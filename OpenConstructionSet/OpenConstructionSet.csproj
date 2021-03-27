@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<Platforms>AnyCPU</Platforms>
+		<KenshiFolder>N:\Games\steamapps\common\Kenshi\</KenshiFolder>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="forgotten construction set">
+			<HintPath>$(KenshiFolder)forgotten construction set.exe</HintPath>
+		</Reference>
+		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+</Project>
