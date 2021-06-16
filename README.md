@@ -15,4 +15,4 @@ The example in the repo demonstrates a basic content patcher.
  - .Net 4.8
 
 ## Setup
-You must set the KenshiFolder property in the c# projects.
+You must set the KenshiFolder property in the projects.

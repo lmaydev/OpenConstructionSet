@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
+		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
 		<Platforms>AnyCPU</Platforms>
-		<KenshiFolder>N:\Games\steamapps\common\Kenshi\</KenshiFolder>
 	</PropertyGroup>
 
 	<ItemGroup>

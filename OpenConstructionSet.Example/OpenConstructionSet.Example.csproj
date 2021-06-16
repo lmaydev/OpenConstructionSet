@@ -3,8 +3,8 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net48</TargetFramework>
-		<KenshiFolder>N:\Games\steamapps\common\Kenshi\</KenshiFolder>
-		<Platforms>AnyCPU</Platforms>
+		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
+		<Platforms>x86</Platforms>
 	</PropertyGroup>
 
 	<ItemGroup>

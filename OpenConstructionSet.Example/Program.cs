@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using forgotten_construction_set;
 using static forgotten_construction_set.GameData;
@@ -7,30 +7,38 @@ namespace OpenConstructionSet.Example
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
-            var folders = ModFolder.ResolveDefaultFolders();
+            // If we can't find the game folders panic!
+            if (!OcsHelper.TryFindDefaultFolders(out var defaultFolders))
+                throw new Exception("Failed to find default game folders");
 
-            var modFilename = "OCS Example.mod";
-            var modFullPath = folders.Mod.GetFilePath(modFilename);
+            const string modFilename = "OCS Example.mod";
 
+            // Delete existing mod
+            defaultFolders.Mod.Delete(modFilename);
+
+            var modFullPath = defaultFolders.Mod.GetFullFilename(modFilename);
+
+            // Metadata for new mod
             var header = new Header
             {
-                Author = "lmay",
-                Description = "Open Construction Set Example",
+                Author = "lmaydev",
+                Description = "Open Construction Set MA Example",
                 Version = 2,
             };
 
-            var service = new OpenConstructionSetService(new[] { folders.Mod, folders.Base });
+            // Creates a new mod and saves it in the default mod folder
+            var gameData = OcsHelper.NewMod(header, defaultFolders.Mod, modFilename);
 
-            var gameData = service.InitMod(header, folders.Mod, modFilename);
+            // Search the default folders for the base mods and their dependencies.
+            var mods = OcsHelper.ResolveDependencyTree(OcsHelper.BaseMods, defaultFolders.ToArray());
 
-            var mods = new List<string> { modFilename };
-            mods.AddRange(OpenConstructionSetService.BaseMods);
+            // Mods will be loaded and become dependencies of the new mod.
+            // Adding other mods above would allow you to create content patchers.
+            OcsHelper.Load(mods, modFullPath, gameData);
 
-            service.Load(mods, true, gameData);
-
-            // Get all stats with an attack value set and change the item's unarmed to match
+            // Get all stats items with an attack value set and change the item's unarmed to match
             gameData.items.OfType(itemType.STATS)
                           .Where(i => i.ContainsKey("attack"))
                           .ToList()

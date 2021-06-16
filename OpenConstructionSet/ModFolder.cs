@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
-using Microsoft.Win32;
 
 namespace OpenConstructionSet
 {
@@ -12,75 +9,52 @@ namespace OpenConstructionSet
 
         public string FolderPath { get; set; }
 
-        public string GetFilePath(string modFilename)
+        public string GetFullFilename(string filename)
         {
             switch (Type)
             {
                 case ModFolderType.Base:
-                    return BasePath();
+                    return GetBasePath(filename);
 
                 case ModFolderType.Mod:
-                    return ModPath();
+                    return GetModPath(filename);
 
                 default:
                     throw new InvalidOperationException($"Invalid {nameof(ModFolderType)} ({Type})");
             }
-
-            string ModPath() => Path.Combine(FolderPath, Path.GetFileNameWithoutExtension(modFilename), modFilename);
-
-            string BasePath() => Path.Combine(FolderPath, modFilename);
         }
 
-        public static (ModFolder Base, ModFolder Mod) ResolveDefaultFolders()
+        public void Delete(string filename)
         {
-            var steamFolder = GetSteamFolder();
-            var libraries = GetLibraries();
-
-            foreach (var library in libraries)
+            switch (Type)
             {
-                if (FindKenshi(library, out var path))
-                {
-                    return (new ModFolder { Type = ModFolderType.Base, FolderPath = System.IO.Path.Combine(path, "data") },
-                        new ModFolder { Type = ModFolderType.Mod, FolderPath = System.IO.Path.Combine(path, "mods") });
-                }
-            }
+                case ModFolderType.Base:
+                    File.Delete(GetBasePath(filename));
+                    break;
 
-            throw new Exception("Default folders could not be found");
+                case ModFolderType.Mod:
+                    Directory.Delete(GetModFolder(filename), true);
+                    break;
 
-            string GetSteamFolder()
-            {
-                var registryKey = Environment.Is64BitProcess ? @"SOFTWARE\Wow6432Node\Valve\Steam" : @"SOFTWARE\Valve\Steam";
-
-                using (var key = Registry.LocalMachine.OpenSubKey(registryKey))
-                {
-                    return key.GetValue("InstallPath").ToString();
-                }
-            }
-
-            IEnumerable<string> GetLibraries()
-            {
-                var path = System.IO.Path.Combine(steamFolder, "steamapps", "libraryfolders.vdf");
-
-                // [whitespace] "[number]" [whitespace] "[library path]"
-                var pattern = "^\\s+\"\\d+\"\\s+\"(.+)\"";
-
-                foreach (var line in File.ReadLines(path))
-                {
-                    var match = Regex.Match(line, pattern);
-
-                    if (match.Success)
-                    {
-                        yield return match.Groups[1].Value;
-                    }
-                }
-            }
-
-            bool FindKenshi(string library, out string path)
-            {
-                path = System.IO.Path.Combine(library, "steamapps", "common", "Kenshi");
-
-                return Directory.Exists(path);
+                default:
+                    throw new InvalidOperationException($"Invalid {nameof(ModFolderType)} ({Type})");
             }
         }
+
+        private string GetModFolder(string filename) => Path.Combine(FolderPath, Path.GetFileNameWithoutExtension(filename));
+
+        private string GetModPath(string filename) => Path.Combine(GetModFolder(filename), filename);
+
+        private string GetBasePath(string filename) => Path.Combine(FolderPath, filename);
+
+        private ModFolder(string folderPath, ModFolderType type)
+        {
+            FolderPath = folderPath;
+            Type = type;
+        }
+
+        public static ModFolder Mod(string folderPath) => new ModFolder(folderPath, ModFolderType.Mod);
+
+        public static ModFolder Base(string folderPath) => new ModFolder(folderPath, ModFolderType.Base);
     }
 }
