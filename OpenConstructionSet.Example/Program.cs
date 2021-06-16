@@ -10,7 +10,7 @@ namespace OpenConstructionSet.Example
         private static void Main()
         {
             // If we can't find the game folders panic!
-            if (!OcsHelper.TryFindDefaultFolders(out var defaultFolders))
+            if (!OcsSteamHelper.TryFindDefaultFolders(out var defaultFolders))
                 throw new Exception("Failed to find default game folders");
 
             const string modFilename = "OCS Example.mod";

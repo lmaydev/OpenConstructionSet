@@ -47,7 +47,7 @@ namespace OpenConstructionSet
             yield return steamFolder;
         }
 
-        public static bool TryFindGameFolder(out string path)
+        private static bool TryFindGameFolder(out string path)
         {
             foreach (var library in GetLibraries())
             {
@@ -61,6 +61,28 @@ namespace OpenConstructionSet
 
             path = null;
             return false;
+        }
+
+        /// <summary>
+        /// Attempt to find the default data and mods folders.
+        /// </summary>
+        /// <param name="defaultFolders">If found this will be set to a <see cref="DefaultFolders"/> containing (You guessed it) the default folders.<</param>
+        /// <returns><c>true</c> if the default folders are found.</returns>
+        public static bool TryFindDefaultFolders(out DefaultFolders defaultFolders)
+        {
+            if (!TryFindGameFolder(out var gameFolder))
+            {
+                defaultFolders = null;
+                return false;
+            }
+
+            defaultFolders = new DefaultFolders()
+            {
+                Base = ModFolder.Base(Path.Combine(gameFolder, "data")),
+                Mod = ModFolder.Mod(Path.Combine(gameFolder, "mods")),
+            };
+
+            return true;
         }
     }
 }

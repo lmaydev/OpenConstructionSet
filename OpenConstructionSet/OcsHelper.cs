@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using forgotten_construction_set;
@@ -56,36 +56,19 @@ namespace OpenConstructionSet
         }
 
         /// <summary>
-        /// Attempt to find the default data and mods folders.
-        /// </summary>
-        /// <returns>A <see cref="DefaultFolders"/> containing (You guessed it) the default folders.</returns>
-        public static bool TryFindDefaultFolders(out DefaultFolders defaultFolders)
-        {
-            if (!OcsSteamHelper.TryFindGameFolder(out var gameFolder))
-            {
-                defaultFolders = null;
-                return false;
-            }
-
-            defaultFolders = new DefaultFolders()
-            {
-                Base = ModFolder.Base(Path.Combine(gameFolder, "data")),
-                Mod = ModFolder.Mod(Path.Combine(gameFolder, "mods")),
-            };
-
-            return true;
-        }
-
-        /// <summary>
         /// Search the provided folders to resolve a mod name (Example.mod) to a full filename.
         /// </summary>
         /// <param name="modFilename">The name of the mod file. example.mod for example.</param>
         /// <param name="folders">Collection of <see cref="ModFolder"/>s to search.</param>
-        /// <returns></returns>
-        public static string ResolveFullFilename(string modFilename, IEnumerable<ModFolder> folders)
+        /// <param name="fullName">If resolved this parameter will be set to the mod's full filename</param>
+        /// <returns>Returns <c>true</c> if the full filename is resolved</returns>
+        public static bool TryResolveFullFilename(string modFilename, IEnumerable<ModFolder> folders, out string fullName)
         {
             if (System.IO.File.Exists(modFilename))
-                return modFilename;
+            {
+                fullName = modFilename;
+                return true;
+            }
 
             foreach (var folder in folders)
             {
@@ -93,11 +76,13 @@ namespace OpenConstructionSet
 
                 if (System.IO.File.Exists(file))
                 {
-                    return file;
+                    fullName = file;
+                    return true;
                 }
             }
 
-            return null;
+            fullName = null;
+            return false;
         }
 
         /// <summary>
@@ -107,13 +92,19 @@ namespace OpenConstructionSet
         /// <param name="mods">Collection of mods names and/or full filenames.</param>
         /// <param name="folders">Collection of <see cref="ModFolder"/>s for use when resolving the full path and a mod name.</param>
         /// <returns>A <c>List</c> of full filenames for the mods and their dependencies in load order.</returns>
-        public static List<string> ResolveDependencyTree(IEnumerable<string> mods, IEnumerable<ModFolder> folders)
+        public static IEnumerable<string> ResolveDependencyTree(IEnumerable<string> mods, IEnumerable<ModFolder> folders)
         {
             var stack = new Stack<string>();
-            var resolved = new List<string>();
+            var resolved = new HashSet<string>();
 
             // Resolve full filenames and add existing files to the stack
-            mods.Select(m => ResolveFullFilename(m, folders)).Where(m => m != null).ToList().ForEach(m => stack.Push(m));
+            foreach (var mod in mods)
+            {
+                if (TryResolveFullFilename(mod, folders, out var fullName))
+                {
+                    stack.Push(fullName);
+                }
+            }
 
             while (stack.Count > 0)
             {
@@ -124,8 +115,16 @@ namespace OpenConstructionSet
 
                 var header = loadHeader(current);
 
-                // Select the full filename of each depedency and create a list from files that exist and aren't already resolved
-                var unresolved = header.Dependencies.Select(m => ResolveFullFilename(m, folders)).Where(m => m != null).Except(resolved).ToList();
+                var unresolved = new List<string>();
+
+                foreach (var mod in header.Dependencies)
+                {
+                    // Only add mods that exist in the folders and haven't already been resolved
+                    if (TryResolveFullFilename(mod, folders, out var fullName) && !resolved.Contains(fullName))
+                    {
+                        unresolved.Add(fullName);
+                    }
+                }
 
                 // if we have any unresolved dependencies push the current item back onto the stack followed by the dependencies
                 if (unresolved.Count > 0)
