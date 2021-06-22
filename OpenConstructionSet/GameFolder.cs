@@ -3,9 +3,9 @@ using System.IO;
 
 namespace OpenConstructionSet
 {
-    public class ModFolder
+    public class GameFolder
     {
-        public ModFolderType Type { get; set; }
+        public GameFolderType Type { get; set; }
 
         public string FolderPath { get; set; }
 
@@ -13,14 +13,14 @@ namespace OpenConstructionSet
         {
             switch (Type)
             {
-                case ModFolderType.Base:
+                case GameFolderType.Data:
                     return GetBasePath(filename);
 
-                case ModFolderType.Mod:
+                case GameFolderType.Mod:
                     return GetModPath(filename);
 
                 default:
-                    throw new InvalidOperationException($"Invalid {nameof(ModFolderType)} ({Type})");
+                    throw new InvalidOperationException($"Invalid {nameof(GameFolderType)} ({Type})");
             }
         }
 
@@ -28,16 +28,16 @@ namespace OpenConstructionSet
         {
             switch (Type)
             {
-                case ModFolderType.Base:
+                case GameFolderType.Data:
                     File.Delete(GetBasePath(filename));
                     break;
 
-                case ModFolderType.Mod:
+                case GameFolderType.Mod:
                     Directory.Delete(GetModFolder(filename), true);
                     break;
 
                 default:
-                    throw new InvalidOperationException($"Invalid {nameof(ModFolderType)} ({Type})");
+                    throw new InvalidOperationException($"Invalid {nameof(GameFolderType)} ({Type})");
             }
         }
 
@@ -47,14 +47,14 @@ namespace OpenConstructionSet
 
         private string GetBasePath(string filename) => Path.Combine(FolderPath, filename);
 
-        private ModFolder(string folderPath, ModFolderType type)
+        private GameFolder(string folderPath, GameFolderType type)
         {
             FolderPath = folderPath;
             Type = type;
         }
 
-        public static ModFolder Mod(string folderPath) => new ModFolder(folderPath, ModFolderType.Mod);
+        public static GameFolder Mod(string folderPath) => new GameFolder(folderPath, GameFolderType.Mod);
 
-        public static ModFolder Base(string folderPath) => new ModFolder(folderPath, ModFolderType.Base);
+        public static GameFolder Base(string folderPath) => new GameFolder(folderPath, GameFolderType.Data);
     }
 }

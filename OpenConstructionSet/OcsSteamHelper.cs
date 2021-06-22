@@ -64,22 +64,22 @@ namespace OpenConstructionSet
         }
 
         /// <summary>
-        /// Attempt to find the default data and mods folders.
+        /// Attempt to find the game's data and mods folders.
         /// </summary>
-        /// <param name="defaultFolders">If found this will be set to a <see cref="DefaultFolders"/> containing (You guessed it) the default folders.<</param>
-        /// <returns><c>true</c> if the default folders are found.</returns>
-        public static bool TryFindDefaultFolders(out DefaultFolders defaultFolders)
+        /// <param name="folders">If found this will be set to a <see cref="GameFolders"/> containing (You guessed it) the game's folders.<</param>
+        /// <returns><c>true</c> if the game folders are found.</returns>
+        public static bool TryFindGameFolders(out GameFolders folders)
         {
             if (!TryFindGameFolder(out var gameFolder))
             {
-                defaultFolders = null;
+                folders = null;
                 return false;
             }
 
-            defaultFolders = new DefaultFolders()
+            folders = new GameFolders()
             {
-                Base = ModFolder.Base(Path.Combine(gameFolder, "data")),
-                Mod = ModFolder.Mod(Path.Combine(gameFolder, "mods")),
+                Data = GameFolder.Base(Path.Combine(gameFolder, "data")),
+                Mod = GameFolder.Mod(Path.Combine(gameFolder, "mods")),
             };
 
             return true;

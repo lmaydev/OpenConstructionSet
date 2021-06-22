@@ -43,7 +43,7 @@ namespace OpenConstructionSet
         /// <param name="folder">Folder to save mod in.</param>
         /// <param name="filename">Mod filename e.g. Example.mod</param>
         /// <returns></returns>
-        public static GameData NewMod(Header header, ModFolder folder, string filename)
+        public static GameData NewMod(Header header, GameFolder folder, string filename)
         {
             var gameData = new GameData
             {
@@ -59,10 +59,10 @@ namespace OpenConstructionSet
         /// Search the provided folders to resolve a mod name (Example.mod) to a full filename.
         /// </summary>
         /// <param name="modFilename">The name of the mod file. example.mod for example.</param>
-        /// <param name="folders">Collection of <see cref="ModFolder"/>s to search.</param>
+        /// <param name="folders">Collection of <see cref="GameFolder"/>s to search.</param>
         /// <param name="fullName">If resolved this parameter will be set to the mod's full filename</param>
         /// <returns>Returns <c>true</c> if the full filename is resolved</returns>
-        public static bool TryResolveFullFilename(string modFilename, IEnumerable<ModFolder> folders, out string fullName)
+        public static bool TryResolveFullFilename(string modFilename, IEnumerable<GameFolder> folders, out string fullName)
         {
             if (System.IO.File.Exists(modFilename))
             {
@@ -90,9 +90,9 @@ namespace OpenConstructionSet
         /// The provided <c>folders</c> will be used to resolve mod names (example.mod) to full file paths. ALL dependencies will need to be resolved this way.
         /// </summary>
         /// <param name="mods">Collection of mods names and/or full filenames.</param>
-        /// <param name="folders">Collection of <see cref="ModFolder"/>s for use when resolving the full path and a mod name.</param>
+        /// <param name="folders">Collection of <see cref="GameFolder"/>s for use when resolving the full path and a mod name.</param>
         /// <returns>A <c>List</c> of full filenames for the mods and their dependencies in load order.</returns>
-        public static IEnumerable<string> ResolveDependencyTree(IEnumerable<string> mods, IEnumerable<ModFolder> folders)
+        public static IEnumerable<string> ResolveDependencyTree(IEnumerable<string> mods, IEnumerable<GameFolder> folders)
         {
             var stack = new Stack<string>();
             var resolved = new HashSet<string>();
