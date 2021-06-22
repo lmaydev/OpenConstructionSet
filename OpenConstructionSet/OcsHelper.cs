@@ -15,15 +15,15 @@ namespace OpenConstructionSet
         /// <summary>
         /// Loads the provided mods into either the passed <c>GameData</c> object or a new one.
         /// </summary>
-        /// <param name="modsFullFilename">Full file paths of the mods to load.</param>
+        /// <param name="modPaths">Full file paths of the mods to load.</param>
         /// <param name="activeMod">Full file path of the active mod if required.</param>
         /// <param name="baseData">If not null the mods will be loaded into baseData.</c></param>
         /// <returns>A <c>GameData</c> object loaded with the specifed mods.</returns>
-        public static GameData Load(IEnumerable<string> modsFullFilename, string activeMod = null, GameData baseData = null)
+        public static GameData Load(IEnumerable<string> modPaths, string activeMod = null, GameData baseData = null)
         {
             var gameData = baseData ?? new GameData();
 
-            foreach (var mod in modsFullFilename)
+            foreach (var mod in modPaths)
             {
                 gameData.load(mod, ModMode.BASE, true);
             }
@@ -41,7 +41,7 @@ namespace OpenConstructionSet
         /// </summary>
         /// <param name="header">Contains the meta data for the mod.</param>
         /// <param name="folder">Folder to save mod in.</param>
-        /// <param name="filename">Mod filename e.g. Example.mod</param>
+        /// <param name="filename">Mod filename. e.g. example.mod</param>
         /// <returns></returns>
         public static GameData NewMod(Header header, GameFolder folder, string filename)
         {
@@ -56,12 +56,12 @@ namespace OpenConstructionSet
         }
 
         /// <summary>
-        /// Search the provided folders to resolve a mod name (Example.mod) to a full filename.
+        /// Search the provided folders to resolve a mod name (e.g. example.mod) to a full filename.
         /// </summary>
-        /// <param name="modFilename">The name of the mod file. example.mod for example.</param>
+        /// <param name="modFilename">The name of the mod file. e.g. example.mod.</param>
         /// <param name="folders">Collection of <see cref="GameFolder"/>s to search.</param>
         /// <param name="fullName">If resolved this parameter will be set to the mod's full filename</param>
-        /// <returns>Returns <c>true</c> if the full filename is resolved</returns>
+        /// <returns>Returns <c>true</c> if the full filename was resolved</returns>
         public static bool TryResolveFullFilename(string modFilename, IEnumerable<GameFolder> folders, out string fullName)
         {
             if (System.IO.File.Exists(modFilename))
@@ -87,15 +87,16 @@ namespace OpenConstructionSet
 
         /// <summary>
         /// Resolve the depedencies of the provided mods and return a list of full filepaths of the mods and dependencies in load order.
-        /// The provided <c>folders</c> will be used to resolve mod names (example.mod) to full file paths. ALL dependencies will need to be resolved this way.
+        /// The provided <see cref="GameFolder"/>s will be used to resolve mod names (example.mod) to full file paths. ALL dependencies will need to be resolved this way.
         /// </summary>
         /// <param name="mods">Collection of mods names and/or full filenames.</param>
         /// <param name="folders">Collection of <see cref="GameFolder"/>s for use when resolving the full path and a mod name.</param>
-        /// <returns>A <c>List</c> of full filenames for the mods and their dependencies in load order.</returns>
+        /// <returns>A collection of full path's for the mods and their dependencies in load order.</returns>
         public static IEnumerable<string> ResolveDependencyTree(IEnumerable<string> mods, IEnumerable<GameFolder> folders)
         {
             var stack = new Stack<string>();
             var resolved = new HashSet<string>();
+            var resolvedPaths = new Dictionary<string, string>();
 
             // Resolve full filenames and add existing files to the stack
             foreach (var mod in mods)

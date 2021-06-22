@@ -10,6 +10,9 @@ using static forgotten_construction_set.navigation;
 
 namespace OpenConstructionSet
 {
+    /// <summary>
+    /// The <c>GameData</c> object is tied to UI so we need to do some stupid stuff to get it working.
+    /// </summary>
     public static class WinFormsInfrastructure
     {
         //  Property used to access Application.OpenForms in a mutable way so we can add our fake windows
@@ -29,6 +32,10 @@ namespace OpenConstructionSet
 
         public static Errors Errors { get; private set; }
 
+        /// <summary>
+        /// Get or set the FileMode. 
+        /// Due to the GameData class being tied to the UI they all share this value.
+        /// </summary>
         public static ModFileMode FileMode
         {
             get
@@ -48,6 +55,10 @@ namespace OpenConstructionSet
             }
         }
 
+        /// <summary>
+        /// We need to do some magic 
+        /// </summary>
+        /// <param name="mode"></param>
         public static void Init(ModFileMode mode = ModFileMode.USER)
         {
             if (Initialised)
