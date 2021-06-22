@@ -3,37 +3,55 @@ using System.IO;
 
 namespace OpenConstructionSet
 {
+    /// <summary>
+    /// Represents and folder that contains mods.
+    /// </summary>
     public class GameFolder
     {
-        public GameFolderType Type { get; set; }
+        /// <summary>
+        /// Used to specify the type.
+        /// </summary>
+        public GameFolderType Type { get; }
 
-        public string FolderPath { get; set; }
+        /// <summary>
+        /// The full path of the folder.
+        /// </summary>
+        public string FolderPath { get; }
 
-        public string GetFullFilename(string filename)
+        /// <summary>
+        /// Returns the full path of a mod from its' name.
+        /// </summary>
+        /// <param name="modFilename">The file name of the mod. e.g. example.mod</param>
+        /// <returns>The full path of a mod file.</returns>
+        public string GetFullPath(string modFilename)
         {
             switch (Type)
             {
                 case GameFolderType.Data:
-                    return GetBasePath(filename);
+                    return GetBasePath(modFilename);
 
                 case GameFolderType.Mod:
-                    return GetModPath(filename);
+                    return GetModPath(modFilename);
 
                 default:
                     throw new InvalidOperationException($"Invalid {nameof(GameFolderType)} ({Type})");
             }
         }
 
-        public void Delete(string filename)
+        /// <summary>
+        /// Deletes the given mod if it exists.
+        /// </summary>
+        /// <param name="modFilename">The file name of the mod. e.g. example.mod</param>
+        public void Delete(string modFilename)
         {
             switch (Type)
             {
                 case GameFolderType.Data:
-                    File.Delete(GetBasePath(filename));
+                    File.Delete(GetBasePath(modFilename));
                     break;
 
                 case GameFolderType.Mod:
-                    Directory.Delete(GetModFolder(filename), true);
+                    Directory.Delete(GetModFolder(modFilename), true);
                     break;
 
                 default:
@@ -41,11 +59,11 @@ namespace OpenConstructionSet
             }
         }
 
-        private string GetModFolder(string filename) => Path.Combine(FolderPath, Path.GetFileNameWithoutExtension(filename));
+        private string GetModFolder(string modFilename) => Path.Combine(FolderPath, Path.GetFileNameWithoutExtension(modFilename));
 
-        private string GetModPath(string filename) => Path.Combine(GetModFolder(filename), filename);
+        private string GetModPath(string modFilename) => Path.Combine(GetModFolder(modFilename), modFilename);
 
-        private string GetBasePath(string filename) => Path.Combine(FolderPath, filename);
+        private string GetBasePath(string modFilename) => Path.Combine(FolderPath, modFilename);
 
         private GameFolder(string folderPath, GameFolderType type)
         {
@@ -53,8 +71,18 @@ namespace OpenConstructionSet
             Type = type;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="GameFolderType.Mod"/> <see cref="GameFolder"/> instance.
+        /// </summary>
+        /// <param name="folderPath">Full path of the folder.</param>
+        /// <returns>A <see cref="GameFolderType.Mod"/> <see cref="GameFolder"/> with the given path. </returns>
         public static GameFolder Mod(string folderPath) => new GameFolder(folderPath, GameFolderType.Mod);
 
-        public static GameFolder Base(string folderPath) => new GameFolder(folderPath, GameFolderType.Data);
+        /// <summary>
+        /// Creates a new <see cref="GameFolderType.Data"/> <see cref="GameFolder"/> instance.
+        /// </summary>
+        /// <param name="folderPath">Full path of the folder.</param>
+        /// <returns>A <see cref="GameFolderType.Data"/> <see cref="GameFolder"/> with the given path. </returns>
+        public static GameFolder Data(string folderPath) => new GameFolder(folderPath, GameFolderType.Data);
     }
 }

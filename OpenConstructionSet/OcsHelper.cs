@@ -50,7 +50,7 @@ namespace OpenConstructionSet
                 header = header
             };
 
-            gameData.save(folder.GetFullFilename(filename));
+            gameData.save(folder.GetFullPath(filename));
 
             return gameData;
         }
@@ -72,7 +72,7 @@ namespace OpenConstructionSet
 
             foreach (var folder in folders)
             {
-                var file = folder.GetFullFilename(modFilename);
+                var file = folder.GetFullPath(modFilename);
 
                 if (System.IO.File.Exists(file))
                 {

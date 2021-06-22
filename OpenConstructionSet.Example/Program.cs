@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using forgotten_construction_set;
 using static forgotten_construction_set.GameData;
@@ -18,7 +18,7 @@ namespace OpenConstructionSet.Example
             // Delete existing mod
             folders.Mod.Delete(modFilename);
 
-            var modFullPath = folders.Mod.GetFullFilename(modFilename);
+            var modFullPath = folders.Mod.GetFullPath(modFilename);
 
             // Metadata for new mod
             var header = new Header

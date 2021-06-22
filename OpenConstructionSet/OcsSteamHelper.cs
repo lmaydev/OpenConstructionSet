@@ -78,7 +78,7 @@ namespace OpenConstructionSet
 
             folders = new GameFolders()
             {
-                Data = GameFolder.Base(Path.Combine(gameFolder, "data")),
+                Data = GameFolder.Data(Path.Combine(gameFolder, "data")),
                 Mod = GameFolder.Mod(Path.Combine(gameFolder, "mods")),
             };
 
