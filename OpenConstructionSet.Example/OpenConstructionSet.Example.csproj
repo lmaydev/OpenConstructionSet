@@ -5,10 +5,11 @@
 		<TargetFramework>net48</TargetFramework>
 		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
 		<Platforms>x86</Platforms>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\OpenConstructionSet\OpenConstructionSet.csproj" />
+		<ProjectReference Include="..\OpenConstructionSet\OpenConstructionSet.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
