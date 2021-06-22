@@ -40,16 +40,14 @@ namespace OpenConstructionSet
         {
             get
             {
-                if (!Initialised)
-                    Init();
+                Init();
 
                 return Nav.FileMode;
             }
 
             set
             {
-                if (!Initialised)
-                    Init();
+                Init();
 
                 Nav.FileMode = value;
             }
