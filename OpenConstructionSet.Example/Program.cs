@@ -38,13 +38,21 @@ namespace OpenConstructionSet.Example
             // Adding other mods above would allow you to create content patchers.
             OcsHelper.Load(mods, modFullPath, gameData);
 
+            Console.WriteLine($"Loaded {gameData.items.Count} items.");
+
             // Get all stats items with an attack value set and change the item's unarmed to match
             gameData.items.OfType(itemType.STATS)
                           .Where(i => i.ContainsKey("attack"))
                           .ToList()
-                          .ForEach(i => i["unarmed"] = i["attack"]);
+                          .ForEach(i =>
+                          {
+                              var attack = i["attack"];
+                              i["unarmed"] = attack;
+                              Console.WriteLine($"Updating {i.Name}, changing unarmed to {attack}");
+                          });
 
             gameData.save(modFullPath);
+            Console.ReadKey();
         }
     }
 }

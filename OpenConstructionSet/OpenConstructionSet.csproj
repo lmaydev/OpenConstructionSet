@@ -1,9 +1,26 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
 		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
 		<Platforms>AnyCPU</Platforms>
 	</PropertyGroup>
+	
+	<!--Nuget package properties-->
+	<PropertyGroup>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<Version>0</Version>
+		<Authors>lmaydev</Authors>
+		<Description>
+			A wrapper SDK for the Forgotten Construction Set.
+			Allows creating, loading, querying, editing and saving of mods and game data.
+		</Description>
+		<PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
+		<RepositoryType>github</RepositoryType>
+	</PropertyGroup>
+
 
 	<ItemGroup>
 		<Reference Include="forgotten construction set">
