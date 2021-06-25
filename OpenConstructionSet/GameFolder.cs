@@ -16,22 +16,22 @@ namespace OpenConstructionSet
         /// <summary>
         /// The full path of the folder.
         /// </summary>
-        public string FolderPath { get; }
+        public string Folder { get; }
 
         /// <summary>
         /// Returns the full path of a mod from its' name.
         /// </summary>
-        /// <param name="modFilename">The file name of the mod. e.g. example.mod</param>
+        /// <param name="mod">The file name of the mod. e.g. example.mod</param>
         /// <returns>The full path of a mod file.</returns>
-        public string GetFullPath(string modFilename)
+        public string GetFullPath(string mod)
         {
             switch (Type)
             {
                 case GameFolderType.Data:
-                    return GetBasePath(modFilename);
+                    return GetBasePath(mod);
 
                 case GameFolderType.Mod:
-                    return GetModPath(modFilename);
+                    return GetModPath(mod);
 
                 default:
                     throw new InvalidOperationException($"Invalid {nameof(GameFolderType)} ({Type})");
@@ -41,17 +41,17 @@ namespace OpenConstructionSet
         /// <summary>
         /// Deletes the given mod if it exists.
         /// </summary>
-        /// <param name="modFilename">The file name of the mod. e.g. example.mod</param>
-        public void Delete(string modFilename)
+        /// <param name="mod">The file name of the mod. e.g. example.mod</param>
+        public void Delete(string mod)
         {
             switch (Type)
             {
                 case GameFolderType.Data:
-                    File.Delete(GetBasePath(modFilename));
+                    File.Delete(GetBasePath(mod));
                     break;
 
                 case GameFolderType.Mod:
-                    Directory.Delete(GetModFolder(modFilename), true);
+                    Directory.Delete(GetModFolder(mod), true);
                     break;
 
                 default:
@@ -59,30 +59,30 @@ namespace OpenConstructionSet
             }
         }
 
-        private string GetModFolder(string modFilename) => Path.Combine(FolderPath, Path.GetFileNameWithoutExtension(modFilename));
+        private string GetModFolder(string mod) => Path.Combine(Folder, Path.GetFileNameWithoutExtension(mod));
 
-        private string GetModPath(string modFilename) => Path.Combine(GetModFolder(modFilename), modFilename);
+        private string GetModPath(string mod) => Path.Combine(GetModFolder(mod), mod);
 
-        private string GetBasePath(string modFilename) => Path.Combine(FolderPath, modFilename);
+        private string GetBasePath(string mod) => Path.Combine(Folder, mod);
 
-        private GameFolder(string folderPath, GameFolderType type)
+        private GameFolder(string folder, GameFolderType type)
         {
-            FolderPath = folderPath;
+            Folder = folder;
             Type = type;
         }
 
         /// <summary>
         /// Creates a new <see cref="GameFolderType.Mod"/> <see cref="GameFolder"/> instance.
         /// </summary>
-        /// <param name="folderPath">Full path of the folder.</param>
+        /// <param name="folder">Full path of the folder.</param>
         /// <returns>A <see cref="GameFolderType.Mod"/> <see cref="GameFolder"/> with the given path. </returns>
-        public static GameFolder Mod(string folderPath) => new GameFolder(folderPath, GameFolderType.Mod);
+        public static GameFolder Mod(string folder) => new GameFolder(folder, GameFolderType.Mod);
 
         /// <summary>
         /// Creates a new <see cref="GameFolderType.Data"/> <see cref="GameFolder"/> instance.
         /// </summary>
-        /// <param name="folderPath">Full path of the folder.</param>
+        /// <param name="folder">Full path of the folder.</param>
         /// <returns>A <see cref="GameFolderType.Data"/> <see cref="GameFolder"/> with the given path. </returns>
-        public static GameFolder Data(string folderPath) => new GameFolder(folderPath, GameFolderType.Data);
+        public static GameFolder Data(string folder) => new GameFolder(folder, GameFolderType.Data);
     }
 }
