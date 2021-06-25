@@ -22,8 +22,12 @@ namespace OpenConstructionSet.Example
             // Creates a new mod and saves it in the default mod folder
             var modPath = OcsHelper.NewMod(header, modFilename);
 
+            Console.WriteLine($"Created new mod at {modPath}");
+
+            // Load the base mods and the new mod as active.
             var gameData = OcsHelper.Load(OcsHelper.BaseMods, modFilename);
 
+            // Change unarmed to match attack in all stats items
             gameData.items.OfType(itemType.STATS)
                           .Where(i => i.ContainsKey("attack"))
                           .ToList()

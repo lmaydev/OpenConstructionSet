@@ -10,8 +10,7 @@ It is currently possible to:
  - Edit data
  - Save mods
 
-The example in the repo demonstrates a basic content patcher.
-[Link to the example](OpenConstructionSet.Example/Program.cs)
+The [example in the repo](OpenConstructionSet.Example/Program.cs) demonstrates a basic content patcher.
 
 ## Prerequisites
  - Kenshi with FCS
@@ -19,3 +18,5 @@ The example in the repo demonstrates a basic content patcher.
 
 ## Setup
 You must set the KenshiFolder property in the projects.
+
+Any applications must be built for x86.
