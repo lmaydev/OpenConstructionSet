@@ -13,7 +13,7 @@ namespace OpenConstructionSet
     /// <summary>
     /// The <c>GameData</c> object is tied to UI so we need to do some stupid stuff to get it working.
     /// </summary>
-    public static class WinFormsInfrastructure
+    public static class OcsWinformsHelper
     {
         //  Property used to access Application.OpenForms in a mutable way so we can add our fake windows
         private static readonly PropertyInfo innerListProperty = typeof(ReadOnlyCollectionBase).GetProperty("InnerList", BindingFlags.NonPublic | BindingFlags.Instance);
