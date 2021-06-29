@@ -26,8 +26,13 @@ namespace OpenConstructionSet
         /// <param name="resolveDependencies">If <c>true</c> dependencies will will be resolved and mods loaded in order.</param>
         /// <param name="loadGameFiles">If <c>true</c> the game's data files will be loaded.</param>
         /// <returns>The built <c>GameData</c>.</returns>
-        public static GameData Load(IEnumerable<string> mods, string activeMod = null, IEnumerable<GameFolder> folders = null, bool resolveDependencies = true, bool loadGameFiles = true)
+        public static GameData Load(IEnumerable<string> mods = null, string activeMod = null, IEnumerable<GameFolder> folders = null, bool resolveDependencies = true, bool loadGameFiles = true)
         {
+            if (!loadGameFiles && (mods == null || !mods.Any()))
+            {
+                throw new ArgumentException("No mods provided. Either them pass in using the mods parameter or set loadGameFiles to true");
+            }
+
             if (folders == null)
             {
                 if (OcsSteamHelper.TryFindGameFolders(out var gameFolders))
@@ -40,8 +45,13 @@ namespace OpenConstructionSet
                 }
             }
 
-            var toLoad = new List<string>(mods);
+            var toLoad = new List<string>();
             
+            if (mods != null)
+            {
+                toLoad.AddRange(mods);
+            }
+
             if (loadGameFiles)
             {
                 toLoad.AddRange(BaseMods);

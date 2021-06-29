@@ -1,15 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using forgotten_construction_set;
 using static forgotten_construction_set.GameData;
 
 namespace OpenConstructionSet.Example
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main()
         {
-            const string modFilename = "OCS Example.mod";
+            const string modName = "OCS Example.mod";
 
             // Metadata for new mod
             var header = new Header
@@ -20,17 +21,16 @@ namespace OpenConstructionSet.Example
             };
 
             // Creates a new mod and saves it in the default mod folder
-            var modPath = OcsHelper.NewMod(header, modFilename);
+            var modPath = OcsHelper.NewMod(header, modName);
 
             Console.WriteLine($"Created new mod at {modPath}");
 
             // Load the base mods and the new mod as active.
-            var gameData = OcsHelper.Load(OcsHelper.BaseMods, modFilename);
+            var gameData = OcsHelper.Load(activeMod: modName);
 
             // Change unarmed to match attack in all stats items
             gameData.items.OfType(itemType.STATS)
                           .Where(i => i.ContainsKey("attack"))
-                          .ToList()
                           .ForEach(i =>
                           {
                               var attack = i["attack"];
@@ -41,6 +41,14 @@ namespace OpenConstructionSet.Example
             gameData.save(modPath);
 
             Console.ReadKey();
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            foreach (var item in collection)
+            {
+                action(item);
+            }
         }
     }
 }
