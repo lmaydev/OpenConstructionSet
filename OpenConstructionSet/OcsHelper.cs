@@ -24,8 +24,9 @@ namespace OpenConstructionSet
         /// </param>
         /// <param name="activeMod">Name or full path of the mod to load as active. Both a name (e.g. example.mod) and a full path are accetped.</param>
         /// <param name="resolveDependencies">If <c>true</c> dependencies will will be resolved and mods loaded in order.</param>
+        /// <param name="loadGameFiles">If <c>true</c> the game's data files will be loaded.</param>
         /// <returns>The built <c>GameData</c>.</returns>
-        public static GameData Load(IEnumerable<string> mods, string activeMod = null, IEnumerable<GameFolder> folders = null, bool resolveDependencies = true)
+        public static GameData Load(IEnumerable<string> mods, string activeMod = null, IEnumerable<GameFolder> folders = null, bool resolveDependencies = true, bool loadGameFiles = true)
         {
             if (folders == null)
             {
@@ -41,6 +42,11 @@ namespace OpenConstructionSet
 
             var toLoad = new List<string>(mods);
             
+            if (loadGameFiles)
+            {
+                toLoad.AddRange(BaseMods);
+            }
+
             if (activeMod != null && !toLoad.Any(m => m == activeMod || m.EndsWith(Path.GetFileName(activeMod))))
             {
                 toLoad.Insert(0, activeMod);
