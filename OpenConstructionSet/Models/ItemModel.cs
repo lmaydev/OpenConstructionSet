@@ -1,4 +1,5 @@
-﻿using System;
+﻿using forgotten_construction_set;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace OpenConstructionSet.Models
 
         public string OriginalName { get; set; }
 
-        public string Type { get; set; }
+        public itemType Type { get; set; }
 
         public string Mod { get; set; }
 

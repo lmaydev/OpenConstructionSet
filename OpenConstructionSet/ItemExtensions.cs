@@ -22,11 +22,31 @@ namespace OpenConstructionSet
         /// <summary>
         /// Returns all items of the specified type.
         /// </summary>
+        /// <param name="items">Dictionary of <see cref="ItemModel"/>s to filter.</param>
+        /// <param name="type">The type used to filter the <see cref="ItemModel"/>s.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ItemModel"/>s with the given type.</returns>
+        public static IEnumerable<ItemModel> OfType(this IDictionary<string, ItemModel> items, itemType type)
+            => items.Values.OfType(type);
+
+
+        /// <summary>
+        /// Returns all items of the specified type.
+        /// </summary>
         /// <param name="items">Collection of <c>GameData.Item</c>s to filter.</param>
         /// <param name="type">The type used to filter the <c>GameData.Item</c>s.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <c>GameData.Item</c>s with the given type.</returns>
         public static IEnumerable<GameData.Item> OfType(this IEnumerable<GameData.Item> items, itemType type)
             => items.Where(i => i.type == type);
+
+        /// <summary>
+        /// Returns all items of the specified type.
+        /// </summary>
+        /// <param name="items">Collection of <see cref="ItemModel"/>s to filter.</param>
+        /// <param name="type">The type used to filter the <see cref="ItemModel"/>s.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ItemModel"/>s with the given type.</returns>
+        public static IEnumerable<ItemModel> OfType(this IEnumerable<ItemModel> items, itemType type)
+            => items.Where(i => i.Type == type);
+
 
         private readonly static FieldInfo itemData = typeof(GameData.Item).GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
         private readonly static FieldInfo itemLocked = typeof(GameData.Item).GetField("lockedData", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -47,7 +67,7 @@ namespace OpenConstructionSet
             {
                 Id = item.id,
                 HasInstances = item.HasInstances,
-                Type = item.type.ToString(),
+                Type = item.type,
                 Mod = item.Mod,
                 ModName = item.ModName,
                 Name = item.Name,
