@@ -25,7 +25,7 @@ namespace OpenConstructionSet
 
         public string[] PlatoonFiles { get; private set; }
 
-        public Save(string basePath, string name)
+        public Save(string basePath, string name, bool loadFiles = true)
         {
             Name = name;
 
@@ -38,7 +38,10 @@ namespace OpenConstructionSet
 
             PlatoonFolder = Path.Combine(FolderPath, "platoon");
 
-            LoadFiles();
+            if (loadFiles)
+            {
+                LoadFiles(); 
+            }
         }
 
         public void LoadFiles()

@@ -7,10 +7,16 @@ using static forgotten_construction_set.GameData;
 
 namespace OpenConstructionSet
 {
+    /// <summary>
+    /// Main OCS helper class
+    /// </summary>
     public static class OcsHelper
     {
         static OcsHelper() => OcsWinformsHelper.Init();
 
+        /// <summary>
+        /// The names of the game's data and mod files.
+        /// </summary>
         public readonly static string[] BaseMods = new string[] { "gamedata.base", "Newwworld.mod", "Dialogue.mod", "rebirth.mod" };
 
         /// <summary>
@@ -30,7 +36,7 @@ namespace OpenConstructionSet
         {
             if (!loadGameFiles && (mods == null || !mods.Any()))
             {
-                throw new ArgumentException("No mods provided. Either them pass in using the mods parameter or set loadGameFiles to true");
+                throw new ArgumentException("No mods provided. Either pass them in using the mods parameter or set loadGameFiles to true");
             }
 
             if (folders == null)
@@ -46,7 +52,7 @@ namespace OpenConstructionSet
             }
 
             var toLoad = new List<string>();
-            
+
             if (mods != null)
             {
                 toLoad.AddRange(mods);
@@ -62,7 +68,7 @@ namespace OpenConstructionSet
                 toLoad.Insert(0, activeMod);
             }
 
-            var loadOrder = resolveDependencies ? ResolveDependencyTree(toLoad, folders) : ResolvePaths(toLoad, folders);
+            var loadOrder = resolveDependencies ? folders.ResolveDependencyTree(toLoad) : folders.ResolvePaths(toLoad);
 
             var gameData = new GameData();
 
@@ -82,6 +88,7 @@ namespace OpenConstructionSet
         /// <param name="header">Contains the meta data for the mod.</param>
         /// <param name="mod">Mod filename. e.g. example.mod</param>
         /// <param name="folder">Folder to save mod in. If folder is <c>null</c> the game's mod folder will be used.</param>
+        /// <param name="deleteExisting">If <c>true</c> existing mods will be removed.</param>
         /// <returns>The full path of the mod.</returns>
         public static string NewMod(Header header, string mod, GameFolder folder = null, bool deleteExisting = true)
         {
@@ -117,11 +124,11 @@ namespace OpenConstructionSet
         /// <summary>
         /// Search the provided folders to resolve a mod name (e.g. example.mod) to a full path.
         /// </summary>
-        /// <param name="mod">The name of the mod file. e.g. example.mod.</param>
         /// <param name="folders">Collection of <see cref="GameFolder"/>s to search.</param>
+        /// <param name="mod">The name of the mod file. e.g. example.mod.</param>
         /// <param name="path">If resolved this parameter will be set to the mod's full path</param>
         /// <returns>Returns <c>true</c> if the full path was resolved</returns>
-        public static bool TryResolvePath(string mod, IEnumerable<GameFolder> folders, out string path)
+        public static bool TryResolvePath(this IEnumerable<GameFolder> folders, string mod, out string path)
         {
             if (System.IO.File.Exists(mod))
             {
@@ -131,11 +138,8 @@ namespace OpenConstructionSet
 
             foreach (var folder in folders)
             {
-                var file = folder.GetFullPath(mod);
-
-                if (System.IO.File.Exists(file))
+                if (folder.Mods.TryGetValue(mod, out path))
                 {
-                    path = file;
                     return true;
                 }
             }
@@ -148,17 +152,17 @@ namespace OpenConstructionSet
         /// Search the provided folders to resolve the presented mods.
         /// Mods that cannot be resolved will be dropped. Unless throwIfMissing is <c>true</c>.
         /// </summary>
-        /// <param name="mods">Collections of the names of the mod files. e.g. example.mod.</param>
         /// <param name="folders">Collection of <see cref="GameFolder"/>s to search.</param>
+        /// <param name="mods">Collections of the names of the mod files. e.g. example.mod.</param>
         /// <param name="throwIfMissing">If <c>true</c> missing mods will result in an exception.</param>
         /// <returns></returns>
-        public static IEnumerable<string> ResolvePaths(IEnumerable<string> mods, IEnumerable<GameFolder> folders, bool throwIfMissing = false)
+        public static IEnumerable<string> ResolvePaths(this IEnumerable<GameFolder> folders, IEnumerable<string> mods, bool throwIfMissing = false)
         {
             var list = new List<string>();
 
             foreach (var mod in mods)
             {
-                if (TryResolvePath(mod,folders, out var path))
+                if (folders.TryResolvePath(mod, out var path))
                 {
                     list.Add(path);
                 }
@@ -175,21 +179,21 @@ namespace OpenConstructionSet
         /// Resolve the depedencies of the provided mods and return a list of full filepaths of the mods and dependencies in load order.
         /// The provided <see cref="GameFolder"/>s will be used to resolve mod names (example.mod) to full file paths. All dependencies will need to be resolved this way.
         /// </summary>
-        /// <param name="mods">Collection of mods names and/or full filenames.</param>
         /// <param name="folders">Collection of <see cref="GameFolder"/>s for use when resolving the full path and a mod name.</param>
+        /// <param name="mods">Collection of mods names and/or full filenames.</param>
         /// <returns>A collection of full path's for the mods and their dependencies in load order.</returns>
-        public static IEnumerable<string> ResolveDependencyTree(IEnumerable<string> mods, IEnumerable<GameFolder> folders)
+        public static IEnumerable<string> ResolveDependencyTree(this IEnumerable<GameFolder> folders, IEnumerable<string> mods)
         {
             var stack = new Stack<string>();
             var resolved = new HashSet<string>();
-            var resolvedPaths = new Dictionary<string, string>();
+            var usedNames = new HashSet<string>();
 
-            // Resolve full filenames and add existing files to the stack
+            // Resolve full path of each mod (ignoring duplicates) and push to the stack
             foreach (var mod in mods)
             {
-                if (TryResolvePath(mod, folders, out var fullName))
+                if (!NameUsed(mod) && folders.TryResolvePath(mod, out var path))
                 {
-                    stack.Push(fullName);
+                    Push(path);
                 }
             }
 
@@ -197,28 +201,31 @@ namespace OpenConstructionSet
             {
                 var current = stack.Pop();
 
-                if (resolved.Contains(current))
-                    continue;
-
                 var header = loadHeader(current);
 
                 var unresolved = new List<string>();
 
                 foreach (var mod in header.Dependencies)
                 {
-                    // Only add mods that exist in the folders and haven't already been resolved
-                    if (TryResolvePath(mod, folders, out var fullName) && !resolved.Contains(fullName))
+                    // this mod is already on the stack/resolved so ignore it
+                    if (NameUsed(mod))
                     {
-                        unresolved.Add(fullName);
+                        continue;
+                    }
+
+                    // new mod so resolve path and store
+                    if (folders.TryResolvePath(mod, out var path))
+                    {
+                        unresolved.Add(path);
                     }
                 }
 
-                // if we have any unresolved dependencies push the current item back onto the stack followed by the dependencies
+                // if we have any unresolved dependencies push the current item back onto the stack followed by it's unresolved dependencies
                 if (unresolved.Count > 0)
                 {
                     stack.Push(current);
 
-                    unresolved.ForEach(d => stack.Push(d));
+                    unresolved.ForEach(Push);
                 }
                 else
                 {
@@ -229,6 +236,16 @@ namespace OpenConstructionSet
 
             // List of full file paths in load order.
             return resolved;
+
+            bool NameUsed(string name) => usedNames.Contains(Path.GetFileName(name));
+
+            bool UseName(string name) => usedNames.Add(Path.GetFileName(name));
+
+            void Push(string name)
+            {
+                stack.Push(name);
+                UseName(name);
+            }
         }
     }
 }

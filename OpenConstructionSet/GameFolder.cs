@@ -20,6 +20,10 @@ namespace OpenConstructionSet
         /// </summary>
         public string FolderPath { get; }
 
+        /// <summary>
+        /// Collection of mod paths key'd to their filename.
+        /// Call <see cref="LoadMods"/> to refresh this collection from disk.
+        /// </summary>
         public IDictionary<string, string> Mods { get; } = new Dictionary<string, string>();
 
         /// <summary>
@@ -69,14 +73,26 @@ namespace OpenConstructionSet
 
         private string GetBasePath(string mod) => Path.Combine(FolderPath, mod);
 
-        public GameFolder(string folder, GameFolderType type)
+        /// <summary>
+        /// Constructs a <c>GameFolder</c>.
+        /// </summary>
+        /// <param name="folder">Path of the folder.</param>
+        /// <param name="type">The <see cref="GameFolderType"/> determines how mods are loaded from the folder.</param>
+        /// <param name="loadMods">If <c>true</c> the <see cref="Mods"/> property will be populated from disk.</param>
+        public GameFolder(string folder, GameFolderType type, bool loadMods = true)
         {
             FolderPath = folder;
             Type = type;
 
-            LoadMods();
+            if (loadMods)
+            {
+                LoadMods();
+            }
         }
 
+        /// <summary>
+        /// Refresh the <see cref="Mods"/> property from disk.
+        /// </summary>
         public void LoadMods()
         {
             Mods.Clear();

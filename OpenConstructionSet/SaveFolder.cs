@@ -13,11 +13,14 @@ namespace OpenConstructionSet
 
         public Save[] Saves { get; private set; }
 
-        public SaveFolder(string path)
+        public SaveFolder(string path, bool loadSaves = true)
         {
             FolderPath = path;
 
-            LoadSaves();
+            if (loadSaves)
+            {
+                LoadSaves();
+            }
         }
 
         public void LoadSaves()
