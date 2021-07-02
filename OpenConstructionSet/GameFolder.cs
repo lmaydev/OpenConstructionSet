@@ -22,7 +22,7 @@ namespace OpenConstructionSet
 
         /// <summary>
         /// Collection of mod paths key'd to their filename.
-        /// Call <see cref="LoadMods"/> to refresh this collection from disk.
+        /// Call <see cref="Populate"/> to refresh this collection from disk.
         /// </summary>
         public IDictionary<string, string> Mods { get; } = new Dictionary<string, string>();
 
@@ -78,22 +78,22 @@ namespace OpenConstructionSet
         /// </summary>
         /// <param name="folder">Path of the folder.</param>
         /// <param name="type">The <see cref="GameFolderType"/> determines how mods are loaded from the folder.</param>
-        /// <param name="loadMods">If <c>true</c> the <see cref="Mods"/> property will be populated from disk.</param>
-        public GameFolder(string folder, GameFolderType type, bool loadMods = true)
+        /// <param name="populate">If <c>true</c> the <see cref="Mods"/> property will be populated from disk.</param>
+        public GameFolder(string folder, GameFolderType type, bool populate = true)
         {
             FolderPath = folder;
             Type = type;
 
-            if (loadMods)
+            if (populate)
             {
-                LoadMods();
+                Populate();
             }
         }
 
         /// <summary>
         /// Refresh the <see cref="Mods"/> property from disk.
         /// </summary>
-        public void LoadMods()
+        public void Populate()
         {
             Mods.Clear();
 

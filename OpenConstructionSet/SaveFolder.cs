@@ -7,23 +7,42 @@ using System.Threading.Tasks;
 
 namespace OpenConstructionSet
 {
+    /// <summary>
+    /// Represents the game's save folder.
+    /// Can be automatically populated from disk.
+    /// </summary>
     public class SaveFolder
     {
+        /// <summary>
+        /// The path....
+        /// </summary>
         public string FolderPath { get; }
 
+        /// <summary>
+        /// A collection of <see cref="Save"/>s.
+        /// Can be populated be calling <see cref="Populate"/>.
+        /// </summary>
         public Save[] Saves { get; private set; }
 
-        public SaveFolder(string path, bool loadSaves = true)
+        /// <summary>
+        /// Create and initialize from a folder path.
+        /// </summary>
+        /// <param name="path">The folder.</param>
+        /// <param name="populate">if <c>true</c> the folder structure will be loaded from disk.</param>
+        public SaveFolder(string path, bool populate = true)
         {
             FolderPath = path;
 
-            if (loadSaves)
+            if (populate)
             {
-                LoadSaves();
+                Populate();
             }
         }
 
-        public void LoadSaves()
+        /// <summary>
+        /// Populate the <see cref="Saves"/> property from disk.
+        /// </summary>
+        public void Populate()
         {
             var info = new DirectoryInfo(FolderPath);
 

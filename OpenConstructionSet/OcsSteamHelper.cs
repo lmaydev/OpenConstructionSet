@@ -6,6 +6,9 @@ using Microsoft.Win32;
 
 namespace OpenConstructionSet
 {
+    /// <summary>
+    /// Helper used to retrieve the default folders from Steam
+    /// </summary>
     public static class OcsSteamHelper
     {
         private static string GetSteamFolder()
@@ -66,7 +69,7 @@ namespace OpenConstructionSet
         /// <summary>
         /// Attempt to find the game's data and mods folders.
         /// </summary>
-        /// <param name="folders">If found this will be set to a <see cref="GameFolders"/> containing (You guessed it) the game's folders.<</param>
+        /// <param name="folders">If found this will be set to a <see cref="GameFolders"/> containing (You guessed it) the game's folders.</param>
         /// <returns><c>true</c> if the game folders are found.</returns>
         public static bool TryFindGameFolders(out GameFolders folders)
         {
