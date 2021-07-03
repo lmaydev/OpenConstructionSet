@@ -12,7 +12,11 @@ namespace OpenConstructionSet
     /// </summary>
     public static class OcsHelper
     {
-        static OcsHelper() => OcsWinformsHelper.Init();
+        static OcsHelper()
+        {
+            OcsWinformsHelper.Init();
+            GameData.initialise();
+        }
 
         /// <summary>
         /// The names of the game's data and mod files.
