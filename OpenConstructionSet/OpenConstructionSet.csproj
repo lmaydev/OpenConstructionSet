@@ -19,6 +19,7 @@
 		<PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
 		<RepositoryType>github</RepositoryType>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 

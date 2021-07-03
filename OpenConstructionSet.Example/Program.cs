@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using forgotten_construction_set;
 using static forgotten_construction_set.GameData;
 
@@ -28,14 +29,20 @@ namespace OpenConstructionSet.Example
             // Load the base mods and the new mod as active.
             var gameData = OcsHelper.Load(activeMod: modName);
 
-            // Change unarmed to match attack in all stats items
+            // For each STATS item with an attack set
             gameData.items.OfType(itemType.STATS)
                           .Where(i => i.ContainsKey("attack"))
-                          .ForEach(i =>
+                          .ForEach(item =>
                           {
-                              var attack = i["attack"];
-                              i["unarmed"] = attack;
-                              Console.WriteLine($"Updating {i.Name}, changing unarmed to {attack}");
+                              // Set unarmed to equal attack
+                              var attack = item["attack"];
+                              item["unarmed"] = attack;
+                              Console.WriteLine($"Updating {item.Name}, changing unarmed to {attack}");
+
+                              // Convert to a model and serialize
+                              var model = item.ToModel();
+                              var json = JsonSerializer.Serialize(model, new JsonSerializerOptions { WriteIndented = true });
+                              Console.WriteLine(json);
                           });
 
             gameData.save(modPath);

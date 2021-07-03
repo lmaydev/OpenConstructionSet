@@ -106,7 +106,7 @@ namespace OpenConstructionSet
             Initialised = true;
 
             // Verify that nav is available and the file mode is correctly set
-            bool Verify() => Application.OpenForms.OfType<baseForm>().FirstOrDefault()?.nav?.FileMode == mode
+            bool Verify() => Application.OpenForms.OfType<baseForm>().FirstOrDefault()?.nav?.FileMode == ModFileMode.USER
                         && errorsInstanceField.GetValue(errors) != null
                         && errorsErrorsField.GetValue(errors) != null;
         }

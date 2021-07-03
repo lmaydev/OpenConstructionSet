@@ -7,6 +7,9 @@ using OpenConstructionSet.Models;
 
 namespace OpenConstructionSet
 {
+    /// <summary>
+    /// Collection of extensaion methods to help when working with <c>GameData.Item</c>s.
+    /// </summary>
     public static class ItemExtensions
     {
 
@@ -53,6 +56,11 @@ namespace OpenConstructionSet
         private readonly static FieldInfo itemMod = typeof(GameData.Item).GetField("modData", BindingFlags.Instance | BindingFlags.NonPublic);
         private readonly static FieldInfo itemReferences = typeof(GameData.Item).GetField("references", BindingFlags.Instance | BindingFlags.NonPublic);
 
+        /// <summary>
+        /// Converts the <c>GameData.Item</c>s to <see cref="ItemModel"/>s.
+        /// </summary>
+        /// <param name="items">The <c>GameData.Item</c>s to convert.</param>
+        /// <returns>Collection of <see cref="ItemModel"/>s.</returns>
         public static IEnumerable<ItemModel> ToModels(this IEnumerable<GameData.Item> items)
         {
             foreach (var item in items)
@@ -61,6 +69,11 @@ namespace OpenConstructionSet
             }
         }
 
+        /// <summary>
+        /// Converts the <c>GameData.Item</c> to  an <see cref="ItemModel"/>.
+        /// </summary>
+        /// <param name="item">The <c>GameData.Item</c> to convert.</param>
+        /// <returns>Collection of <see cref="ItemModel"/>s.</returns>
         public static ItemModel ToModel(this GameData.Item item)
         {
             return new ItemModel
