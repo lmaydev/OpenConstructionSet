@@ -24,13 +24,25 @@ namespace OpenConstructionSet
         // This field contains the list that holds errors. It neees to be set or any errors will crash the app
         private static readonly FieldInfo errorsErrorsField = typeof(Errors).GetField("errors", BindingFlags.NonPublic | BindingFlags.Instance);
 
+        /// <summary>
+        /// If <c>true</c> the infrastructure is in place to use <c>GameData</c> objects.
+        /// </summary>
         public static bool Initialised { get; private set; }
 
-        public static baseForm BaseForm { get; private set; }
+        /// <summary>
+        /// Empty instance of the base form.
+        /// </summary>
+        static baseForm baseForm;
 
-        public static navigation Nav { get; private set; }
+        /// <summary>
+        /// Empty instance of the navigation form
+        /// </summary>
+        static navigation nav;
 
-        public static Errors Errors { get; private set; }
+        /// <summary>
+        /// Semi empty instance of the errors form
+        /// </summary>
+        static Errors errors;
 
         /// <summary>
         /// Get or set the FileMode. 
@@ -42,14 +54,14 @@ namespace OpenConstructionSet
             {
                 Init();
 
-                return Nav.FileMode;
+                return nav.FileMode;
             }
 
             set
             {
                 Init();
 
-                Nav.FileMode = value;
+                nav.FileMode = value;
             }
         }
 
@@ -57,7 +69,7 @@ namespace OpenConstructionSet
         /// We need to do some magic 
         /// </summary>
         /// <param name="mode"></param>
-        public static void Init(ModFileMode mode = ModFileMode.USER)
+        public static void Init()
         {
             if (Initialised)
             {
@@ -65,25 +77,25 @@ namespace OpenConstructionSet
             }
 
             // Create the WinForms objects without calling the constructor
-            BaseForm = (baseForm)FormatterServices.GetUninitializedObject(typeof(baseForm));
-            Nav = (navigation)FormatterServices.GetUninitializedObject(typeof(navigation));
+            baseForm = (baseForm)FormatterServices.GetUninitializedObject(typeof(baseForm));
+            nav = (navigation)FormatterServices.GetUninitializedObject(typeof(navigation));
 
-            BaseForm.nav = Nav;
-            Nav.FileMode = mode;
+            baseForm.nav = nav;
+            nav.FileMode = ModFileMode.USER;
 
             // Add the baseForm to Application.OpenForms
             var innerList = (ArrayList)innerListProperty.GetValue(Application.OpenForms);
-            innerList.Add(BaseForm);
+            innerList.Add(baseForm);
 
             // Create Errors instance and set the singlton field.
-            Errors = (Errors)FormatterServices.GetUninitializedObject(typeof(Errors));
-            errorsInstanceField.SetValue(Errors, Errors);
+            errors = (Errors)FormatterServices.GetUninitializedObject(typeof(Errors));
+            errorsInstanceField.SetValue(errors, errors);
 
             // Errors.Item is private so use reflection to create a new List<Errors.Item> and set the field
             var type = typeof(Errors).GetNestedType("Item", BindingFlags.NonPublic);
             var listType = typeof(List<>).MakeGenericType(type);
             var errorsList = Activator.CreateInstance(listType);
-            errorsErrorsField.SetValue(Errors, errorsList);
+            errorsErrorsField.SetValue(errors, errorsList);
 
             // Verify
             if (!Verify())
@@ -95,8 +107,8 @@ namespace OpenConstructionSet
 
             // Verify that nav is available and the file mode is correctly set
             bool Verify() => Application.OpenForms.OfType<baseForm>().FirstOrDefault()?.nav?.FileMode == mode
-                        && errorsInstanceField.GetValue(Errors) != null
-                        && errorsErrorsField.GetValue(Errors) != null;
+                        && errorsInstanceField.GetValue(errors) != null
+                        && errorsErrorsField.GetValue(errors) != null;
         }
     }
 }

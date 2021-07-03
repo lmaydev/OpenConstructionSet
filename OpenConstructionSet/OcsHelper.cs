@@ -34,9 +34,9 @@ namespace OpenConstructionSet
         /// <returns>The built <c>GameData</c>.</returns>
         public static GameData Load(IEnumerable<string> mods = null, string activeMod = null, IEnumerable<GameFolder> folders = null, bool resolveDependencies = true, bool loadGameFiles = true)
         {
-            if (!loadGameFiles && (mods == null || !mods.Any()))
+            if (!loadGameFiles && activeMod == null && (mods == null || !mods.Any()))
             {
-                throw new ArgumentException("No mods provided. Either pass them in using the mods parameter or set loadGameFiles to true");
+                throw new ArgumentException("No mods provided");
             }
 
             if (folders == null)
@@ -72,12 +72,30 @@ namespace OpenConstructionSet
 
             var gameData = new GameData();
 
+            OcsWinformsHelper.FileMode = navigation.ModFileMode.USER;
+
             foreach (var mod in loadOrder)
             {
                 var mode = activeMod != null && Path.GetFileName(mod) == Path.GetFileName(activeMod) ? ModMode.ACTIVE : ModMode.BASE;
 
                 gameData.load(mod, mode, true);
             }
+
+            return gameData;
+        }
+
+        /// <summary>
+        /// Builds <c>GameData</c> object from the provided save file.
+        /// </summary>
+        /// <param name="path">The path of the save file.</param>
+        /// <returns>A <c>GameData</c> object built from the save file.</returns>
+        public static GameData LoadSaveFile(string path)
+        {
+            var gameData = new GameData();
+
+            OcsWinformsHelper.FileMode = navigation.ModFileMode.SINGLE;
+
+            gameData.load(path, ModMode.ACTIVE);
 
             return gameData;
         }
