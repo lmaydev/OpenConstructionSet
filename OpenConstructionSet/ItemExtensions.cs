@@ -111,7 +111,7 @@ namespace OpenConstructionSet
                     values[pair.Key] = pair.Value;
                 }
 
-                return data;
+                return values;
             }
 
             IDictionary<string, IList<ItemReference>> GetReferences()
