@@ -110,9 +110,9 @@ namespace OpenConstructionSet
         /// <param name="header">Contains the meta data for the mod.</param>
         /// <param name="mod">Mod filename. e.g. example.mod</param>
         /// <param name="folder">Folder to save mod in. If folder is <c>null</c> the game's mod folder will be used.</param>
-        /// <param name="deleteExisting">If <c>true</c> existing mods will be removed.</param>
+        /// <param name="overwrite">If <c>true</c> existing mods will be overwritten.</param>
         /// <returns>The full path of the mod.</returns>
-        public static string NewMod(Header header, string mod, GameFolder folder = null, bool deleteExisting = true)
+        public static string NewMod(Header header, string mod, GameFolder folder = null, bool overwrite = true)
         {
             if (folder == null)
             {
@@ -126,12 +126,15 @@ namespace OpenConstructionSet
 
             var path = folder.GetFullPath(mod);
 
-            if (!deleteExisting && System.IO.File.Exists(path))
+            if (System.IO.File.Exists(path))
             {
-                throw new Exception("Mod already exists");
-            }
+                if (!overwrite)
+                {
+                    throw new Exception("Mod already exists");
+                }
 
-            folder.Delete(mod);
+                folder.Delete(mod);
+            }
 
             var gameData = new GameData
             {

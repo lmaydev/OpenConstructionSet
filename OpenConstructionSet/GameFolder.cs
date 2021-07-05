@@ -59,7 +59,12 @@ namespace OpenConstructionSet
                     break;
 
                 case GameFolderType.Mod:
-                    Directory.Delete(GetModFolder(mod), true);
+                    var dir = GetModPath(mod);
+
+                    if (Directory.Exists(dir))
+                    {
+                        Directory.Delete(dir, true);
+                    }
                     break;
 
                 default:
@@ -110,7 +115,7 @@ namespace OpenConstructionSet
                     {
                         var mod = folder.Name + ".mod";
 
-                        Mods.Add(mod, Path.Combine(folder.FullName, mod)); 
+                        Mods.Add(mod, Path.Combine(folder.FullName, mod));
                     }
                     break;
                 default:
