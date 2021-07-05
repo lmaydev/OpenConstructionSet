@@ -38,11 +38,6 @@ namespace OpenConstructionSet.Models
         public string Mod { get; set; }
 
         /// <summary>
-        /// The reference count (I guess).
-        /// </summary>
-        public int RefCount { get; set; }
-
-        /// <summary>
         /// The item's string ID (used when referencing)
         /// </summary>
         public string StringId { get; set; }
@@ -51,11 +46,6 @@ namespace OpenConstructionSet.Models
         /// I think it's the item's name in the current mod.
         /// </summary>
         public string ModName { get; set; }
-
-        /// <summary>
-        /// Whether or not the item has instances?
-        /// </summary>
-        public bool HasInstances {  get; set; }
 
         /// <summary>
         /// Values attached to the item.

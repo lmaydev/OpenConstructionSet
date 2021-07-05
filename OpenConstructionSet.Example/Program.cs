@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using forgotten_construction_set;
 using static forgotten_construction_set.GameData;
 
@@ -11,6 +12,10 @@ namespace OpenConstructionSet.Example
     {
         private static void Main()
         {
+            var options = new JsonSerializerOptions { WriteIndented = true, };
+
+            options.Converters.Add(new JsonStringEnumConverter());
+
             const string modName = "OCS Example.mod";
 
             // Metadata for new mod
@@ -41,7 +46,7 @@ namespace OpenConstructionSet.Example
 
                               // Convert to a model and serialize
                               var model = item.ToModel();
-                              var json = JsonSerializer.Serialize(model, new JsonSerializerOptions { WriteIndented = true });
+                              var json = JsonSerializer.Serialize(model, options);
                               Console.WriteLine(json);
                           });
 
