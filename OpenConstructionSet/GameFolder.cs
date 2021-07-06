@@ -115,7 +115,12 @@ namespace OpenConstructionSet
                     {
                         var mod = folder.Name + ".mod";
 
-                        Mods.Add(mod, Path.Combine(folder.FullName, mod));
+                        var path = Path.Combine(folder.FullName, mod);
+
+                        if (File.Exists(path))
+                        {
+                            Mods.Add(mod, path);
+                        }
                     }
                     break;
                 default:
