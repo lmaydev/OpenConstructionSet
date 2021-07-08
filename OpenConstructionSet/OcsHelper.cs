@@ -48,6 +48,8 @@ namespace OpenConstructionSet
                 throw new ArgumentException("No mods provided");
             }
 
+            activeMod = activeMod?.AddModExtension();
+
             if (folders == null)
             {
                 folders = LocalFolders.ToArray();
