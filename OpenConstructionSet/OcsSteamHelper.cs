@@ -83,8 +83,6 @@ namespace OpenConstructionSet
             {
                 Data = new GameFolder(Path.Combine(gameFolder, "data"), GameFolderType.Data),
                 Mod = new GameFolder(Path.Combine(gameFolder, "mods"), GameFolderType.Mod),
-                OldSaveFolder = new SaveFolder(Path.Combine(gameFolder, "save")),
-                SaveFolder = new SaveFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "kenshi", "save")),
             };
 
             return true;

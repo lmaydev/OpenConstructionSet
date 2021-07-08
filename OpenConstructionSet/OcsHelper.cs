@@ -24,6 +24,11 @@ namespace OpenConstructionSet
         public readonly static string[] BaseMods = new string[] { "gamedata.base", "Newwworld.mod", "Dialogue.mod", "rebirth.mod" };
 
         /// <summary>
+        /// Locations of the local game folders.
+        /// </summary>
+        public readonly static GameFolders LocalFolders = new GameFolders { Data = new GameFolder("data\\", GameFolderType.Data), Mod = new GameFolder("mods\\", GameFolderType.Mod) };
+
+        /// <summary>
         /// Builds a <c>GameData</c> object by loading the given <c>mods</c> from the provided <c>folders</c>.
         /// </summary>
         /// <param name="mods">Collection of mods to be loaded. Both names (e.g. example.mod) and full paths are accetped.</param>
@@ -45,14 +50,7 @@ namespace OpenConstructionSet
 
             if (folders == null)
             {
-                if (OcsSteamHelper.TryFindGameFolders(out var gameFolders))
-                {
-                    folders = gameFolders.ToArray();
-                }
-                else
-                {
-                    throw new Exception("Failed to find default game folders");
-                }
+                folders = LocalFolders.ToArray();
             }
 
             var toLoad = new List<string>();
@@ -108,32 +106,45 @@ namespace OpenConstructionSet
         /// Initializes a new mod, saves it and then returns the mods full path.
         /// </summary>
         /// <param name="header">Contains the meta data for the mod.</param>
-        /// <param name="mod">Mod filename. e.g. example.mod</param>
+        /// <param name="mod">Mod name or path</param>
         /// <param name="folder">Folder to save mod in. If folder is <c>null</c> the game's mod folder will be used.</param>
         /// <param name="overwrite">If <c>true</c> existing mods will be overwritten.</param>
         /// <returns>The full path of the mod.</returns>
         public static string NewMod(Header header, string mod, GameFolder folder = null, bool overwrite = true)
         {
-            if (folder == null)
+            mod = mod.AddModExtension();
+
+            string path;
+
+            if (System.IO.File.Exists(mod))
             {
-                if (!OcsSteamHelper.TryFindGameFolders(out var gameFolders))
+                path = mod;
+            }
+            else
+            {
+                if (folder == null)
                 {
-                    throw new Exception("Failed to find default game folders");
+                    folder = LocalFolders.Mod;
                 }
 
-                folder = gameFolders.Mod;
+                path = folder.GetFullPath(mod);
             }
 
-            var path = folder.GetFullPath(mod);
+            return NewMod(header, path, overwrite);
+        }
 
-            if (System.IO.File.Exists(path))
+        /// <summary>
+        /// Initializes a new mod, saves it and then returns the mods full path.
+        /// </summary>
+        /// <param name="header">Contains the meta data for the mod.</param>
+        /// <param name="path">Mod path. e.g. path\to\mod\example.mod</param>
+        /// <param name="overwrite">If <c>true</c> existing mods will be overwritten.</param>
+        /// <returns>The full path of the mod.</returns>
+        static string NewMod(Header header, string path, bool overwrite = true)
+        {
+            if (!overwrite && System.IO.File.Exists(path))
             {
-                if (!overwrite)
-                {
-                    throw new Exception("Mod already exists");
-                }
-
-                folder.Delete(mod);
+                throw new Exception($"Mods file already exists ({path})");
             }
 
             var gameData = new GameData
@@ -155,6 +166,8 @@ namespace OpenConstructionSet
         /// <returns>Returns <c>true</c> if the full path was resolved</returns>
         public static bool TryResolvePath(this IEnumerable<GameFolder> folders, string mod, out string path)
         {
+            mod = mod.AddModExtension();
+
             if (System.IO.File.Exists(mod))
             {
                 path = mod;
@@ -272,6 +285,13 @@ namespace OpenConstructionSet
                 UseName(name);
             }
         }
+
+        /// <summary>
+        /// Load the meta data for the game's save folders. 
+        /// </summary>
+        /// <returns>A collection of save folders representing the game's save folders.</returns>
+        public static IEnumerable<SaveFolder> LoadSaveFolders() => new[] { new SaveFolder("save"), new SaveFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "kenshi", "save")) };
+
+        internal static string AddModExtension(this string modName) => string.IsNullOrEmpty(Path.GetExtension(modName)) ? $"{modName}.mod" : modName;
     }
 }
-;

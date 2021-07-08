@@ -16,16 +16,6 @@
         public GameFolder Mod { get; set; }
 
         /// <summary>
-        /// New save location in local app data
-        /// </summary>
-        public SaveFolder SaveFolder { get; set; }
-
-        /// <summary>
-        /// Old save location in game folder
-        /// </summary>
-        public SaveFolder OldSaveFolder { get; set; }
-
-        /// <summary>
         /// Helper function to get the folders as an array.
         /// </summary>
         /// <returns>The folders in an arrray.</returns>

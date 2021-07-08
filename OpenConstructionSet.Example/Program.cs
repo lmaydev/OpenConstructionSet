@@ -16,7 +16,7 @@ namespace OpenConstructionSet.Example
 
             options.Converters.Add(new JsonStringEnumConverter());
 
-            const string modName = "OCS Example.mod";
+            const string modName = "OCS Example";
 
             // Metadata for new mod
             var header = new Header

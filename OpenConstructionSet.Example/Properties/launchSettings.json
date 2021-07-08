@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OpenConstructionSet.Example": {
+      "commandName": "Project",
+      "workingDirectory": "$(KenshiFolder)"
+    }
+  }
+}
