@@ -37,11 +37,12 @@ namespace OpenConstructionSet
         /// All dependencies will be resolved this way.
         /// If <c>folders</c> is null the game folders will be used.
         /// </param>
+        /// <param name="gameData">An optional existing <c>GameData</c> object to load on top of. if <c>null</c> a new <c>GameData</c> will be created.</param>
         /// <param name="activeMod">Name or full path of the mod to load as active. Both a name (e.g. example.mod) and a full path are accetped.</param>
         /// <param name="resolveDependencies">If <c>true</c> dependencies will will be resolved and mods loaded in order.</param>
         /// <param name="loadGameFiles">If <c>true</c> the game's data files will be loaded.</param>
         /// <returns>The built <c>GameData</c>.</returns>
-        public static GameData Load(IEnumerable<string> mods = null, string activeMod = null, IEnumerable<GameFolder> folders = null, bool resolveDependencies = true, bool loadGameFiles = true)
+        public static GameData Load(IEnumerable<string> mods = null, string activeMod = null, IEnumerable<GameFolder> folders = null, GameData gameData = null, bool resolveDependencies = true, bool loadGameFiles = true)
         {
             if (!loadGameFiles && activeMod == null && (mods == null || !mods.Any()))
             {
@@ -74,7 +75,10 @@ namespace OpenConstructionSet
 
             var loadOrder = resolveDependencies ? folders.ResolveDependencyTree(toLoad) : folders.ResolvePaths(toLoad);
 
-            var gameData = new GameData();
+            if (gameData == null)
+            {
+                gameData = new GameData();
+            }
 
             OcsWinformsHelper.FileMode = navigation.ModFileMode.USER;
 
