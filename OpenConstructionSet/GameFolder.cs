@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,11 +10,6 @@ namespace OpenConstructionSet
     /// </summary>
     public class GameFolder
     {
-        /// <summary>
-        /// Used to specify the type.
-        /// </summary>
-        public GameFolderType Type { get; }
-
         /// <summary>
         /// The full path of the folder.
         /// </summary>
@@ -35,18 +30,12 @@ namespace OpenConstructionSet
         {
             mod = mod.AddModExtension();
 
-            switch (Type)
+            if (Mods.ContainsKey(mod))
             {
-                case GameFolderType.Data:
-                    return GetBasePath(mod);
-
-                case GameFolderType.Mod:
-                case GameFolderType.Both:
-                    return GetModPath(mod);
-
-                default:
-                    throw new InvalidOperationException($"Invalid {nameof(GameFolderType)} ({Type})");
+                return Mods[mod];
             }
+
+            return GetModPath(mod);
         }
 
         /// <summary>
@@ -57,38 +46,46 @@ namespace OpenConstructionSet
         {
             mod = mod.AddModExtension();
 
-            if ((Type & GameFolderType.Mod) != 0)
-            {
-                var dir = GetModPath(mod);
+            FileInfo path;
 
-                if (Directory.Exists(dir))
-                {
-                    Directory.Delete(dir, true);
-                }
+            if (Mods.ContainsKey(mod))
+            {
+                path = new FileInfo(Mods[mod]);
+            }
+            else
+            {
+                path = new FileInfo(GetModPath(mod));
             }
 
-            if ((Type & GameFolderType.Data) != 0)
+            if (!path.Exists)
             {
-                File.Delete(GetBasePath(mod));
+                return;
+            }
+
+            var directory = path.Directory;
+
+            if (directory.Name.Equals(Path.GetFileNameWithoutExtension(path.Name), StringComparison.OrdinalIgnoreCase))
+            {
+                directory.Delete(true);
+            }
+            else
+            {
+                path.Delete();
             }
         }
 
         private string GetModFolder(string mod) => Path.Combine(FolderPath, Path.GetFileNameWithoutExtension(mod));
 
-        private string GetModPath(string mod) => Path.Combine(GetModFolder(mod), mod);
-
-        private string GetBasePath(string mod) => Path.Combine(FolderPath, mod);
+        private string GetModPath(string mod) => Path.Combine(GetModFolder(mod), mod.AddModExtension());
 
         /// <summary>
         /// Constructs a <c>GameFolder</c>.
         /// </summary>
         /// <param name="folder">Path of the folder.</param>
-        /// <param name="type">The <see cref="GameFolderType"/> determines how mods are loaded from the folder.</param>
         /// <param name="populate">If <c>true</c> the <see cref="Mods"/> property will be populated from disk.</param>
-        public GameFolder(string folder, GameFolderType type, bool populate = true)
+        public GameFolder(string folder, bool populate = true)
         {
             FolderPath = folder;
-            Type = type;
 
             if (populate)
             {
@@ -108,27 +105,18 @@ namespace OpenConstructionSet
                 return;
             }
 
-            if ((Type & GameFolderType.Mod) != 0)
+            var folderInfo = new DirectoryInfo(FolderPath);
+
+            // Add all .mod and .base files in the root of the folder
+            foreach (var file in folderInfo.GetFiles("*.mod").Union(folderInfo.GetFiles("*.base")))
             {
-                foreach (var folder in new DirectoryInfo(FolderPath).GetDirectories())
-                {
-                    var mod = folder.Name + ".mod";
-
-                    var path = Path.Combine(folder.FullName, mod);
-
-                    if (File.Exists(path))
-                    {
-                        Mods.Add(mod, path);
-                    }
-                }
+                Mods.Add(file.Name, file.FullName);
             }
 
-            if ((Type & GameFolderType.Data) != 0)
+            // Add all .mod files in sub folders
+            foreach (var file in folderInfo.GetDirectories().SelectMany(d => d.GetFiles("*.mod")))
             {
-                foreach (var file in Directory.GetFiles(FolderPath, "*.mod").Union(Directory.GetFiles(FolderPath, "*.base")))
-                {
-                    Mods.Add(Path.GetFileName(file), file);
-                }
+                Mods.Add(file.Name, file.FullName);
             }
         }
     }

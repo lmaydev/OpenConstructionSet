@@ -11,7 +11,7 @@
         public GameFolder Data { get; set; }
 
         /// <summary>
-        /// The game's mod folder
+        /// The game's mod folder.
         /// </summary>
         public GameFolder Mod { get; set; }
 

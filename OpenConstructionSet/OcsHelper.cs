@@ -26,7 +26,7 @@ namespace OpenConstructionSet
         /// <summary>
         /// Locations of the local game folders.
         /// </summary>
-        public readonly static GameFolders LocalFolders = new GameFolders { Data = new GameFolder("data\\", GameFolderType.Data), Mod = new GameFolder("mods\\", GameFolderType.Mod) };
+        public readonly static GameFolders LocalFolders = new GameFolders { Data = new GameFolder("data\\"), Mod = new GameFolder("mods\\") };
 
         /// <summary>
         /// Builds a <c>GameData</c> object by loading the given <c>mods</c> from the provided <c>folders</c>.
