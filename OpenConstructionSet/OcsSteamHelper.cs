@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
@@ -11,7 +12,7 @@ namespace OpenConstructionSet
     /// </summary>
     public static class OcsSteamHelper
     {
-        private static string GetSteamFolder()
+        private static bool TryGetSteamFolder(out string folder)
         {
             try
             {
@@ -19,23 +20,31 @@ namespace OpenConstructionSet
 
                 using (var key = Registry.LocalMachine.OpenSubKey(registryKey))
                 {
-                    return key.GetValue("InstallPath").ToString();
+                    folder = key.GetValue("InstallPath").ToString();
+                    return true;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                throw new Exception("Failed to find Steam folder", ex);
             }
+
+            folder = null;
+            return false;
         }
 
         private static IEnumerable<string> GetLibraries()
         {
-            var steamFolder = GetSteamFolder();
+            if (!TryGetSteamFolder(out var steamFolder))
+            {
+                return Enumerable.Empty<string>();
+            }
 
             var path = Path.Combine(steamFolder, "steamapps", "libraryfolders.vdf");
 
             // [whitespace] "[number]" [whitespace] "[library path]"
             const string pattern = "^\\s+\"\\d+\"\\s+\"(.+)\"";
+
+            var libraries = new List<string> { steamFolder };
 
             foreach (var line in File.ReadLines(path))
             {
@@ -43,11 +52,11 @@ namespace OpenConstructionSet
 
                 if (match.Success)
                 {
-                    yield return match.Groups[1].Value;
+                    libraries.Add(match.Groups[1].Value);
                 }
             }
 
-            yield return steamFolder;
+            return libraries;
         }
 
         private static bool TryFindGameFolder(out string path)
@@ -86,6 +95,23 @@ namespace OpenConstructionSet
             };
 
             return true;
+        }
+
+        public static bool TryFindContentFolder(out GameFolder contentFolder)
+        {
+            foreach (var library in GetLibraries())
+            {
+                var path = Path.Combine(library, "steamapps", "workshop", "content", "233860");
+
+                if (Directory.Exists(path))
+                {
+                    contentFolder = new GameFolder(path);
+                    return true;
+                }
+            }
+
+            contentFolder = null;
+            return false;
         }
     }
 }
