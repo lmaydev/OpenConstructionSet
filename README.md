@@ -8,6 +8,7 @@ It is currently possible to:
  - Load a mod as active
  - Query data
  - Edit data
+ - Export data to JSON
  - Save mods
 
 The [example in the repo](OpenConstructionSet.Example/Program.cs) demonstrates a basic content patcher.

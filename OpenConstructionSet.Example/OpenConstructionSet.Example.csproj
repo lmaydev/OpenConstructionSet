@@ -3,13 +3,13 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net48</TargetFramework>
-		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
 		<Platforms>x86</Platforms>
 		<IsPackable>false</IsPackable>
+		<Configurations>SteamDebug;SteamRelease;GogDebug;GogRelease</Configurations>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="System.Text.Json" Version="5.0.2" />
+		<PackageReference Include="System.Text.Json" Version="5.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -17,10 +17,35 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+
+
+
+	<PropertyGroup Condition="$(Configuration.StartsWith('Steam'))">
+		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
+		<FcsFile>forgotten construction set</FcsFile>
+	</PropertyGroup>
+
+	<ItemGroup Condition="$(Configuration.StartsWith('Steam'))">
 		<Reference Include="forgotten construction set">
 			<HintPath>$(KenshiFolder)forgotten construction set.exe</HintPath>
 			<Private>true</Private>
 		</Reference>
-		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
+
+
+
+	<PropertyGroup Condition="$(Configuration.StartsWith('Gog'))">
+		<KenshiFolder>N:\Games\gog\Kenshi\</KenshiFolder>
+		<FcsFile>fcs_gog</FcsFile>
+	</PropertyGroup>
+
+	<ItemGroup Condition="$(Configuration.StartsWith('Gog'))">
+		<Reference Include="fcs_gog">
+			<HintPath>$(KenshiFolder)fcs_gog.exe</HintPath>
+			<Private>true</Private>
+		</Reference>
+	</ItemGroup>
+
 </Project>
