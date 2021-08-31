@@ -1,46 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<Platforms>x86</Platforms>
-		<Configurations>GogDebug;SteamDebug;GogRelease;SteamRelease</Configurations>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<Reference Include="System.Windows.Forms" />
-	</ItemGroup>
-
-
-
-	<PropertyGroup Condition="$(Configuration.StartsWith('Steam'))">
 		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
-		<GamePlatform>Steam</GamePlatform>
-		<Steam>true</Steam>
 	</PropertyGroup>
-
-	<ItemGroup Condition="$(Configuration.StartsWith('Steam'))">
-		<Reference Include="forgotten construction set">
-			<HintPath>$(KenshiFolder)forgotten construction set.exe</HintPath>
-			<Private>true</Private>
-		</Reference>
-	</ItemGroup>
-
-
-
-	<PropertyGroup Condition="$(Configuration.StartsWith('Gog'))">
-		<KenshiFolder>N:\Games\gog\Kenshi\</KenshiFolder>
-		<GamePlatform>Gog</GamePlatform>
-		<Gog>true</Gog>
-	</PropertyGroup>
-
-	<ItemGroup Condition="$(Configuration.StartsWith('Gog'))">
-		<Reference Include="fcs_gog">
-			<HintPath>$(KenshiFolder)fcs_gog.exe</HintPath>
-			<Private>true</Private>
-		</Reference>
-	</ItemGroup>
-
-
-
+	
 	<!--Nuget package properties-->
 	<PropertyGroup>
 		<IncludeSymbols>true</IncludeSymbols>
@@ -56,6 +19,5 @@
 		<RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
 		<RepositoryType>github</RepositoryType>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<PackageId>OpenConstructionSet.$(GamePlatform)</PackageId>
 	</PropertyGroup>
 </Project>
