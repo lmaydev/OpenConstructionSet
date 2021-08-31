@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using forgotten_construction_set;
-using static forgotten_construction_set.GameData;
 
 namespace OpenConstructionSet
 {
@@ -12,12 +9,6 @@ namespace OpenConstructionSet
     /// </summary>
     public static class OcsHelper
     {
-        static OcsHelper()
-        {
-            OcsWinformsHelper.Init();
-            GameData.initialise();
-        }
-
         /// <summary>
         /// The names of the game's data and mod files.
         /// </summary>
@@ -27,86 +18,6 @@ namespace OpenConstructionSet
         /// Locations of the local game folders.
         /// </summary>
         public readonly static GameFolders LocalFolders = new GameFolders { Data = new GameFolder("data\\"), Mod = new GameFolder("mods\\") };
-
-        /// <summary>
-        /// Builds a <c>GameData</c> object by loading the given <c>mods</c> from the provided <c>folders</c>.
-        /// </summary>
-        /// <param name="mods">Collection of mods to be loaded. Both names (e.g. example.mod) and full paths are accetped.</param>
-        /// <param name="folders">
-        /// Collection of folders to search when resolving a mod's name to it's full path.
-        /// All dependencies will be resolved this way.
-        /// If <c>folders</c> is null the game folders will be used.
-        /// </param>
-        /// <param name="gameData">An optional existing <c>GameData</c> object to load on top of. if <c>null</c> a new <c>GameData</c> will be created.</param>
-        /// <param name="activeMod">Name or full path of the mod to load as active. Both a name (e.g. example.mod) and a full path are accetped.</param>
-        /// <param name="resolveDependencies">If <c>true</c> dependencies will will be resolved and mods loaded in order.</param>
-        /// <param name="loadGameFiles">If <c>true</c> the game's data files will be loaded.</param>
-        /// <returns>The built <c>GameData</c>.</returns>
-        public static GameData Load(IEnumerable<string> mods = null, string activeMod = null, IEnumerable<GameFolder> folders = null, GameData gameData = null, bool resolveDependencies = true, bool loadGameFiles = true)
-        {
-            if (!loadGameFiles && activeMod == null && (mods == null || !mods.Any()))
-            {
-                throw new ArgumentException("No mods provided");
-            }
-
-            activeMod = activeMod?.AddModExtension();
-
-            if (folders == null)
-            {
-                folders = LocalFolders.ToArray();
-            }
-
-            var toLoad = new List<string>();
-
-            if (mods != null)
-            {
-                toLoad.AddRange(mods);
-            }
-
-            if (loadGameFiles)
-            {
-                toLoad.AddRange(BaseMods);
-            }
-
-            if (activeMod != null && !toLoad.Any(m => m == activeMod || m.EndsWith(Path.GetFileName(activeMod))))
-            {
-                toLoad.Insert(0, activeMod);
-            }
-
-            var loadOrder = resolveDependencies ? folders.ResolveDependencyTree(toLoad) : folders.ResolvePaths(toLoad);
-
-            if (gameData == null)
-            {
-                gameData = new GameData();
-            }
-
-            OcsWinformsHelper.FileMode = navigation.ModFileMode.USER;
-
-            foreach (var mod in loadOrder)
-            {
-                var mode = activeMod != null && Path.GetFileName(mod) == Path.GetFileName(activeMod) ? ModMode.ACTIVE : ModMode.BASE;
-
-                gameData.load(mod, mode, true);
-            }
-
-            return gameData;
-        }
-
-        /// <summary>
-        /// Builds <c>GameData</c> object from the provided save file.
-        /// </summary>
-        /// <param name="path">The path of the save file.</param>
-        /// <returns>A <c>GameData</c> object built from the save file.</returns>
-        public static GameData LoadSaveFile(string path)
-        {
-            var gameData = new GameData();
-
-            OcsWinformsHelper.FileMode = navigation.ModFileMode.SINGLE;
-
-            gameData.load(path, ModMode.ACTIVE);
-
-            return gameData;
-        }
 
         /// <summary>
         /// Initializes a new mod, saves it and then returns the mods full path.
@@ -122,7 +33,7 @@ namespace OpenConstructionSet
 
             string path;
 
-            if (System.IO.File.Exists(mod))
+            if (File.Exists(mod))
             {
                 path = mod;
             }
@@ -153,14 +64,12 @@ namespace OpenConstructionSet
                 throw new Exception($"Mods file already exists ({path})");
             }
 
-            var gameData = new GameData
-            {
-                header = header
-            };
+            // TODO FIX
+            return "";
+        }
 
-            gameData.save(path);
-
-            return path;
+        static Header LoadHeader(string path)
+        {
         }
 
         /// <summary>
@@ -245,7 +154,7 @@ namespace OpenConstructionSet
             {
                 var current = stack.Pop();
 
-                var header = loadHeader(current);
+                var header = LoadHeader(current);
 
                 var unresolved = new List<string>();
 
