@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using OpenConstructionSet.IO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.Win32;
 
 namespace OpenConstructionSet
 {
@@ -18,17 +19,15 @@ namespace OpenConstructionSet
             {
                 var registryKey = Environment.Is64BitProcess ? @"SOFTWARE\Wow6432Node\Valve\Steam" : @"SOFTWARE\Valve\Steam";
 
-                using (var key = Registry.LocalMachine.OpenSubKey(registryKey))
-                {
-                    folder = key.GetValue("InstallPath").ToString();
-                    return true;
-                }
+                using var key = Registry.LocalMachine.OpenSubKey(registryKey);
+
+                folder = key?.GetValue("InstallPath")?.ToString() ?? "";
             }
             catch
             {
             }
 
-            folder = null;
+            folder = "";
             return false;
         }
 
@@ -46,7 +45,18 @@ namespace OpenConstructionSet
 
             var libraries = new List<string> { steamFolder };
 
-            foreach (var line in File.ReadLines(path))
+            IEnumerable<string> lines;
+
+            try
+            {
+                lines = File.ReadLines(path);
+            }
+            catch
+            {
+                return Enumerable.Empty<string>();
+            }
+
+            foreach (var line in lines)
             {
                 var match = Regex.Match(line, pattern);
 
@@ -61,43 +71,41 @@ namespace OpenConstructionSet
 
         private static bool TryFindGameFolder(out string path)
         {
-            foreach (var library in GetLibraries())
+            try
             {
-                path = Path.Combine(library, "steamapps", "common", "Kenshi");
-
-                if (Directory.Exists(path))
+                foreach (var library in GetLibraries())
                 {
-                    return true;
+                    path = Path.Combine(library, "steamapps", "common", "Kenshi");
+
+                    if (Directory.Exists(path))
+                    {
+                        return true;
+                    }
                 }
             }
+            catch
+            {
+            }
 
-            path = null;
+            path = "";
             return false;
         }
 
-        /// <summary>
-        /// Attempt to find the game's data and mods folders.
-        /// </summary>
-        /// <param name="folders">If found this will be set to a <see cref="GameFolders"/> containing (You guessed it) the game's folders.</param>
-        /// <returns><c>true</c> if the game folders are found.</returns>
-        public static bool TryFindGameFolders(out GameFolders folders)
+        public static ModFolders? FindGameFolders()
         {
             if (!TryFindGameFolder(out var gameFolder))
             {
-                folders = null;
-                return false;
+                return null;
             }
 
-            folders = new GameFolders()
+            return new()
             {
-                Data = new GameFolder(Path.Combine(gameFolder, "data")),
-                Mod = new GameFolder(Path.Combine(gameFolder, "mods")),
+                Data = ModFolder.Discover(Path.Combine(gameFolder, "data")),
+                Mod = ModFolder.Discover(Path.Combine(gameFolder, "mods")),
             };
-
-            return true;
         }
 
-        public static bool TryFindContentFolder(out GameFolder contentFolder)
+        public static ModFolder? FindContentFolder()
         {
             foreach (var library in GetLibraries())
             {
@@ -105,13 +113,11 @@ namespace OpenConstructionSet
 
                 if (Directory.Exists(path))
                 {
-                    contentFolder = new GameFolder(path);
-                    return true;
+                    return ModFolder.Discover(path);
                 }
             }
 
-            contentFolder = null;
-            return false;
+            return null;
         }
     }
 }

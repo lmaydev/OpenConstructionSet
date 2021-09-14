@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet", "Open
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet.Example", "OpenConstructionSet.Example\OpenConstructionSet.Example.csproj", "{2F0AFD96-694D-4153-B8F9-0E7BBF77D2CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenConstructionSet.Tests", "OpenConstructionSet.Tests\OpenConstructionSet.Tests.csproj", "{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{2F0AFD96-694D-4153-B8F9-0E7BBF77D2CF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F0AFD96-694D-4153-B8F9-0E7BBF77D2CF}.Release|x86.ActiveCfg = Release|x86
 		{2F0AFD96-694D-4153-B8F9-0E7BBF77D2CF}.Release|x86.Build.0 = Release|x86
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Debug|x86.Build.0 = Debug|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Release|x86.ActiveCfg = Release|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

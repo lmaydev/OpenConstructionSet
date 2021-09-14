@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ModData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <id>1489675661</id>
+  <mod>Thousand Hands Martial Village</mod>
+  <title>Martial Village</title>
+  <tags>
+    <string>Buildings</string>
+    <string>Characters</string>
+    <string>Clothing/Armour</string>
+    <string>Environment/Map</string>
+    <string>Factions</string>
+    <string>Gameplay</string>
+    <string>Items/Weapons</string>
+    <string>Races</string>
+    <string>Research</string>
+  </tags>
+  <visibility>0</visibility>
+  <lastUpdate>2019-06-10T02:46:48.1320735-03:00</lastUpdate>
+</ModData>
