@@ -1,94 +1,84 @@
-﻿using OpenConstructionSet.Models;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Xml.Serialization;
 
-namespace OpenConstructionSet
+namespace OpenConstructionSet;
+
+public class OcsModInfoService : IOcsModInfoService
 {
-    public class OcsModInfoService : IOcsModInfoService
+    private static readonly Lazy<OcsModInfoService> _default = new(() => new());
+
+    public static OcsModInfoService Default => _default.Value;
+
+    public string GetInfoFileName(string modPath)
     {
-        private static readonly Lazy<OcsModInfoService> _default = new(() => new());
+        var folder = Path.GetDirectoryName(modPath);
 
-        public static OcsModInfoService Default
+        if (folder is null)
         {
-            get => _default.Value;
+            throw new ArgumentException("Could not determine directory for file \"{modPath}\"", nameof(modPath));
         }
 
-        public string GetInfoFileName(string modPath)
+        var name = Path.GetFileNameWithoutExtension(modPath);
+
+        return Path.Combine(folder, $"_{name}.info");
+    }
+
+    public void Write(string path, ModInfo info, bool modPath = false)
+    {
+        if (modPath)
         {
-            var folder = Path.GetDirectoryName(modPath);
-
-            if (folder is null)
-            {
-                throw new ArgumentException("Could not determine directory for file \"{modPath}\"", nameof(modPath));
-            }
-
-            var name = Path.GetFileNameWithoutExtension(modPath);
-
-            return Path.Combine(folder, $"_{name}.info");
+            path = GetInfoFileName(path);
         }
 
-        public void Write(string path, ModInfo info, bool modPath = false)
+        using var stream = File.OpenWrite(path);
+
+        new XmlSerializer(typeof(ModInfo)).Serialize(stream, info);
+    }
+
+    public bool TryWrite(string path, ModInfo info, bool modPath = false)
+    {
+        try
         {
-            if (modPath)
-            {
-                path = GetInfoFileName(path);
-            }
+            Write(path, info, modPath);
 
-            using var stream = File.OpenWrite(path);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
-            new XmlSerializer(typeof(ModInfo)).Serialize(stream, info);
+    public ModInfo? Read(string path, bool modPath = false)
+    {
+        if (modPath)
+        {
+            path = GetInfoFileName(path);
         }
 
-        public bool TryWrite(string path, ModInfo info, bool modPath = false)
+        if (!File.Exists(path))
         {
-            try
-            {
-                Write(path, info, modPath);
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public ModInfo? Read(string path, bool modPath = false)
-        {
-            if (modPath)
-            {
-                path = GetInfoFileName(path);
-            }
-
-            if (!File.Exists(path))
-            {
-                return null;
-            }
-
-            using var stream = File.OpenRead(path);
-
-            var value = new XmlSerializer(typeof(ModInfo)).Deserialize(stream);
-
-            if (value is not null && value is ModInfo info)
-            {
-                return info;
-            }
-
             return null;
         }
 
-        public bool TryRead(string path, [MaybeNullWhen(false)] out ModInfo info, bool modPath = false)
+        using var stream = File.OpenRead(path);
+
+        var value = new XmlSerializer(typeof(ModInfo)).Deserialize(stream);
+
+        return value is not null and ModInfo info ? info : null;
+    }
+
+    public bool TryRead(string path, [MaybeNullWhen(false)] out ModInfo info, bool modPath = false)
+    {
+        try
         {
-            try
-            {
-                info = Read(path, modPath)!;
-                return info is not null;
-            }
-            catch
-            {
-                info = null;
-                return false;
-            }
+            info = Read(path, modPath)!;
+            return info is not null;
+        }
+        catch
+        {
+            info = null;
+            return false;
         }
     }
 }

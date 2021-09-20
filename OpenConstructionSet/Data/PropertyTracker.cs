@@ -1,63 +1,61 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
-namespace OpenConstructionSet.Data
+namespace OpenConstructionSet.Data;
+
+public class PropertyTracker : IRevertibleChangeTracking
 {
-    public class PropertyTracker : IRevertibleChangeTracking
+    private Dictionary<string, object> values = new();
+    private Dictionary<string, object> oldValues = new();
+
+    private readonly HashSet<string> changed = new();
+
+    public bool IsChanged => changed.Count > 0;
+
+    public T Get<T>(string name) => (T)values[name];
+
+    public T GetOld<T>(string name) => (T)oldValues[name];
+
+    public void Set<T>(string name, [DisallowNull] T value)
     {
-        private Dictionary<string, object> values = new();
-        private Dictionary<string, object> oldValues = new();
-
-        private readonly HashSet<string> changed = new();
-
-        public bool IsChanged => changed.Count > 0;
-
-        public T Get<T>(string name) => (T)values[name];
-
-        public T GetOld<T>(string name) => (T)oldValues[name];
-
-        public void Set<T>(string name, [DisallowNull] T value)
+        if (!values.ContainsKey(name))
         {
-            if (!values.ContainsKey(name))
-            {
-                oldValues.Add(name, value);
-            }
-
-            values[name] = value;
-
-            if (oldValues[name].Equals(value))
-            {
-                changed.Remove(name);
-            }
-            else
-            {
-                changed.Add(name);
-            }
+            oldValues.Add(name, value);
         }
 
-        public bool Modified(string name) => changed.Contains(name);
+        values[name] = value;
 
-        public void AcceptChanges()
+        if (oldValues[name].Equals(value))
         {
-            oldValues = new(values);
-
-            changed.Clear();
+            changed.Remove(name);
         }
-
-        public void RejectChanges()
+        else
         {
-            values = new(oldValues);
-
-            changed.Clear();
+            changed.Add(name);
         }
+    }
 
-        public void Clear()
-        {
-            oldValues.Clear();
-            values.Clear();
+    public bool Modified(string name) => changed.Contains(name);
 
-            changed.Clear();
-        }
+    public void AcceptChanges()
+    {
+        oldValues = new(values);
+
+        changed.Clear();
+    }
+
+    public void RejectChanges()
+    {
+        values = new(oldValues);
+
+        changed.Clear();
+    }
+
+    public void Clear()
+    {
+        oldValues.Clear();
+        values.Clear();
+
+        changed.Clear();
     }
 }

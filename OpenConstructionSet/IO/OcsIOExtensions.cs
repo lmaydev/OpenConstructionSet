@@ -1,9 +1,6 @@
-﻿using System.IO;
+﻿namespace OpenConstructionSet.IO;
 
-namespace OpenConstructionSet.IO
+public static class OcsIOExtensions
 {
-    public static class OcsIOExtensions
-    {
-        internal static string AddModExtension(this string modName) => string.IsNullOrEmpty(Path.GetExtension(modName)) ? $"{modName}.mod" : modName;
-    }
+    internal static string AddModExtension(this string modName) => string.IsNullOrEmpty(Path.GetExtension(modName)) ? $"{modName}.mod" : modName;
 }

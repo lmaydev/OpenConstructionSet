@@ -1,21 +1,20 @@
-﻿namespace OpenConstructionSet.Models
+﻿namespace OpenConstructionSet.Models;
+
+/// <summary>
+/// Change types for items.
+/// </summary>
+public enum ItemChanges : int
 {
     /// <summary>
-    /// Change types for items.
+    /// The item was changed by the active mod.
     /// </summary>
-    public enum ItemChanges : int
-    {
-        /// <summary>
-        /// The item was changed by the active mod.
-        /// </summary>
-        Changed = -2147483647,
-        /// <summary>
-        /// Added by the active mod.
-        /// </summary>
-        New = -2147483646,
-        /// <summary>
-        /// The item's name was changed by the active mod.
-        /// </summary>
-        Renamed = -2147483645,
-    }
+    Changed = -2147483647,
+    /// <summary>
+    /// Added by the active mod.
+    /// </summary>
+    New = -2147483646,
+    /// <summary>
+    /// The item's name was changed by the active mod.
+    /// </summary>
+    Renamed = -2147483645,
 }

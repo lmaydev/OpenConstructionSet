@@ -1,7 +1,6 @@
-﻿namespace OpenConstructionSet.Data
+﻿namespace OpenConstructionSet.Data;
+
+public interface IClearable
 {
-    public interface IClearable
-    {
-        void Clear();
-    }
+    void Clear();
 }

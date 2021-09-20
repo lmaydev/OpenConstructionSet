@@ -1,13 +1,12 @@
-﻿namespace OpenConstructionSet.Models
+﻿namespace OpenConstructionSet.Models;
+
+/// <summary>
+/// Type identifier for data files.
+/// </summary>
+public enum FileType : int
 {
     /// <summary>
-    /// Type identifier for data files.
+    /// A mod file.
     /// </summary>
-    public enum FileType : int
-    {
-        /// <summary>
-        /// A mod file.
-        /// </summary>
-        Mod = 16
-    }
+    Mod = 16
 }

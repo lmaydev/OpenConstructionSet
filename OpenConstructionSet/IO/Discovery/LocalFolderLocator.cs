@@ -1,25 +1,24 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace OpenConstructionSet.IO.Discovery
+namespace OpenConstructionSet.IO.Discovery;
+
+public class LocalFolderLocator : IFolderLocator
 {
-    public class LocalFolderLocator : IFolderLocator
+    private static readonly Lazy<LocalFolderLocator> _default = new(() => new());
+
+    public static LocalFolderLocator Default => _default.Value;
+
+    public string Id { get; } = "local";
+
+    public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
     {
-        private static readonly Lazy<LocalFolderLocator> _default = new(() => new());
-
-        public static LocalFolderLocator Default => _default.Value;
-
-        public string Id { get; } = "local";
-
-        public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
+        if (!Directory.Exists("data") && !Directory.Exists("mods"))
         {
-            if (!Directory.Exists("data") && !Directory.Exists("mods"))
-            {
-                folders = null;
-                return false;
-            }
-
-            folders = new("mods", "data", null);
-            return true;
+            folders = null;
+            return false;
         }
+
+        folders = new("mods", "data", null);
+        return true;
     }
 }

@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
 using OpenConstructionSet.Data;
 using OpenConstructionSet.Models;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -16,14 +16,9 @@ namespace OpenConstructionSet.Example
 
             const string modName = "OCS Example";
 
-            // Setup dependency injection
-            var services = new ServiceCollection().UseOpenContructionSet().BuildServiceProvider();
+            Console.WriteLine("Searching for game folders");
 
-            // Get the required services
-            var discovery = services.GetRequiredService<IOcsDiscoveryService>();
-            var builder = services.GetRequiredService<IOcsDataContextBuilder>();
-
-            if (!discovery.TryFindGameFolders(out var folders))
+            if (!OcsDiscoveryService.Default.TryFindGameFolders(out IO.ModFolders? folders))
             {
                 Console.WriteLine("Could not find game folders!");
                 Console.Write("Press any key to exit...");
@@ -31,16 +26,36 @@ namespace OpenConstructionSet.Example
                 return;
             }
 
-            var dataContext = builder.Build(
+            Console.WriteLine("Building game data");
+
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+
+            OcsDataContext? dataContext = OcsDataContextBuilder.Default.Build(
                 modName + ".mod",
                 folders: folders.ToArray(),
                 header: new Header(2, "lmaydev", "OCS Example - Unarmed set equal to Attack for all stats items"),
                 info: new ModInfo(0, modName + ".mod", modName, new[] { "Total Overhaul" }, 0, DateTime.Now),
                 loadGameFiles: true);
 
+            stopWatch.Stop();
+
+            Console.WriteLine($"Game data built in {stopWatch.Elapsed.TotalSeconds} seconds");
+
+            Console.WriteLine("Updating items");
+
+            stopWatch.Restart();
+
             dataContext.Items.Values.OfType(ItemType.Stats)
                                     .Where(i => i.Values.ContainsKey("attack"))
-                                    .ForEach(item => item.Values["unarmed"] = item.Values["attack"]);
+                                    .ForEach(item =>
+                                    {
+                                        Console.WriteLine($"\"{item.Name}\" unarmed set to {item.Values["attack"]}");
+                                        item.Values["unarmed"] = item.Values["attack"];
+                                    });
+
+            Console.WriteLine($"Items updated in {stopWatch.Elapsed.TotalSeconds} seconds");
 
             if (folders.Mod is not null)
             {
@@ -52,7 +67,7 @@ namespace OpenConstructionSet.Example
 
         public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
-            foreach (var item in collection)
+            foreach (T? item in collection)
             {
                 action(item);
             }

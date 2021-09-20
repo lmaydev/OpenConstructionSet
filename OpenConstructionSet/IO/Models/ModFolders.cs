@@ -1,58 +1,55 @@
-﻿using System.Collections.Generic;
+﻿namespace OpenConstructionSet.IO;
 
-namespace OpenConstructionSet.IO
+/// <summary>
+/// POCO for the game's folders.
+/// </summary>
+public class ModFolders
 {
     /// <summary>
-    /// POCO for the game's folders.
+    /// The game's data folder.
     /// </summary>
-    public class ModFolders
+    public ModFolder? Data { get; set; }
+
+    /// <summary>
+    /// The game's mod folder.
+    /// </summary>
+    public ModFolder? Mod { get; set; }
+
+    /// <summary>
+    /// The game's content folder.
+    /// </summary>
+    public ModFolder? Content { get; set; }
+
+    public ModFolders(ModFolder? data, ModFolder? mod, ModFolder? content)
     {
-        /// <summary>
-        /// The game's data folder.
-        /// </summary>
-        public ModFolder? Data { get; set; }
+        Data = data;
+        Mod = mod;
+        Content = content;
+    }
 
-        /// <summary>
-        /// The game's mod folder.
-        /// </summary>
-        public ModFolder? Mod { get; set; }
+    /// <summary>
+    /// Helper function to get the folders as an array.
+    /// </summary>
+    /// <returns>The folders in an arrray.</returns>
+    public ModFolder[] ToArray()
+    {
+        var list = new List<ModFolder>();
 
-        /// <summary>
-        /// The game's content folder.
-        /// </summary>
-        public ModFolder? Content { get; set; }
-
-        public ModFolders(ModFolder? data, ModFolder? mod, ModFolder? content)
+        if (Data is not null)
         {
-            Data = data;
-            Mod = mod;
-            Content = content;
+            list.Add(Data);
         }
 
-        /// <summary>
-        /// Helper function to get the folders as an array.
-        /// </summary>
-        /// <returns>The folders in an arrray.</returns>
-        public ModFolder[] ToArray()
+        if (Mod is not null)
         {
-            var list = new List<ModFolder>();
-
-            if (Data is not null)
-            {
-                list.Add(Data);
-            }
-
-            if (Mod is not null)
-            {
-                list.Add(Mod);
-            }
-
-            if (Content is not null)
-            {
-                list.Add(Content);
-            }
-
-            return list.ToArray();
+            list.Add(Mod);
         }
+
+        if (Content is not null)
+        {
+            list.Add(Content);
+        }
+
+        return list.ToArray();
     }
 }

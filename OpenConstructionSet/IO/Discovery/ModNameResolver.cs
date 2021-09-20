@@ -1,41 +1,37 @@
-﻿namespace OpenConstructionSet.IO.Discovery
+﻿namespace OpenConstructionSet.IO.Discovery;
+
+public class ModNameResolver : IModNameResolver
 {
-    public class ModNameResolver : IModNameResolver
+    private static readonly Lazy<ModNameResolver> _default = new(() => new(OcsDiscoveryService.Default));
+
+    public static ModNameResolver Default => _default.Value;
+
+    private readonly IOcsDiscoveryService discoveryService;
+
+    public ModNameResolver(IOcsDiscoveryService discoveryService) => this.discoveryService = discoveryService;
+
+    public ModFile? Resolve(string mod, IEnumerable<ModFolder> modFolders)
     {
-        private static readonly Lazy<ModNameResolver> _default = new(() => new(OcsDiscoveryService.Default));
-
-        public static ModNameResolver Default => _default.Value;
-
-        private readonly IOcsDiscoveryService discoveryService;
-
-        public ModNameResolver(IOcsDiscoveryService discoveryService)
+        if (File.Exists(mod))
         {
-            this.discoveryService = discoveryService;
+            return discoveryService.Discover(new FileInfo(mod));
         }
 
-        public ModFile? Resolve(string mod, IEnumerable<ModFolder> modFolders)
+        mod = mod.AddModExtension();
+
+        foreach (var folder in modFolders)
         {
-            if (File.Exists(mod))
+            if (folder.Mods.TryGetValue(mod, out var modFile))
             {
-                return discoveryService.Discover(new FileInfo(mod));
+                return modFile;
             }
-
-            mod = mod.AddModExtension();
-
-            foreach (var folder in modFolders)
-            {
-                if (folder.Mods.TryGetValue(mod, out var modFile))
-                {
-                    return modFile;
-                }
-            }
-
-            return null;
         }
 
-        public ModFile ResolveOrThrow(string mod, IEnumerable<ModFolder> modFolders) => Resolve(mod, modFolders) ?? throw new Exception("Failed to resolve file");
-
-        public IEnumerable<ModFile> ResolveOrThrow(IEnumerable<string> mods, IEnumerable<ModFolder> modFolders) => mods.Select(m =>
-            Resolve(m, modFolders) ?? throw new Exception("Failed to resolve file"));
+        return null;
     }
+
+    public ModFile ResolveOrThrow(string mod, IEnumerable<ModFolder> modFolders) => Resolve(mod, modFolders) ?? throw new Exception("Failed to resolve file");
+
+    public IEnumerable<ModFile> ResolveOrThrow(IEnumerable<string> mods, IEnumerable<ModFolder> modFolders) => mods.Select(m =>
+                                                                                                             Resolve(m, modFolders) ?? throw new Exception("Failed to resolve file"));
 }

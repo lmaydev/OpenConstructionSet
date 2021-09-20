@@ -5,14 +5,18 @@
 		<TargetFramework>net6</TargetFramework>
 		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
 		<IsPackable>false</IsPackable>
-		<LangVersion>10</LangVersion>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
 		<PublishTrimmed>true</PublishTrimmed>
 		<PublishSingleFile>true</PublishSingleFile>
 		<TrimMode>link</TrimMode>
 		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+		<Platforms>x64</Platforms>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />

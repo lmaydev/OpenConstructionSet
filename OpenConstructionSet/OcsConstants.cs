@@ -1,14 +1,14 @@
-﻿namespace OpenConstructionSet
-{
-    public static class OcsConstants
-    {
-        /// <summary>
-        /// The names of the game's data and mod files.
-        /// </summary>
-        public static readonly string[] BaseMods = new string[] { "gamedata.base", "Newwworld.mod", "Dialogue.mod", "rebirth.mod" };
+﻿namespace OpenConstructionSet;
 
-        public static readonly string[] Categories = new string[]
-        {
+public static class OcsConstants
+{
+    /// <summary>
+    /// The names of the game's data and mod files.
+    /// </summary>
+    public static readonly string[] BaseMods = new string[] { "gamedata.base", "Newwworld.mod", "Dialogue.mod", "rebirth.mod" };
+
+    public static readonly string[] Categories = new string[]
+    {
             "Buildings",
             "Characters",
             "Cheats",
@@ -23,6 +23,5 @@
             "Research",
             "Total Overhaul",
             "Translation"
-        };
-    }
+    };
 }

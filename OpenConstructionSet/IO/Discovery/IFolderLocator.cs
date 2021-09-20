@@ -1,11 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace OpenConstructionSet.IO.Discovery
-{
-    public interface IFolderLocator
-    {
-        string Id { get; }
+namespace OpenConstructionSet.IO.Discovery;
 
-        bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders);
-    }
+public interface IFolderLocator
+{
+    string Id { get; }
+
+    bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders);
 }
