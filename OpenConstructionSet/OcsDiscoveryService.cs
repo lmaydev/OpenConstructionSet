@@ -46,25 +46,25 @@ public class OcsDiscoveryService : IOcsDiscoveryService
     {
         var locator = locators.Find(l => l.Id == locatorId) ?? throw LocatorNotFound(locatorId);
 
-        if (!locator.TryFind(out var folderPaths))
+        if (!locator.TryFind(out var discovered))
         {
             folders = null;
             return false;
         }
 
-        if (!TryDiscoverFolder(folderPaths.Data, out var data) ||
-            !TryDiscoverFolder(folderPaths.Mod, out var mod))
+        if (!TryDiscoverFolder(discovered.Data, out var data) ||
+            !TryDiscoverFolder(discovered.Mod, out var mod))
         {
             folders = null;
             return false;
         }
 
-        if (folderPaths.Content is null || !TryDiscoverFolder(folderPaths.Content, out var content))
+        if (discovered.Content is null || !TryDiscoverFolder(discovered.Content, out var content))
         {
             content = null;
         }
 
-        folders = new(data, mod, content);
+        folders = new(new DirectoryInfo(discovered.Game), data, mod, content);
         return true;
 
         static Exception LocatorNotFound(string locatorId)

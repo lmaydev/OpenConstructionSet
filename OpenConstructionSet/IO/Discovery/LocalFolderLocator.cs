@@ -18,7 +18,7 @@ public class LocalFolderLocator : IFolderLocator
             return false;
         }
 
-        folders = new("mods", "data", null);
+        folders = new("", null);
         return true;
     }
 }

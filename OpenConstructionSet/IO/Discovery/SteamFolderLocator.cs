@@ -42,13 +42,13 @@ public class SteamFolderLocator : IFolderLocator
             }
         }
 
-        if (string.IsNullOrWhiteSpace(gameFolder))
+        if (string.IsNullOrWhiteSpace(gameFolder) || !Directory.Exists(gameFolder))
         {
             folders = null;
             return false;
         }
 
-        folders = new DiscoveredFolders(Path.Combine(gameFolder, "mods"), Path.Combine(gameFolder, "data"), contentFolder);
+        folders = new DiscoveredFolders(gameFolder, contentFolder);
         return true;
 
         string SteamFolder()

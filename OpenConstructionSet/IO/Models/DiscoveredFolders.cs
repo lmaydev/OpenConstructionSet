@@ -2,33 +2,17 @@
 
 public class DiscoveredFolders
 {
-    public DiscoveredFolders(string mod, string data, string? content)
+    public DiscoveredFolders(string game, string? content)
     {
-        Mod = mod;
-        Data = data;
+        Game = game;
         Content = content;
     }
 
-    public string Mod { get; set; }
-
-    public string Data { get; set; }
+    public string Game { get; set; }
 
     public string? Content { get; set; }
 
-    public string[] ToArray()
-    {
-        var list = new List<string>
-            {
-                Data,
+    public string Mod => Path.Combine(Game, "mods");
 
-                Mod
-            };
-
-        if (Content is not null)
-        {
-            list.Add(Content);
-        }
-
-        return list.ToArray();
-    }
+    public string Data => Path.Combine(Game, "mods");
 }

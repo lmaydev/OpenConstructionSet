@@ -26,13 +26,13 @@ public class GogFolderLocator : IFolderLocator
 
         var gameFolder = registryKey.GetValue("path", "")?.ToString();
 
-        if (string.IsNullOrEmpty(gameFolder))
+        if (string.IsNullOrEmpty(gameFolder) || !Directory.Exists(gameFolder))
         {
             folders = null;
             return false;
         }
 
-        folders = new DiscoveredFolders(Path.Combine(gameFolder, "mods"), Path.Combine(gameFolder, "data"), null);
+        folders = new DiscoveredFolders(gameFolder, null);
         return true;
     }
 }

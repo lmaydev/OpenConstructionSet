@@ -5,6 +5,7 @@
 /// </summary>
 public class ModFolders
 {
+    public DirectoryInfo Game {  get; set; }
     /// <summary>
     /// The game's data folder.
     /// </summary>
@@ -20,8 +21,9 @@ public class ModFolders
     /// </summary>
     public ModFolder? Content { get; set; }
 
-    public ModFolders(ModFolder? data, ModFolder? mod, ModFolder? content)
+    public ModFolders(DirectoryInfo game, ModFolder? data, ModFolder? mod, ModFolder? content)
     {
+        Game = game;
         Data = data;
         Mod = mod;
         Content = content;
