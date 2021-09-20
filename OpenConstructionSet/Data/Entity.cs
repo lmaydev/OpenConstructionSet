@@ -226,7 +226,7 @@ namespace OpenConstructionSet.Data
 
         public Item AsDeleted()
         {
-            var deleted =  new Item(Type, Id, Name, StringId, ItemChanges.Changed);
+            var deleted = new Item(Type, Id, Name, StringId, ItemChanges.Changed);
 
             deleted.Delete();
 

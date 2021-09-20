@@ -1,5 +1,4 @@
 ﻿using OpenConstructionSet.Data;
-using OpenConstructionSet.Models;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,7 +63,7 @@ namespace OpenConstructionSet.Collections
 
         public DictionaryChanges<T> GetChanges()
         {
-            return ((IOcsDictionary<T>)items).GetChanges();
+            return items.GetChanges();
         }
     }
 }

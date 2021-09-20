@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace OpenConstructionSet.IO
 {
@@ -21,11 +19,12 @@ namespace OpenConstructionSet.IO
 
         public string[] ToArray()
         {
-            var list = new List<string>();
+            var list = new List<string>
+            {
+                Data,
 
-            list.Add(Data);
-
-            list.Add(Mod);
+                Mod
+            };
 
             if (Content is not null)
             {

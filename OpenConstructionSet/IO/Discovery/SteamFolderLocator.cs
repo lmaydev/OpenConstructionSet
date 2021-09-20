@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace OpenConstructionSet.IO.Discovery
@@ -13,7 +12,7 @@ namespace OpenConstructionSet.IO.Discovery
     {
         public string Id { get; } = "steam";
 
-        public bool TryFind([MaybeNullWhen(false)]out DiscoveredFolders folders)
+        public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
         {
             string folder = SteamFolder();
 

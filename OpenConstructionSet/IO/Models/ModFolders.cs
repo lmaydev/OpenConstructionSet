@@ -38,10 +38,14 @@ namespace OpenConstructionSet.IO
             var list = new List<ModFolder>();
 
             if (Data is not null)
-            list.Add(Data);
+            {
+                list.Add(Data);
+            }
 
             if (Mod is not null)
+            {
                 list.Add(Mod);
+            }
 
             if (Content is not null)
             {

@@ -1,10 +1,8 @@
 ﻿using OpenConstructionSet.Collections;
 using OpenConstructionSet.IO;
 using OpenConstructionSet.Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace OpenConstructionSet.Data
 {
@@ -30,7 +28,7 @@ namespace OpenConstructionSet.Data
 
         public bool IsChanged => Items.IsChanged || properties.IsChanged;
 
-        public OcsDataContext(IOcsFileService fileService, IOcsModInfoService modInfoService,  OcsRefDictionary<Entity> items, string modName, int lastId, Header? header = null, ModInfo? info = null)
+        public OcsDataContext(IOcsFileService fileService, IOcsModInfoService modInfoService, OcsRefDictionary<Entity> items, string modName, int lastId, Header? header = null, ModInfo? info = null)
         {
             Items = items;
             ModName = modName.AddModExtension();

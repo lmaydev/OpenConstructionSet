@@ -2,9 +2,6 @@
 using OpenConstructionSet;
 using OpenConstructionSet.Data;
 using OpenConstructionSet.IO.Discovery;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

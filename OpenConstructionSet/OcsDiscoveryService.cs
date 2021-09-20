@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace OpenConstructionSet
 {
@@ -104,7 +103,9 @@ namespace OpenConstructionSet
                 foreach (var mod in mods)
                 {
                     if (mod is null)
+                    {
                         continue;
+                    }
 
                     result.Mods.Add(mod.Name, mod);
                 }
@@ -151,7 +152,9 @@ namespace OpenConstructionSet
                 modFile = Discover(file);
 
                 if (modFile is not null)
+                {
                     return true;
+                }
             }
             catch
             {

@@ -1,16 +1,14 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 
 namespace OpenConstructionSet.IO.Discovery
 {
     public class GogFolderLocator : IFolderLocator
     {
-        const string Key64 = @"SOFTWARE\WOW6432Node\GOG.com\Games\1193046833";
-        const string Key32 = @"SOFTWARE\GOG.com\Games\1193046833";
+        private const string Key64 = @"SOFTWARE\WOW6432Node\GOG.com\Games\1193046833";
+        private const string Key32 = @"SOFTWARE\GOG.com\Games\1193046833";
 
         public string Id { get; } = "gog";
 
