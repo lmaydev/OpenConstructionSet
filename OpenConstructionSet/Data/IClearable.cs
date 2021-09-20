@@ -1,4 +1,4 @@
-﻿namespace OpenConstructionSet.Models
+﻿namespace OpenConstructionSet.Data
 {
     public interface IClearable
     {

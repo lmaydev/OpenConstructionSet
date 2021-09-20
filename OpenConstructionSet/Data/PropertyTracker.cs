@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
-namespace OpenConstructionSet.Models
+namespace OpenConstructionSet.Data
 {
     public class PropertyTracker : IRevertibleChangeTracking
     {

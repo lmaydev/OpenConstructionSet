@@ -1,13 +1,18 @@
 ﻿using OpenConstructionSet.Collections;
 using OpenConstructionSet.IO;
+using OpenConstructionSet.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
-namespace OpenConstructionSet.Models
+namespace OpenConstructionSet.Data
 {
     public class OcsDataContext : IRevertibleChangeTracking
     {
         private readonly PropertyTracker properties = new();
+        private readonly IOcsFileService fileService;
+        private readonly IOcsModInfoService modInfoService;
 
         public OcsRefDictionary<Entity> Items { get; }
         public string ModName { get; }
@@ -25,13 +30,16 @@ namespace OpenConstructionSet.Models
 
         public bool IsChanged => Items.IsChanged || properties.IsChanged;
 
-        public OcsDataContext(OcsRefDictionary<Entity> items, string modName, int lastId, Header? header = null, ModInfo? info = null)
+        public OcsDataContext(IOcsFileService fileService, IOcsModInfoService modInfoService,  OcsRefDictionary<Entity> items, string modName, int lastId, Header? header = null, ModInfo? info = null)
         {
             Items = items;
-            ModName = modName;
+            ModName = modName.AddModExtension();
             LastId = lastId;
             Header = header ?? new();
             Info = info ?? new();
+
+            this.fileService = fileService;
+            this.modInfoService = modInfoService;
         }
 
         public Entity NewItem(ItemType type, string name)
@@ -57,35 +65,29 @@ namespace OpenConstructionSet.Models
 
         public void Save(string path)
         {
-            var items = new Dictionary<string, Item>();
+            var items = new List<Item>();
 
             var changes = Items.GetChanges();
 
-            foreach (var removed in changes.Removed)
-            {
-                items.Add(removed.Key, removed.Value.AsDeleted());
-            }
+            changes.Removed.Values.ForEach(item => items.Add(item.AsDeleted()));
 
-            foreach (var pair in changes.Added)
-            {
-                items.Add(pair.Key, pair.Value.GetChanges(true));
-            }
+            changes.Added.Values.ForEach(item => items.Add(item.GetChanges(true)));
 
-            foreach (var pair in changes.Modified)
-            {
-                items.Add(pair.Key, pair.Value.GetChanges(false));
-            }
-
-            var dataFile = new DataFile(FileType.Mod, Header, LastId, Info, items);
+            changes.Modified.Values.ForEach(item => items.Add(item.GetChanges(false)));
 
             using var writer = new OcsWriter(path);
 
-            OcsModFile.Write(dataFile, writer);
+            fileService.Write(writer, Header, LastId, items);
 
             if (Info is not null)
             {
-                OcsModInfoFile.Write(path, Info, true);
+                modInfoService.Write(path, Info, true);
             }
+        }
+
+        public void Save(ModFolder folder)
+        {
+            Save(fileService.GetPath(folder, ModName));
         }
     }
 }

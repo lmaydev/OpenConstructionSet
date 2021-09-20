@@ -6,7 +6,9 @@ namespace OpenConstructionSet
     {
         private const string RemovedValueKey = "REMOVED";
 
-        public static bool Deleted(this Item item) => item.Values.ContainsKey(RemovedValueKey) && item.Values[RemovedValueKey] is bool removed && removed;
+        public static bool Deleted(this Item item) => item.Values.TryGetValue(RemovedValueKey, out var value)
+                                                      && value is bool removed
+                                                      && removed;
 
         public static void Delete(this Item item)
         {

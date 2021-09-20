@@ -1,12 +1,13 @@
 ﻿using OpenConstructionSet.Models;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace OpenConstructionSet.IO
+namespace OpenConstructionSet
 {
-    public static class OcsModInfoFile
+    public class OcsModInfoService : IOcsModInfoService
     {
-        public static string GetInfoFileName(string modPath)
+        public string GetInfoFileName(string modPath)
         {
             var folder = Path.GetDirectoryName(modPath);
 
@@ -15,7 +16,7 @@ namespace OpenConstructionSet.IO
             return Path.Combine(folder, $"_{name}.info");
         }
 
-        public static void Write(string path, ModInfo info, bool modPath = false)
+        public void Write(string path, ModInfo info, bool modPath = false)
         {
             if (modPath)
             {
@@ -27,7 +28,7 @@ namespace OpenConstructionSet.IO
             new XmlSerializer(typeof(ModInfo)).Serialize(stream, info);
         }
 
-        public static bool TryWrite(string path, ModInfo info, bool modPath = false)
+        public bool TryWrite(string path, ModInfo info, bool modPath = false)
         {
             try
             {
@@ -41,7 +42,7 @@ namespace OpenConstructionSet.IO
             }
         }
 
-        public static ModInfo? Read(string path, bool modPath = false)
+        public ModInfo? Read(string path, bool modPath = false)
         {
             if (modPath)
             {
@@ -58,7 +59,7 @@ namespace OpenConstructionSet.IO
             return (ModInfo)new XmlSerializer(typeof(ModInfo)).Deserialize(stream);
         }
 
-        public static bool TryRead(string path, out ModInfo info, bool modPath = false)
+        public bool TryRead(string path, [MaybeNullWhen(false)] out ModInfo info, bool modPath = false)
         {
             try
             {
@@ -67,7 +68,7 @@ namespace OpenConstructionSet.IO
             }
             catch
             {
-                info = null!;
+                info = null;
                 return false;
             }
         }

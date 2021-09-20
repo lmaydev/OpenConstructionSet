@@ -172,15 +172,5 @@ namespace OpenConstructionSet.IO
         public void Write(Single value) => writer.Write(value);
 
         public void Write(Int32 value) => writer.Write(value);
-
-        public bool Write(ModInfo info)
-        {
-            if (writer.BaseStream is not FileStream fs)
-            {
-                return false;
-            }
-
-            return OcsModInfoFile.TryWrite(fs.Name, info, true);
-        }
     }
 }

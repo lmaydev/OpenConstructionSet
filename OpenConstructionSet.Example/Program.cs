@@ -1,10 +1,13 @@
+using Microsoft.Extensions.DependencyInjection;
+using OpenConstructionSet.Data;
+using OpenConstructionSet.IO;
+using OpenConstructionSet.IO.Discovery;
+using OpenConstructionSet.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using forgotten_construction_set;
-using static forgotten_construction_set.GameData;
 
 namespace OpenConstructionSet.Example
 {
@@ -18,39 +21,36 @@ namespace OpenConstructionSet.Example
 
             const string modName = "OCS Example";
 
-            // Metadata for new mod
-            var header = new Header
+            // Setup dependency injection
+            var services = new ServiceCollection().UseOpenContructionSet().BuildServiceProvider();
+
+            // Get the required services
+            var discovery = services.GetRequiredService<IOcsDiscoveryService>();
+            var builder = services.GetRequiredService<IOcsDataContextBuilder>();
+
+            if (!discovery.TryFindGameFolders(out var folders))
             {
-                Author = "lmaydev",
-                Description = "Open Construction Set MA Example",
-                Version = 2,
-            };
+                Console.WriteLine("Could not find game folders!");
+                Console.Write("Press any key to exit...");
+                Console.ReadKey();
+                return;
+            }
 
-            // Creates a new mod and saves it in the default mod folder
-            var modPath = OcsHelper.NewMod(header, modName);
+            var dataContext = builder.Build(
+                modName + ".mod",
+                folders: folders.ToArray(),
+                header: new Header(2, "lmaydev", "OCS Example - Unarmed set equal to Attack for all stats items"),
+                info: new ModInfo(0, modName + ".mod", modName, new[] { "Total Overhaul" }, 0, DateTime.Now),
+                loadGameFiles: true);
 
-            Console.WriteLine($"Created new mod at {modPath}");
+            dataContext.Items.Values.OfType(ItemType.Stats)
+                                    .Where(i => i.Values.ContainsKey("attack"))
+                                    .ForEach(item => item.Values["unarmed"] = item.Values["attack"]);
 
-            // Load the base mods and the new mod as active.
-            var gameData = OcsHelper.Load(activeMod: modName);
-
-            // For each STATS item with an attack set
-            gameData.items.OfType(itemType.STATS)
-                          .Where(i => i.ContainsKey("attack"))
-                          .ForEach(item =>
-                          {
-                              // Set unarmed to equal attack
-                              var attack = item["attack"];
-                              item["unarmed"] = attack;
-                              Console.WriteLine($"Updating {item.Name}, changing unarmed to {attack}");
-
-                              // Convert to a model and serialize
-                              var model = item.ToModel();
-                              var json = JsonSerializer.Serialize(model, options);
-                              Console.WriteLine(json);
-                          });
-
-            gameData.save(modPath);
+            if (folders.Mod is not null)
+            {
+                dataContext.Save(folders.Mod);
+            }
 
             Console.ReadKey();
         }

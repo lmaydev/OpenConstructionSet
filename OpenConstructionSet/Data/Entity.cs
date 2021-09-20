@@ -1,10 +1,11 @@
 ﻿using OpenConstructionSet.Collections;
+using OpenConstructionSet.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace OpenConstructionSet.Models
+namespace OpenConstructionSet.Data
 {
     public class Entity : IRevertibleChangeTracking, IClearable
     {
@@ -223,6 +224,13 @@ namespace OpenConstructionSet.Models
             }
         }
 
-        public Item AsDeleted() => new(Type, Id, Name, StringId, ItemChanges.Changed);
+        public Item AsDeleted()
+        {
+            var deleted =  new Item(Type, Id, Name, StringId, ItemChanges.Changed);
+
+            deleted.Delete();
+
+            return deleted;
+        }
     }
 }

@@ -18,6 +18,18 @@ namespace OpenConstructionSet.IO
         public ModFolder? Mod { get; set; }
 
         /// <summary>
+        /// The game's content folder.
+        /// </summary>
+        public ModFolder? Content { get; set; }
+
+        public ModFolders(ModFolder? data, ModFolder? mod, ModFolder? content)
+        {
+            Data = data;
+            Mod = mod;
+            Content = content;
+        }
+
+        /// <summary>
         /// Helper function to get the folders as an array.
         /// </summary>
         /// <returns>The folders in an arrray.</returns>
@@ -26,13 +38,14 @@ namespace OpenConstructionSet.IO
             var list = new List<ModFolder>();
 
             if (Data is not null)
-            {
-                list.Add(Data);
-            }
+            list.Add(Data);
 
             if (Mod is not null)
-            {
                 list.Add(Mod);
+
+            if (Content is not null)
+            {
+                list.Add(Content);
             }
 
             return list.ToArray();

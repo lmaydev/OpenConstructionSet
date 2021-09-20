@@ -96,19 +96,14 @@ namespace OpenConstructionSet.IO
             return strings;
         }
 
-        public Dictionary<string, Item> ReadItems()
+        public IEnumerable<Item> ReadItems()
         {
-            var items = new Dictionary<string, Item>();
-
             var count = ReadInt();
 
             for (int i = 0; i < count; i++)
             {
-                var item = ReadItem();
-                items.Add(item.StringId, item);
+                yield return ReadItem();
             }
-
-            return items;
         }
 
         public Reference ReadReference() => new(ReadString(), ReadReferenceValues());
@@ -165,18 +160,6 @@ namespace OpenConstructionSet.IO
         public void Dispose()
         {
             ((IDisposable)reader).Dispose();
-        }
-
-        public ModInfo? ReadModData()
-        {
-            if (reader.BaseStream is not FileStream fs)
-            {
-                return null;
-            }
-
-            OcsModInfoFile.TryRead(fs.Name, out var info, true);
-
-            return info;
         }
     }
 }

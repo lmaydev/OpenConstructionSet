@@ -1,31 +1,36 @@
 ﻿using OpenConstructionSet.Collections;
 using OpenConstructionSet.IO;
+using OpenConstructionSet.IO.Discovery;
+using OpenConstructionSet.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 
-namespace OpenConstructionSet.Models
+namespace OpenConstructionSet.Data
 {
-    public class OcsDataContextBuilder
+    public class OcsDataContextBuilder : IOcsDataContextBuilder
     {
-        private readonly string name;
-        private readonly List<string> _baseMods = new();
-        private readonly List<string> _mods = new();
-        private readonly HashSet<string> _folders = new();
-        private bool loadGameFiles;
-        private Header? header;
-        private ModInfo? info;
+        private readonly IOcsFileService fileService;
+        private readonly IOcsModInfoService modInfoService;
+        private readonly IModNameResolver resolver;
 
-        public OcsDataContextBuilder(string name)
+        public OcsDataContextBuilder(IOcsFileService fileService, IOcsModInfoService modInfoService, IModNameResolver resolver)
         {
-            this.name = name;
+            this.fileService = fileService;
+            this.modInfoService = modInfoService;
+            this.resolver = resolver;
         }
 
-        public OcsDataContext Build()
+        public OcsDataContext Build(string name, IEnumerable<ModFolder>? folders = null, IEnumerable<string>? baseMods = null, IEnumerable<string>? activeMods = null,
+            Header? header = null, ModInfo? info = null, bool loadGameFiles = false)
         {
-            var modsFolders = ModFolder.Discover(_folders);
+            folders ??= Enumerable.Empty<ModFolder>();
+
+            IEnumerable<ModFile>? baseModFiles = baseMods is null ? null : resolver.ResolveOrThrow(baseMods, folders);
+            IEnumerable<ModFile>? activeModFiles = activeMods is null ? null : resolver.ResolveOrThrow(activeMods, folders);
 
             var items = new OcsRefDictionary<Entity>();
 
@@ -33,54 +38,55 @@ namespace OpenConstructionSet.Models
 
             if (loadGameFiles)
             {
-                _baseMods.InsertRange(0, OcsConstants.BaseMods);
+                if (folders?.Any() != true)
+                {
+                    throw new ArgumentException("folders can not be null or empty when attempting to load game files");
+                }
+
+                resolver.ResolveOrThrow(OcsConstants.BaseMods, folders).ForEach(ReadFile);
             }
 
-            foreach (var baseMod in _baseMods.Distinct())
+            if (baseMods is not null)
             {
-                var path = ResolvePath(baseMod);
-
-                ReadFile(path);
+                foreach (var mod in baseModFiles.Distinct())
+                {
+                    ReadFile(mod);
+                }
             }
 
+            // Set base data as original values. All changes after this will be part of the active mod.
             (items as IChangeTracking)?.AcceptChanges();
 
-            foreach (var mod in _mods.Distinct())
+            if (activeMods is not null)
             {
-                var path = ResolvePath(mod);
-
-                ReadFile(path);
+                foreach (var mod in activeModFiles.Distinct())
+                {
+                    ReadFile(mod);
+                }
             }
 
-            return new OcsDataContext(items, name, lastId, header, info);
+            return new OcsDataContext(fileService, modInfoService, items, name, lastId, header, info);
 
-            void ReadFile(string path)
+            void ReadFile(ModFile file)
             {
-                using var reader = new OcsReader(path);
+                using var reader = new OcsReader(file.FullName);
 
                 var type = (FileType)reader.ReadInt();
 
                 if (type != FileType.Mod)
                 {
-                    throw new InvalidOperationException($"Invalid file type. Expected 16; received {type}");
+                    throw new InvalidOperationException($"Invalid file type. Expected Mod (16); received {type}");
                 }
 
                 reader.ReadHeader();
 
                 lastId = Math.Max(lastId, reader.ReadInt());
 
-                var itemCount = reader.ReadInt();
-
-                for (int i = 0; i < itemCount; i++)
-                {
-                    ReadItem(reader);
-                }
+                reader.ReadItems().ForEach(AddOrUpdate);
             }
 
-            void ReadItem(OcsReader reader)
+            void AddOrUpdate(Item data)
             {
-                var data = reader.ReadItem();
-
                 if (!items.TryGetValue(data.StringId, out var item))
                 {
                     item = items.New(data.StringId, data.Name, data.Type);
@@ -88,69 +94,6 @@ namespace OpenConstructionSet.Models
 
                 item.Update(data);
             }
-
-            string ResolvePath(string mod)
-            {
-                if (File.Exists(mod))
-                {
-                    return mod;
-                }
-
-                foreach (var folder in modsFolders)
-                {
-                    if (folder.Mods.TryGetValue(mod, out var modFile))
-                    {
-                        return modFile.FullName;
-                    }
-                }
-
-                throw new FileNotFoundException("Mod not found", mod);
-            }
-        }
-
-        public OcsDataContextBuilder LoadGameFiles(bool load = true)
-        {
-            loadGameFiles = load;
-
-            return this;
-        }
-
-        public OcsDataContextBuilder UsingFolders(params string[] folders)
-        {
-            foreach (var folder in folders)
-            {
-                _folders.Add(folder);
-            }
-
-            return this;
-        }
-
-        public OcsDataContextBuilder WithBaseMods(params string[] mods)
-        {
-            _baseMods.AddRange(mods);
-
-            return this;
-        }
-
-        public OcsDataContextBuilder WithMods(params string[] mods)
-        {
-            _mods.AddRange(mods);
-
-            return this;
-        }
-
-        public OcsDataContextBuilder WithHeader(Header header)
-        {
-            this.header = header;
-
-            return this;
-        }
-
-        public OcsDataContextBuilder WithInfo(ModInfo info)
-        {
-            this.info = info;
-
-            return this;
         }
     }
 }
