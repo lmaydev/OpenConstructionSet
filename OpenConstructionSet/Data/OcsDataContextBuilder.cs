@@ -1,16 +1,17 @@
-﻿using OpenConstructionSet.Collections;
+using OpenConstructionSet.Collections;
 using OpenConstructionSet.IO;
 using OpenConstructionSet.IO.Discovery;
 using OpenConstructionSet.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace OpenConstructionSet.Data
 {
     public class OcsDataContextBuilder : IOcsDataContextBuilder
     {
+        private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsFileService.Default, OcsModInfoService.Default, ModNameResolver.Default));
+
+        public static OcsDataContextBuilder Default { get => _default.Value; }
+
         private readonly IOcsFileService fileService;
         private readonly IOcsModInfoService modInfoService;
         private readonly IModNameResolver resolver;

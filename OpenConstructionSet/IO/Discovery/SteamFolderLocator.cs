@@ -1,15 +1,15 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace OpenConstructionSet.IO.Discovery
 {
     public class SteamFolderLocator : IFolderLocator
     {
+        private static readonly Lazy<SteamFolderLocator> _default = new(() => new());
+
+        public static SteamFolderLocator Default => _default.Value;
+
         public string Id { get; } = "steam";
 
         public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)

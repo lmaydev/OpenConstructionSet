@@ -1,12 +1,14 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 
 namespace OpenConstructionSet.IO.Discovery
 {
     public class GogFolderLocator : IFolderLocator
     {
+        private static readonly Lazy<GogFolderLocator> _default = new(() => new());
+
+        public static GogFolderLocator Default => _default.Value;
+
         private const string Key64 = @"SOFTWARE\WOW6432Node\GOG.com\Games\1193046833";
         private const string Key32 = @"SOFTWARE\GOG.com\Games\1193046833";
 

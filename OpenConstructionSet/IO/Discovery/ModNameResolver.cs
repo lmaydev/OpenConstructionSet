@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-namespace OpenConstructionSet.IO.Discovery
+﻿namespace OpenConstructionSet.IO.Discovery
 {
     public class ModNameResolver : IModNameResolver
     {
+        private static readonly Lazy<ModNameResolver> _default = new(() => new(OcsDiscoveryService.Default));
+
+        public static ModNameResolver Default => _default.Value;
+
         private readonly IOcsDiscoveryService discoveryService;
 
         public ModNameResolver(IOcsDiscoveryService discoveryService)

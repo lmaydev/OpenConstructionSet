@@ -1,15 +1,18 @@
 ﻿using OpenConstructionSet.IO;
 using OpenConstructionSet.IO.Discovery;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
 
 namespace OpenConstructionSet
 {
     public class OcsDiscoveryService : IOcsDiscoveryService
     {
+        private static IEnumerable<IFolderLocator> GetFolderLocators() =>
+            new IFolderLocator[] { LocalFolderLocator.Default, SteamFolderLocator.Default, GogFolderLocator.Default };
+
+        private static readonly Lazy<OcsDiscoveryService> _default = new(() => new(GetFolderLocators(), OcsModInfoService.Default, OcsFileService.Default));
+
+        public static OcsDiscoveryService Default { get => _default.Value; }
+
         private readonly List<IFolderLocator> locators;
         private readonly IOcsModInfoService modInfoService;
         private readonly IOcsFileService fileService;

@@ -1,15 +1,26 @@
 ﻿using OpenConstructionSet.Models;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Xml.Serialization;
 
 namespace OpenConstructionSet
 {
     public class OcsModInfoService : IOcsModInfoService
     {
+        private static readonly Lazy<OcsModInfoService> _default = new(() => new());
+
+        public static OcsModInfoService Default
+        {
+            get => _default.Value;
+        }
+
         public string GetInfoFileName(string modPath)
         {
             var folder = Path.GetDirectoryName(modPath);
+
+            if (folder is null)
+            {
+                throw new ArgumentException("Could not determine directory for file \"{modPath}\"", nameof(modPath));
+            }
 
             var name = Path.GetFileNameWithoutExtension(modPath);
 
@@ -56,7 +67,14 @@ namespace OpenConstructionSet
 
             using var stream = File.OpenRead(path);
 
-            return (ModInfo)new XmlSerializer(typeof(ModInfo)).Deserialize(stream);
+            var value = new XmlSerializer(typeof(ModInfo)).Deserialize(stream);
+
+            if (value is not null && value is ModInfo info)
+            {
+                return info;
+            }
+
+            return null;
         }
 
         public bool TryRead(string path, [MaybeNullWhen(false)] out ModInfo info, bool modPath = false)

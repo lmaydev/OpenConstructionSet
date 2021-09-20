@@ -1,14 +1,18 @@
 ﻿using OpenConstructionSet.IO;
 using OpenConstructionSet.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 
 namespace OpenConstructionSet
 {
     public class OcsFileService : IOcsFileService
     {
+        private static readonly Lazy<OcsFileService> _default = new(() => new());
+
+        public static OcsFileService Default
+        {
+            get => _default.Value;
+        }
+
         public void Write(OcsWriter writer, Header? header, int lastId, IEnumerable<Item> items)
         {
             writer.Write((int)FileType.Mod);
@@ -60,9 +64,19 @@ namespace OpenConstructionSet
             return true;
         }
 
-        public void Delete(ModFile file)
+        public bool Delete(ModFile file)
         {
+            if (!File.Exists(file.FullName))
+            {
+                return false;
+            }
+
             var directory = Path.GetDirectoryName(file.FullName);
+
+            if (string.IsNullOrEmpty(directory))
+            {
+                return false;
+            }
 
             // individual mod folder, burn it all
             if (directory == file.Info?.Id.ToString() || directory == Path.GetFileNameWithoutExtension(file.Name))
@@ -74,6 +88,8 @@ namespace OpenConstructionSet
                 // Installation/data folder so only delete file
                 File.Delete(file.FullName);
             }
+
+            return true;
         }
 
         /// <summary>
