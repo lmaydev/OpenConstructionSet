@@ -12,13 +12,13 @@ public class LocalFolderLocator : IFolderLocator
 
     public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
     {
-        if (!Directory.Exists("data") && !Directory.Exists("mods"))
+        if (!Directory.Exists("data") || !Directory.Exists("mods"))
         {
             folders = null;
             return false;
         }
 
-        folders = new("", null);
+        folders = new(Path.GetFullPath("."), null);
         return true;
     }
 }

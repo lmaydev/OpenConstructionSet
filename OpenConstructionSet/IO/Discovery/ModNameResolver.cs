@@ -10,7 +10,7 @@ public class ModNameResolver : IModNameResolver
 
     public ModNameResolver(IOcsDiscoveryService discoveryService) => this.discoveryService = discoveryService;
 
-    public ModFile? Resolve(string mod, IEnumerable<ModFolder> modFolders)
+    public ModFile? Resolve(IEnumerable<ModFolder> modFolders, string mod)
     {
         if (File.Exists(mod))
         {
@@ -30,8 +30,20 @@ public class ModNameResolver : IModNameResolver
         return null;
     }
 
-    public ModFile ResolveOrThrow(string mod, IEnumerable<ModFolder> modFolders) => Resolve(mod, modFolders) ?? throw new Exception("Failed to resolve file");
+    public IEnumerable<ModFile> Resolve(IEnumerable<ModFolder> folders, IEnumerable<string> mods, bool throwIfMissing)
+    {
+        foreach (var mod in mods)
+        {
+            var modFile = Resolve(folders, mod);
 
-    public IEnumerable<ModFile> ResolveOrThrow(IEnumerable<string> mods, IEnumerable<ModFolder> modFolders) => mods.Select(m =>
-                                                                                                             Resolve(m, modFolders) ?? throw new Exception("Failed to resolve file"));
+            if (modFile is not null)
+            {
+                yield return modFile;
+            }
+            else if (throwIfMissing)
+            {
+                throw new Exception($"Could not resolve the mod \"mod\"");
+            }
+        }
+    }
 }

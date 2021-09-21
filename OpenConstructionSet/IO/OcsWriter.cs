@@ -90,25 +90,25 @@ public sealed class OcsWriter : IDisposable
 
     public void Write(Instance value)
     {
-        Write(value.id);
-        Write(value.target);
-        Write(value.position);
-        Write(value.rotation, true);
+        Write(value.Id);
+        Write(value.Target);
+        Write(value.Position);
+        Write(value.Rotation, true);
 
-        Write(value.states.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+        Write(value.States.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
     }
 
     public void Write(Reference value)
     {
-        Write(value.targetId);
-        Write(value.values);
+        Write(value.TargetId);
+        Write(value.Values);
     }
 
     public void Write(ReferenceValues value)
     {
-        Write(value.value0);
-        Write(value.value1);
-        Write(value.value2);
+        Write(value.Value0);
+        Write(value.Value1);
+        Write(value.Value2);
     }
 
     public void Write(Header value)
@@ -128,29 +128,29 @@ public sealed class OcsWriter : IDisposable
         writer.Write(data);
     }
 
-    public void Write(FileValue value) => Write(value.path);
+    public void Write(FileValue value) => Write(value.Path);
 
     public void Write(Vector3 value)
     {
-        Write(value.x);
-        Write(value.y);
-        Write(value.z);
+        Write(value.X);
+        Write(value.Y);
+        Write(value.Z);
     }
 
     public void Write(Vector4 value, bool wFirst = false)
     {
         if (wFirst)
         {
-            Write(value.w);
+            Write(value.W);
         }
 
-        Write(value.x);
-        Write(value.y);
-        Write(value.z);
+        Write(value.X);
+        Write(value.Y);
+        Write(value.Z);
 
         if (!wFirst)
         {
-            Write(value.w);
+            Write(value.W);
         }
     }
 

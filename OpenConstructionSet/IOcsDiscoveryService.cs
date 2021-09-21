@@ -12,7 +12,7 @@ public interface IOcsDiscoveryService
     bool TryDiscoverFile(string path, [MaybeNullWhen(false)] out ModFile modFile);
     bool TryDiscoverFolder(DirectoryInfo folder, [MaybeNullWhen(false)] out ModFolder modFolder);
     bool TryDiscoverFolder(string folder, [MaybeNullWhen(false)] out ModFolder modFolder);
-    Dictionary<string, ModFolders> TryFindAllGameFolders();
-    bool TryFindGameFolders([MaybeNullWhen(false)] out ModFolders folders);
-    bool TryFindGameFolders(string locatorId, [MaybeNullWhen(false)] out ModFolders folders);
+    Dictionary<string, GameFolders> TryFindAllGameFolders();
+    bool TryFindGameFolders([MaybeNullWhen(false)] out GameFolders folders);
+    bool TryFindGameFolders(string locatorId, [MaybeNullWhen(false)] out GameFolders folders);
 }

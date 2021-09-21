@@ -8,11 +8,11 @@ public class DiscoveredFolders
         Content = content;
     }
 
-    public string Game { get; set; }
+    public string Game { get; }
 
-    public string? Content { get; set; }
+    public string? Content { get; }
 
     public string Mod => Path.Combine(Game, "mods");
 
-    public string Data => Path.Combine(Game, "mods");
+    public string Data => Path.Combine(Game, "data");
 }

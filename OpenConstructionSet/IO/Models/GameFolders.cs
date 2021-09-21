@@ -3,32 +3,8 @@
 /// <summary>
 /// POCO for the game's folders.
 /// </summary>
-public class ModFolders
+public record GameFolders(DirectoryInfo Game, ModFolder Data, ModFolder Mod, ModFolder? Content)
 {
-    public DirectoryInfo Game {  get; set; }
-    /// <summary>
-    /// The game's data folder.
-    /// </summary>
-    public ModFolder? Data { get; set; }
-
-    /// <summary>
-    /// The game's mod folder.
-    /// </summary>
-    public ModFolder? Mod { get; set; }
-
-    /// <summary>
-    /// The game's content folder.
-    /// </summary>
-    public ModFolder? Content { get; set; }
-
-    public ModFolders(DirectoryInfo game, ModFolder? data, ModFolder? mod, ModFolder? content)
-    {
-        Game = game;
-        Data = data;
-        Mod = mod;
-        Content = content;
-    }
-
     /// <summary>
     /// Helper function to get the folders as an array.
     /// </summary>

@@ -11,14 +11,14 @@ public static class OcsServiceCollectionExtensions
     {
         services.TryAddEnumerable(new[]
         {
-                ServiceDescriptor.Singleton<IFolderLocator, LocalFolderLocator>(),
                 ServiceDescriptor.Singleton<IFolderLocator, SteamFolderLocator>(),
                 ServiceDescriptor.Singleton<IFolderLocator, GogFolderLocator>(),
+                ServiceDescriptor.Singleton<IFolderLocator, LocalFolderLocator>(),
             });
 
         services.TryAddEnumerable(ServiceDescriptor.Singleton<IModNameResolver, ModNameResolver>());
 
-        return services.AddSingleton<IOcsFileService, OcsFileService>()
+        return services.AddSingleton<IOcsModService, OcsModService>()
                        .AddSingleton<IOcsDiscoveryService, OcsDiscoveryService>()
                        .AddSingleton<IOcsDataContextBuilder, OcsDataContextBuilder>();
     }

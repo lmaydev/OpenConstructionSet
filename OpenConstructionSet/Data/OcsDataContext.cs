@@ -7,7 +7,7 @@ namespace OpenConstructionSet.Data;
 public class OcsDataContext : IRevertibleChangeTracking
 {
     private readonly PropertyTracker properties = new();
-    private readonly IOcsFileService fileService;
+    private readonly IOcsModService modService;
     private readonly IOcsModInfoService modInfoService;
 
     public OcsRefDictionary<Entity> Items { get; }
@@ -26,7 +26,7 @@ public class OcsDataContext : IRevertibleChangeTracking
 
     public bool IsChanged => Items.IsChanged || properties.IsChanged;
 
-    public OcsDataContext(IOcsFileService fileService, IOcsModInfoService modInfoService, OcsRefDictionary<Entity> items, string modName, int lastId, Header? header = null, ModInfo? info = null)
+    public OcsDataContext(IOcsModService modService, IOcsModInfoService modInfoService, OcsRefDictionary<Entity> items, string modName, int lastId, Header? header = null, ModInfo? info = null)
     {
         Items = items;
         ModName = modName.AddModExtension();
@@ -34,7 +34,7 @@ public class OcsDataContext : IRevertibleChangeTracking
         Header = header ?? new();
         Info = info ?? new();
 
-        this.fileService = fileService;
+        this.modService = modService;
         this.modInfoService = modInfoService;
     }
 
@@ -73,7 +73,7 @@ public class OcsDataContext : IRevertibleChangeTracking
 
         using var writer = new OcsWriter(path);
 
-        fileService.Write(writer, Header, LastId, items);
+        modService.Write(writer, Header, LastId, items);
 
         if (Info is not null)
         {
@@ -81,5 +81,5 @@ public class OcsDataContext : IRevertibleChangeTracking
         }
     }
 
-    public void Save(ModFolder folder) => Save(fileService.GetPath(folder, ModName));
+    public void Save(ModFolder folder) => Save(modService.GetPath(folder, ModName));
 }

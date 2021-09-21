@@ -51,10 +51,10 @@ public class Entity : IRevertibleChangeTracking, IClearable
 
     internal Entity(Item item) : this(item.Type, item.StringId, item.Name, item.Id,
         new(item.Values),
-        new(item.Instances.ToDictionary(i => i.id, i => new InstanceValues(i))),
+        new(item.Instances.ToDictionary(i => i.Id, i => new InstanceValues(i))),
         // Create outer dictionary using the category name (key).
         // Then create the inner dictionary using the targetId as the key
-        new(item.References.ToDictionary(p => p.Key, p => new OcsDictionary<ReferenceValues>(p.Value.ToDictionary(r => r.targetId, r => r.values)))))
+        new(item.References.ToDictionary(p => p.Key, p => new OcsDictionary<ReferenceValues>(p.Value.ToDictionary(r => r.TargetId, r => r.Values)))))
     {
     }
 
@@ -107,11 +107,11 @@ public class Entity : IRevertibleChangeTracking, IClearable
         {
             if (instance.Deleted())
             {
-                Instances.Remove(instance.id);
+                Instances.Remove(instance.Id);
                 continue;
             }
 
-            Instances[instance.id] = new(instance);
+            Instances[instance.Id] = new(instance);
         }
 
         foreach (var pair in item.References)
@@ -127,11 +127,11 @@ public class Entity : IRevertibleChangeTracking, IClearable
             {
                 if (reference.Deleted())
                 {
-                    references.Remove(reference.targetId);
+                    references.Remove(reference.TargetId);
                     continue;
                 }
 
-                references[reference.targetId] = reference.values;
+                references[reference.TargetId] = reference.Values;
             }
         }
     }

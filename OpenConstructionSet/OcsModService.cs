@@ -3,11 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OpenConstructionSet;
 
-public class OcsFileService : IOcsFileService
+public class OcsModService : IOcsModService
 {
-    private static readonly Lazy<OcsFileService> _default = new(() => new());
+    private static readonly Lazy<OcsModService> _default = new(() => new());
 
-    public static OcsFileService Default => _default.Value;
+    public static OcsModService Default => _default.Value;
 
     public void Write(OcsWriter writer, Header? header, int lastId, IEnumerable<Item> items)
     {
@@ -94,4 +94,11 @@ public class OcsFileService : IOcsFileService
     }
 
     private string GetPath(string folder, string modName) => Path.Combine(folder, Path.GetFileNameWithoutExtension(modName), modName.AddModExtension());
+
+    public string[] ReadLoadOrder(string gameFolder)
+    {
+        var path = Path.Combine(gameFolder, @"data\mods.cfg");
+
+        return File.Exists(path) ? File.ReadAllLines(path) : Array.Empty<string>();
+    }
 }

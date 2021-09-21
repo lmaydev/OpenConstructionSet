@@ -18,7 +18,7 @@ namespace OpenConstructionSet.Example
 
             Console.WriteLine("Searching for game folders");
 
-            if (!OcsDiscoveryService.Default.TryFindGameFolders(out IO.ModFolders? folders))
+            if (!OcsDiscoveryService.Default.TryFindGameFolders(out IO.GameFolders? folders))
             {
                 Console.WriteLine("Could not find game folders!");
                 Console.Write("Press any key to exit...");
@@ -28,6 +28,8 @@ namespace OpenConstructionSet.Example
 
             Console.WriteLine("Building game data");
 
+            var baseMods = OcsModService.Default.ReadLoadOrder(folders.Game.FullName);
+
             var stopWatch = new Stopwatch();
 
             stopWatch.Start();
@@ -35,11 +37,11 @@ namespace OpenConstructionSet.Example
             OcsDataContext? dataContext = OcsDataContextBuilder.Default.Build(
                 modName + ".mod",
                 folders: folders.ToArray(),
+                baseMods: baseMods,
                 header: new Header(2, "lmaydev", "OCS Example - Unarmed set equal to Attack for all stats items"),
                 info: new ModInfo(0, modName + ".mod", modName, new[] { "Total Overhaul" }, 0, DateTime.Now),
-                loadGameFiles: true);
-
-            stopWatch.Stop();
+                loadGameFiles: ModLoadType.Base,
+                throwIfMissing: false);
 
             Console.WriteLine($"Game data built in {stopWatch.Elapsed.TotalSeconds} seconds");
 
@@ -59,13 +61,19 @@ namespace OpenConstructionSet.Example
 
             if (folders.Mod is not null)
             {
+                Console.WriteLine("Saving mod");
+
+                stopWatch.Restart();
+
                 dataContext.Save(folders.Mod);
+
+                Console.WriteLine($"Save complete {stopWatch.Elapsed.TotalSeconds} seconds");
             }
 
             Console.ReadKey();
         }
 
-        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        internal static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
             foreach (T? item in collection)
             {

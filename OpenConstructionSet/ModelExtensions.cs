@@ -19,18 +19,18 @@ internal static class ModelExtensions
 
     public static Reference Delete(this Reference reference)
     {
-        reference.values = ReferenceValues.Deleted;
+        reference.Values = ReferenceValues.Deleted;
 
         return reference;
     }
 
-    public static bool Deleted(this Reference reference) => reference.values.Equals(ReferenceValues.Deleted);
+    public static bool Deleted(this Reference reference) => reference.Values.Equals(ReferenceValues.Deleted);
 
-    public static bool Deleted(this Instance instance) => string.IsNullOrEmpty(instance.target);
+    public static bool Deleted(this Instance instance) => string.IsNullOrEmpty(instance.Target);
 
     public static Instance Delete(this Instance instance)
     {
-        instance.target = "";
+        instance.Target = "";
 
         return instance;
     }

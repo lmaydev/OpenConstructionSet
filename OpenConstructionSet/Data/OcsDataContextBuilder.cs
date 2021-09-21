@@ -7,65 +7,78 @@ namespace OpenConstructionSet.Data;
 
 public class OcsDataContextBuilder : IOcsDataContextBuilder
 {
-    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsFileService.Default, OcsModInfoService.Default, ModNameResolver.Default));
+    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsModService.Default, OcsModInfoService.Default, ModNameResolver.Default));
 
     public static OcsDataContextBuilder Default => _default.Value;
 
-    private readonly IOcsFileService fileService;
+    private readonly IOcsModService modService;
     private readonly IOcsModInfoService modInfoService;
     private readonly IModNameResolver resolver;
 
-    public OcsDataContextBuilder(IOcsFileService fileService, IOcsModInfoService modInfoService, IModNameResolver resolver)
+    public OcsDataContextBuilder(IOcsModService modService, IOcsModInfoService modInfoService, IModNameResolver resolver)
     {
-        this.fileService = fileService;
+        this.modService = modService;
         this.modInfoService = modInfoService;
         this.resolver = resolver;
     }
 
-    public OcsDataContext Build(string name, IEnumerable<ModFolder>? folders = null, IEnumerable<string>? baseMods = null, IEnumerable<string>? activeMods = null,
-        Header? header = null, ModInfo? info = null, bool loadGameFiles = false)
+    /// <summary>
+    /// Builds a <see cref="OcsDataContext"/> from the provided options
+    /// </summary>
+    /// <param name="name">The name of the mod e.g. example.mod</param>
+    /// <param name="folders">A collection of folders used when resolving mod names. If loading game files or enabled mods <c>folders</c> can not be <c>null</c>.</param>
+    /// <param name="baseMods">A collection of mods to load as the base data.</param>
+    /// <param name="activeMods">A collection of mods to load as active. When saving data from these mods will be saved along with any changes.</param>
+    /// <param name="header">Header for the new mod</param>
+    /// <param name="info"></param>
+    /// <param name="loadGameFiles"></param>
+    /// <param name="loadEnabledMods"></param>
+    /// <returns></returns>
+    public OcsDataContext Build(string name, bool throwIfMissing = true, IEnumerable<ModFolder>? folders = null, IEnumerable<string>? baseMods = null,
+        IEnumerable<string>? activeMods = null, Header? header = null, ModInfo? info = null, ModLoadType loadGameFiles = ModLoadType.None)
     {
         folders ??= Enumerable.Empty<ModFolder>();
 
-        var baseModFiles = baseMods is null ? null : resolver.ResolveOrThrow(baseMods, folders);
-        var activeModFiles = activeMods is null ? null : resolver.ResolveOrThrow(activeMods, folders);
+        var baseModFiles = baseMods is not null ? Resolve(baseMods) : Enumerable.Empty<ModFile>();
+        var activeModFiles = activeMods is not null ? Resolve(activeMods) : Enumerable.Empty<ModFile>();
 
         var items = new OcsRefDictionary<Entity>();
 
         var lastId = 0;
 
-        if (loadGameFiles)
-        {
-            if (folders?.Any() != true)
-            {
-                throw new ArgumentException("folders can not be null or empty when attempting to load game files");
-            }
+        Stack<ModFile> loaded = new();
 
-            resolver.ResolveOrThrow(OcsConstants.BaseMods, folders).ForEach(ReadFile);
+        if (loadGameFiles == ModLoadType.Base)
+        {
+            LoadGameFiles(false);
         }
 
-        if (baseModFiles is not null)
-        {
-            foreach (var mod in baseModFiles.Distinct())
-            {
-                ReadFile(mod);
-            }
-        }
+        baseModFiles.ForEach(m => ReadFile(m, false));
 
         // Set base data as original values. All changes after this will be part of the active mod.
         (items as IChangeTracking)?.AcceptChanges();
 
-        if (activeModFiles is not null)
+        if (loadGameFiles == ModLoadType.Active)
         {
-            foreach (var mod in activeModFiles.Distinct())
+            LoadGameFiles(true);
+        }
+
+        activeModFiles.DistinctBy(m => m.Name).ForEach(m => ReadFile(m, true));
+
+        if (loaded.TryPop(out var last))
+        {
+            if (header is null)
+                header = last.Header;
+
+            if (info is null)
             {
-                ReadFile(mod);
+                info = last.Info;
             }
         }
 
-        return new OcsDataContext(fileService, modInfoService, items, name, lastId, header, info);
+        return new OcsDataContext(modService, modInfoService, items, name, lastId, header, info);
 
-        void ReadFile(ModFile file)
+        void ReadFile(ModFile file, bool active)
         {
             using var reader = new OcsReader(file.FullName);
 
@@ -81,6 +94,11 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
             lastId = Math.Max(lastId, reader.ReadInt());
 
             reader.ReadItems().ForEach(AddOrUpdate);
+
+            if (active)
+            {
+                loaded.Push(file);
+            }
         }
 
         void AddOrUpdate(Item data)
@@ -91,6 +109,16 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
             }
 
             item.Update(data);
+        }
+
+        void LoadGameFiles(bool active)
+        {
+            Resolve(OcsConstants.BaseMods).ForEach(m => ReadFile(m, active));
+        }
+
+        IEnumerable<ModFile> Resolve(IEnumerable<string> mods)
+        {
+            return resolver.Resolve(folders, mods, throwIfMissing).DistinctBy(m => m.Name);
         }
     }
 }

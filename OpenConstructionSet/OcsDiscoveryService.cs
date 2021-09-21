@@ -6,30 +6,30 @@ namespace OpenConstructionSet;
 
 public class OcsDiscoveryService : IOcsDiscoveryService
 {
-    private static IEnumerable<IFolderLocator> GetFolderLocators() => new IFolderLocator[] { LocalFolderLocator.Default, SteamFolderLocator.Default, GogFolderLocator.Default };
+    private static IEnumerable<IFolderLocator> GetFolderLocators() => new IFolderLocator[] {SteamFolderLocator.Default, GogFolderLocator.Default, LocalFolderLocator.Default};
 
-    private static readonly Lazy<OcsDiscoveryService> _default = new(() => new(GetFolderLocators(), OcsModInfoService.Default, OcsFileService.Default));
+    private static readonly Lazy<OcsDiscoveryService> _default = new(() => new(GetFolderLocators(), OcsModInfoService.Default, OcsModService.Default));
 
     public static OcsDiscoveryService Default => _default.Value;
 
     private readonly List<IFolderLocator> locators;
     private readonly IOcsModInfoService modInfoService;
-    private readonly IOcsFileService fileService;
+    private readonly IOcsModService modService;
 
     private string[] SupportedFolderLocators { get; }
 
-    public OcsDiscoveryService(IEnumerable<IFolderLocator> locators, IOcsModInfoService modInfoService, IOcsFileService fileService)
+    public OcsDiscoveryService(IEnumerable<IFolderLocator> locators, IOcsModInfoService modInfoService, IOcsModService modService)
     {
         this.locators = locators.ToList();
 
         SupportedFolderLocators = locators.Select(l => l.Id).ToArray();
         this.modInfoService = modInfoService;
-        this.fileService = fileService;
+        this.modService = modService;
     }
 
-    public Dictionary<string, ModFolders> TryFindAllGameFolders()
+    public Dictionary<string, GameFolders> TryFindAllGameFolders()
     {
-        var result = new Dictionary<string, ModFolders>();
+        var result = new Dictionary<string, GameFolders>();
 
         foreach (var locator in SupportedFolderLocators)
         {
@@ -42,8 +42,13 @@ public class OcsDiscoveryService : IOcsDiscoveryService
         return result;
     }
 
-    public bool TryFindGameFolders(string locatorId, [MaybeNullWhen(false)] out ModFolders folders)
+    public bool TryFindGameFolders(string locatorId, [MaybeNullWhen(false)] out GameFolders folders)
     {
+        if (locatorId.Length == 0)
+        {
+            return TryFindGameFolders(out folders);
+        }
+
         var locator = locators.Find(l => l.Id == locatorId) ?? throw LocatorNotFound(locatorId);
 
         if (!locator.TryFind(out var discovered))
@@ -73,7 +78,7 @@ public class OcsDiscoveryService : IOcsDiscoveryService
         }
     }
 
-    public bool TryFindGameFolders([MaybeNullWhen(false)] out ModFolders folders)
+    public bool TryFindGameFolders([MaybeNullWhen(false)] out GameFolders folders)
     {
         foreach (var locatorId in SupportedFolderLocators)
         {
@@ -94,7 +99,7 @@ public class OcsDiscoveryService : IOcsDiscoveryService
             return null;
         }
 
-        var result = new ModFolder(folder.FullName);
+        var result = new ModFolder(folder.FullName, new());
 
         AddRange(folder.GetFiles("*.base").Select(Discover));
         AddRange(folder.GetFiles("*.mod").Select(Discover));
@@ -125,14 +130,7 @@ public class OcsDiscoveryService : IOcsDiscoveryService
 
         using var reader = new OcsReader(file.FullName);
 
-        return !fileService.TryReadHeader(reader, out var header)
-            ? null : new()
-            {
-                Name = file.Name,
-                FullName = file.FullName,
-                Header = header,
-                Info = modInfoService.Read(file.FullName, true),
-            };
+        return !modService.TryReadHeader(reader, out var header) ? null : new(file.Name, file.FullName, header, modInfoService.Read(file.FullName, true));
     }
 
     public IEnumerable<ModFolder> Discoverfolders(IEnumerable<string> folders) => folders.Select(f =>
