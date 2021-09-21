@@ -1,4 +1,4 @@
-﻿namespace OpenConstructionSet.IO;
+﻿namespace OpenConstructionSet.Models;
 
 /// <summary>
 /// Representation of a mod folder.

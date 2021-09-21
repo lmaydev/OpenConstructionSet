@@ -1,4 +1,4 @@
-﻿namespace OpenConstructionSet.IO;
+﻿namespace OpenConstructionSet.Models;
 
 /// <summary>
 /// POCO for the game's folders.

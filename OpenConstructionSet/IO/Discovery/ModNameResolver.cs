@@ -14,7 +14,7 @@ public class ModNameResolver : IModNameResolver
     {
         if (File.Exists(mod))
         {
-            return discoveryService.Discover(new FileInfo(mod));
+            return discoveryService.DiscoverFile(mod);
         }
 
         mod = mod.AddModExtension();
@@ -42,7 +42,7 @@ public class ModNameResolver : IModNameResolver
             }
             else if (throwIfMissing)
             {
-                throw new Exception($"Could not resolve the mod \"mod\"");
+                throw new Exception($"Could not resolve the mod \"{mod}\"");
             }
         }
     }

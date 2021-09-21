@@ -12,7 +12,7 @@ public class GogFolderLocator : IFolderLocator
     private const string Key64 = @"SOFTWARE\WOW6432Node\GOG.com\Games\1193046833";
     private const string Key32 = @"SOFTWARE\GOG.com\Games\1193046833";
 
-    public string Id { get; } = "gog";
+    public string Id { get; } = "Gog";
 
     public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
     {

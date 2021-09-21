@@ -1,6 +1,4 @@
-﻿using OpenConstructionSet.IO;
-
-namespace OpenConstructionSet.Data;
+﻿namespace OpenConstructionSet.Data;
 
 public interface IOcsDataContextBuilder
 {

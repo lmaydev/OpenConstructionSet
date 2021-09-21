@@ -6,15 +6,6 @@ public sealed class OcsReader : IDisposable
 {
     private readonly BinaryReader reader;
 
-    public OcsReader(string path) : this(File.OpenRead(path))
-    { }
-
-    public OcsReader(byte[] data) : this(new MemoryStream(data))
-    { }
-
-    public OcsReader(Stream stream) : this(new BinaryReader(stream))
-    { }
-
     public OcsReader(BinaryReader reader) => this.reader = reader;
 
     public Item ReadItem()

@@ -8,7 +8,7 @@ public class LocalFolderLocator : IFolderLocator
 
     public static LocalFolderLocator Default => _default.Value;
 
-    public string Id { get; } = "local";
+    public string Id { get; } = "Local";
 
     public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
     {

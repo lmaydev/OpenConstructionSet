@@ -6,28 +6,26 @@ namespace OpenConstructionSet;
 
 public class OcsDiscoveryService : IOcsDiscoveryService
 {
-    private static IEnumerable<IFolderLocator> GetFolderLocators() => new IFolderLocator[] {SteamFolderLocator.Default, GogFolderLocator.Default, LocalFolderLocator.Default};
+    private static IEnumerable<IFolderLocator> GetFolderLocators() => new IFolderLocator[] { SteamFolderLocator.Default, GogFolderLocator.Default, LocalFolderLocator.Default };
 
-    private static readonly Lazy<OcsDiscoveryService> _default = new(() => new(GetFolderLocators(), OcsModInfoService.Default, OcsModService.Default));
+    private static readonly Lazy<OcsDiscoveryService> _default = new(() => new(GetFolderLocators(), OcsModService.Default));
 
     public static OcsDiscoveryService Default => _default.Value;
 
-    private readonly List<IFolderLocator> locators;
-    private readonly IOcsModInfoService modInfoService;
+    private readonly Dictionary<string, IFolderLocator> locators;
     private readonly IOcsModService modService;
 
     private string[] SupportedFolderLocators { get; }
 
-    public OcsDiscoveryService(IEnumerable<IFolderLocator> locators, IOcsModInfoService modInfoService, IOcsModService modService)
+    public OcsDiscoveryService(IEnumerable<IFolderLocator> locators, IOcsModService modService)
     {
-        this.locators = locators.ToList();
-
+        this.locators = locators.ToDictionary(l => l.Id);
         SupportedFolderLocators = locators.Select(l => l.Id).ToArray();
-        this.modInfoService = modInfoService;
+
         this.modService = modService;
     }
 
-    public Dictionary<string, GameFolders> TryFindAllGameFolders()
+    public Dictionary<string, GameFolders> FindAllGameFolders()
     {
         var result = new Dictionary<string, GameFolders>();
 
@@ -49,7 +47,10 @@ public class OcsDiscoveryService : IOcsDiscoveryService
             return TryFindGameFolders(out folders);
         }
 
-        var locator = locators.Find(l => l.Id == locatorId) ?? throw LocatorNotFound(locatorId);
+        if (!locators.TryGetValue(locatorId, out var locator))
+        {
+            throw LocatorNotFound(locatorId);
+        }
 
         if (!locator.TryFind(out var discovered))
         {
@@ -57,17 +58,16 @@ public class OcsDiscoveryService : IOcsDiscoveryService
             return false;
         }
 
-        if (!TryDiscoverFolder(discovered.Data, out var data) ||
-            !TryDiscoverFolder(discovered.Mod, out var mod))
+        var data = DiscoverFolder(discovered.Data);
+        var mod = DiscoverFolder(discovered.Mod);
+
+        if (data is null || mod is null)
         {
             folders = null;
             return false;
         }
 
-        if (discovered.Content is null || !TryDiscoverFolder(discovered.Content, out var content))
-        {
-            content = null;
-        }
+        var content = discovered.Content is null ? null : DiscoverFolder(discovered.Content);
 
         folders = new(new DirectoryInfo(discovered.Game), data, mod, content);
         return true;
@@ -92,18 +92,19 @@ public class OcsDiscoveryService : IOcsDiscoveryService
         return false;
     }
 
-    public ModFolder? Discover(DirectoryInfo folder)
+    public ModFolder? DiscoverFolder(string folder)
     {
-        if (!folder.Exists)
+        if (!Directory.Exists(folder))
         {
             return null;
         }
 
-        var result = new ModFolder(folder.FullName, new());
+        var result = new ModFolder(folder, new());
 
-        AddRange(folder.GetFiles("*.base").Select(Discover));
-        AddRange(folder.GetFiles("*.mod").Select(Discover));
-        AddRange(folder.GetDirectories().SelectMany(d => d.GetFiles("*.mod").Select(Discover)));
+        AddRange(Directory.GetFiles(folder, "*.base").Select(DiscoverFile));
+        AddRange(Directory.GetFiles(folder, "*.mod").Select(DiscoverFile));
+        // all mod files in a sub folder
+        AddRange(Directory.GetDirectories(folder).SelectMany(f => Directory.GetFiles(f, "*.mod")).Select(DiscoverFile));
 
         void AddRange(IEnumerable<ModFile?> mods)
         {
@@ -121,68 +122,22 @@ public class OcsDiscoveryService : IOcsDiscoveryService
         return result;
     }
 
-    public ModFile? Discover(FileInfo file)
+    public ModFile? DiscoverFile(string file)
     {
-        if (!file.Exists)
+        if (!File.Exists(file))
         {
             return null;
         }
 
-        using var reader = new OcsReader(file.FullName);
+        using var reader = new OcsReader(new BinaryReader(File.OpenRead(file)));
 
-        return !modService.TryReadHeader(reader, out var header) ? null : new(file.Name, file.FullName, header, modInfoService.Read(file.FullName, true));
-    }
-
-    public IEnumerable<ModFolder> Discoverfolders(IEnumerable<string> folders) => folders.Select(f =>
-                                                                                Discover(new DirectoryInfo(f)) ?? throw new Exception($"Discovery failed for folder \"{f}\""));
-
-    public IEnumerable<ModFile> DiscoverFiles(IEnumerable<string> files) => files.Select(f =>
-                                                                          Discover(new FileInfo(f)) ?? throw new Exception($"Discovery failed for file \"{f}\"))"));
-
-    public bool TryDiscoverFile(string path, [MaybeNullWhen(false)] out ModFile modFile) => TryDiscoverFile(new FileInfo(path), out modFile);
-
-    private bool TryDiscoverFile(FileInfo file, [MaybeNullWhen(false)] out ModFile modFile)
-    {
-        try
+        if (!modService.TryReadHeader(reader, out var header))
         {
-            modFile = Discover(file);
-
-            if (modFile is not null)
-            {
-                return true;
-            }
-        }
-        catch
-        {
+            return null;
         }
 
-        modFile = null;
-        return false;
-    }
+        using var stream = File.OpenRead(OcsIOHelper.GetInfoFileName(file));
 
-    public bool TryDiscoverFolder(string folder, [MaybeNullWhen(false)] out ModFolder modFolder) => TryDiscoverFolder(new DirectoryInfo(folder), out modFolder);
-
-    /// <summary>
-    /// Search the given folder for mods.
-    /// </summary>
-    /// <param name="folder">The folder to search.</param>
-    /// <returns>A <c>ModFolder</c> containing all discovered mods.</returns>
-    public bool TryDiscoverFolder(DirectoryInfo folder, [MaybeNullWhen(false)] out ModFolder modFolder)
-    {
-        try
-        {
-            modFolder = Discover(folder);
-
-            if (modFolder is not null)
-            {
-                return true;
-            }
-        }
-        catch
-        {
-        }
-
-        modFolder = null;
-        return false;
+        return new(Path.GetFileName(file), file, header, OcsIOHelper.ReadInfo(stream));
     }
 }

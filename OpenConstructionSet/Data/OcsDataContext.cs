@@ -8,7 +8,6 @@ public class OcsDataContext : IRevertibleChangeTracking
 {
     private readonly PropertyTracker properties = new();
     private readonly IOcsModService modService;
-    private readonly IOcsModInfoService modInfoService;
 
     public OcsRefDictionary<Entity> Items { get; }
     public string ModName { get; }
@@ -26,7 +25,7 @@ public class OcsDataContext : IRevertibleChangeTracking
 
     public bool IsChanged => Items.IsChanged || properties.IsChanged;
 
-    public OcsDataContext(IOcsModService modService, IOcsModInfoService modInfoService, OcsRefDictionary<Entity> items, string modName, int lastId, Header? header = null, ModInfo? info = null)
+    public OcsDataContext(IOcsModService modService, OcsRefDictionary<Entity> items, string modName, int lastId, Header? header = null, ModInfo? info = null)
     {
         Items = items;
         ModName = modName.AddModExtension();
@@ -35,7 +34,6 @@ public class OcsDataContext : IRevertibleChangeTracking
         Info = info ?? new();
 
         this.modService = modService;
-        this.modInfoService = modInfoService;
     }
 
     public Entity NewItem(ItemType type, string name)
@@ -71,13 +69,15 @@ public class OcsDataContext : IRevertibleChangeTracking
 
         changes.Modified.Values.ForEach(item => items.Add(item.GetChanges(false)));
 
-        using var writer = new OcsWriter(path);
+        using var writer = new OcsWriter(new(File.Create(path)));
 
         modService.Write(writer, Header, LastId, items);
 
         if (Info is not null)
         {
-            modInfoService.Write(path, Info, true);
+            using var stream = File.OpenRead(OcsIOHelper.GetInfoFileName(path));
+
+            Info.WriteInfo(stream);
         }
     }
 

@@ -10,7 +10,7 @@ public class SteamFolderLocator : IFolderLocator
 
     public static SteamFolderLocator Default => _default.Value;
 
-    public string Id { get; } = "steam";
+    public string Id { get; } = "Steam";
 
     public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
     {

@@ -4,81 +4,80 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace OpenConstructionSet.Example
+namespace OpenConstructionSet.Example;
+
+internal static class Program
 {
-    internal static class Program
+    private static void Main()
     {
-        private static void Main()
+        var options = new JsonSerializerOptions { WriteIndented = true, };
+
+        options.Converters.Add(new JsonStringEnumConverter());
+
+        const string modName = "OCS Example";
+
+        Console.WriteLine("Searching for game folders");
+
+        if (!OcsDiscoveryService.Default.TryFindGameFolders(out var folders))
         {
-            var options = new JsonSerializerOptions { WriteIndented = true, };
+            Console.WriteLine("Could not find game folders!");
+            Console.Write("Press any key to exit...");
+            Console.ReadKey();
+            return;
+        }
 
-            options.Converters.Add(new JsonStringEnumConverter());
+        Console.WriteLine("Building game data");
 
-            const string modName = "OCS Example";
+        var baseMods = OcsModService.Default.ReadLoadOrder(folders.Game.FullName);
 
-            Console.WriteLine("Searching for game folders");
+        var stopWatch = new Stopwatch();
 
-            if (!OcsDiscoveryService.Default.TryFindGameFolders(out IO.GameFolders? folders))
-            {
-                Console.WriteLine("Could not find game folders!");
-                Console.Write("Press any key to exit...");
-                Console.ReadKey();
-                return;
-            }
+        stopWatch.Start();
 
-            Console.WriteLine("Building game data");
+        var dataContext = OcsDataContextBuilder.Default.Build(
+            modName + ".mod",
+            folders: folders.ToArray(),
+            baseMods: baseMods,
+            header: new Header(2, "lmaydev", "OCS Example - Unarmed set equal to Attack for all stats items"),
+            info: new ModInfo(0, modName + ".mod", modName, new[] { "Total Overhaul" }, 0, DateTime.Now),
+            loadGameFiles: ModLoadType.Base,
+            throwIfMissing: false);
 
-            var baseMods = OcsModService.Default.ReadLoadOrder(folders.Game.FullName);
+        Console.WriteLine($"Game data built in {stopWatch.Elapsed.TotalSeconds} seconds");
 
-            var stopWatch = new Stopwatch();
+        Console.WriteLine("Updating items");
 
-            stopWatch.Start();
+        stopWatch.Restart();
 
-            OcsDataContext? dataContext = OcsDataContextBuilder.Default.Build(
-                modName + ".mod",
-                folders: folders.ToArray(),
-                baseMods: baseMods,
-                header: new Header(2, "lmaydev", "OCS Example - Unarmed set equal to Attack for all stats items"),
-                info: new ModInfo(0, modName + ".mod", modName, new[] { "Total Overhaul" }, 0, DateTime.Now),
-                loadGameFiles: ModLoadType.Base,
-                throwIfMissing: false);
+        dataContext.Items.Values.OfType(ItemType.Stats)
+                                .Where(i => i.Values.ContainsKey("attack"))
+                                .ForEach(item =>
+                                {
+                                    Console.WriteLine($"\"{item.Name}\" unarmed set to {item.Values["attack"]}");
+                                    item.Values["unarmed"] = item.Values["attack"];
+                                });
 
-            Console.WriteLine($"Game data built in {stopWatch.Elapsed.TotalSeconds} seconds");
+        Console.WriteLine($"Items updated in {stopWatch.Elapsed.TotalSeconds} seconds");
 
-            Console.WriteLine("Updating items");
+        if (folders.Mod is not null)
+        {
+            Console.WriteLine("Saving mod");
 
             stopWatch.Restart();
 
-            dataContext.Items.Values.OfType(ItemType.Stats)
-                                    .Where(i => i.Values.ContainsKey("attack"))
-                                    .ForEach(item =>
-                                    {
-                                        Console.WriteLine($"\"{item.Name}\" unarmed set to {item.Values["attack"]}");
-                                        item.Values["unarmed"] = item.Values["attack"];
-                                    });
+            dataContext.Save(folders.Mod);
 
-            Console.WriteLine($"Items updated in {stopWatch.Elapsed.TotalSeconds} seconds");
-
-            if (folders.Mod is not null)
-            {
-                Console.WriteLine("Saving mod");
-
-                stopWatch.Restart();
-
-                dataContext.Save(folders.Mod);
-
-                Console.WriteLine($"Save complete {stopWatch.Elapsed.TotalSeconds} seconds");
-            }
-
-            Console.ReadKey();
+            Console.WriteLine($"Save complete {stopWatch.Elapsed.TotalSeconds} seconds");
         }
 
-        internal static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        Console.ReadKey();
+    }
+
+    internal static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+    {
+        foreach (var item in collection)
         {
-            foreach (T? item in collection)
-            {
-                action(item);
-            }
+            action(item);
         }
     }
 }
