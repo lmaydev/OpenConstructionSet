@@ -1,3 +1,3 @@
 ﻿namespace OpenConstructionSet.Models;
 
-public record struct Vector4(float W, float X, float Y, float Z);
+public record Vector4(float W, float X, float Y, float Z);

@@ -1,6 +1,6 @@
 ﻿namespace OpenConstructionSet.Models;
 
-public record struct Instance(string Id, string Target, Vector3 Position, Vector4 Rotation, string States)
+public record Instance(string Id, string Target, Vector3 Position, Vector4 Rotation, string States)
 {
 
     public Instance(KeyValuePair<string, InstanceValues> pair) : this(pair.Key, pair.Value)

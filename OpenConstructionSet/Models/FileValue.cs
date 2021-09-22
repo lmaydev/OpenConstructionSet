@@ -1,3 +1,3 @@
 ﻿namespace OpenConstructionSet.Models;
 
-public record struct FileValue(string Path);
+public record FileValue(string Path);
