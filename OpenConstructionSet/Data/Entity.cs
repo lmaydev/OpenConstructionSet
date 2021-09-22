@@ -32,7 +32,7 @@ public class Entity : IRevertibleChangeTracking, IClearable
         set => properties.Set<string>(nameof(Name), value);
     }
 
-    internal Entity(ItemType type, string stringId,
+    public Entity(ItemType type, string stringId,
                     string name, int id = 0,
                     OcsDictionary<object>? values = null,
                     OcsDictionary<InstanceValues>? instances = null,

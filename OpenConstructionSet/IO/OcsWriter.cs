@@ -15,7 +15,7 @@ public sealed class OcsWriter : IDisposable
 
     private readonly BinaryWriter writer;
 
-    public OcsWriter(BinaryWriter writer) => this.writer = writer;
+    public OcsWriter(Stream stream) => writer = new(stream);
 
     public void Dispose() => writer.Dispose();
 

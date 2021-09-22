@@ -4,25 +4,25 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OpenConstructionSet;
 
-public class OcsDiscoveryService : IOcsDiscoveryService
+public class OcsService : IOcsService
 {
-    private static IEnumerable<IFolderLocator> GetFolderLocators() => new IFolderLocator[] { SteamFolderLocator.Default, GogFolderLocator.Default, LocalFolderLocator.Default };
+    private static readonly Lazy<OcsService> _default = new(() => new(new IFolderLocator[]
+    {
+        SteamFolderLocator.Default,
+        GogFolderLocator.Default,
+        LocalFolderLocator.Default
+    }));
 
-    private static readonly Lazy<OcsDiscoveryService> _default = new(() => new(GetFolderLocators(), OcsModService.Default));
-
-    public static OcsDiscoveryService Default => _default.Value;
+    public static OcsService Default => _default.Value;
 
     private readonly Dictionary<string, IFolderLocator> locators;
-    private readonly IOcsModService modService;
 
     private string[] SupportedFolderLocators { get; }
 
-    public OcsDiscoveryService(IEnumerable<IFolderLocator> locators, IOcsModService modService)
+    public OcsService(IEnumerable<IFolderLocator> locators)
     {
         this.locators = locators.ToDictionary(l => l.Id);
         SupportedFolderLocators = locators.Select(l => l.Id).ToArray();
-
-        this.modService = modService;
     }
 
     public Dictionary<string, GameFolders> FindAllGameFolders()
@@ -31,7 +31,9 @@ public class OcsDiscoveryService : IOcsDiscoveryService
 
         foreach (var locator in SupportedFolderLocators)
         {
-            if (TryFindGameFolders(locator, out var folders))
+            var folders = FindGameFolders(locator);
+
+            if (folders is not null)
             {
                 result.Add(locator, folders);
             }
@@ -40,22 +42,16 @@ public class OcsDiscoveryService : IOcsDiscoveryService
         return result;
     }
 
-    public bool TryFindGameFolders(string locatorId, [MaybeNullWhen(false)] out GameFolders folders)
+    public GameFolders? FindGameFolders(string locatorId)
     {
-        if (locatorId.Length == 0)
-        {
-            return TryFindGameFolders(out folders);
-        }
-
         if (!locators.TryGetValue(locatorId, out var locator))
         {
-            throw LocatorNotFound(locatorId);
+            return null;
         }
 
         if (!locator.TryFind(out var discovered))
         {
-            folders = null;
-            return false;
+            return null;
         }
 
         var data = DiscoverFolder(discovered.Data);
@@ -63,34 +59,15 @@ public class OcsDiscoveryService : IOcsDiscoveryService
 
         if (data is null || mod is null)
         {
-            folders = null;
-            return false;
+            return null;
         }
 
         var content = discovered.Content is null ? null : DiscoverFolder(discovered.Content);
 
-        folders = new(new DirectoryInfo(discovered.Game), data, mod, content);
-        return true;
-
-        static Exception LocatorNotFound(string locatorId)
-        {
-            return new ArgumentException($"LocatorId \"{locatorId}\" was not found", nameof(locatorId));
-        }
+        return new(discovered.Game, data, mod, content);
     }
 
-    public bool TryFindGameFolders([MaybeNullWhen(false)] out GameFolders folders)
-    {
-        foreach (var locatorId in SupportedFolderLocators)
-        {
-            if (TryFindGameFolders(locatorId, out folders))
-            {
-                return true;
-            }
-        }
-
-        folders = null;
-        return false;
-    }
+    public GameFolders? FindGameFolders() => SupportedFolderLocators.Select(FindGameFolders).FirstOrDefault(f => f is not null);
 
     public ModFolder? DiscoverFolder(string folder)
     {
@@ -115,7 +92,7 @@ public class OcsDiscoveryService : IOcsDiscoveryService
                     continue;
                 }
 
-                result.Mods.Add(mod.Name, mod);
+                result.Mods.Add(mod.FileName, mod);
             }
         }
 
@@ -124,20 +101,64 @@ public class OcsDiscoveryService : IOcsDiscoveryService
 
     public ModFile? DiscoverFile(string file)
     {
+        file = Path.GetFullPath(file);
+
         if (!File.Exists(file))
         {
             return null;
         }
 
-        using var reader = new OcsReader(new BinaryReader(File.OpenRead(file)));
+        var header = ReadHeader(file);
 
-        if (!modService.TryReadHeader(reader, out var header))
+        if (header is null)
         {
             return null;
         }
 
-        using var stream = File.OpenRead(OcsIOHelper.GetInfoFileName(file));
+        var infoPath = OcsIOHelper.GetInfoPath(file);
 
-        return new(Path.GetFileName(file), file, header, OcsIOHelper.ReadInfo(stream));
+        ModInfo? info = null;
+
+        if (File.Exists(infoPath))
+        {
+            using var stream = File.OpenRead(infoPath);
+            info = OcsIOHelper.ReadInfo(stream);
+        }
+
+        return new(file, header, info);
+    }
+
+    public string[] ReadLoadOrder(IEnumerable<ModFolder> folders)
+    {
+        var path = folders.Select(f => Path.Combine(f.FullName, "mods.cfg")).FirstOrDefault(File.Exists);
+
+        return path is not null ? File.ReadAllLines(path) : Array.Empty<string>();
+    }
+
+    public bool SaveLoadOrder(IEnumerable<ModFolder> folders, string[] loadOrder)
+    {
+        var path = folders.Select(f => Path.Combine(f.FullName, "mods.cfg")).FirstOrDefault(File.Exists);
+
+        if (path is null)
+        {
+            return false;
+        }
+
+        File.WriteAllLines(path, loadOrder);
+        return true;
+    }
+
+    public Header? ReadHeader(string path)
+    {
+        path = path.AddModExtension();
+
+        if (!File.Exists(path))
+        {
+            return null;
+        }
+
+        using var reader = new OcsReader(File.OpenRead(path));
+
+        return OcsIOHelper.ReadHeader(reader);
     }
 }

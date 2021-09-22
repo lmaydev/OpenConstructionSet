@@ -1,6 +1,6 @@
 ﻿namespace OpenConstructionSet;
 
-internal static class ModelExtensions
+public static class ModelExtensions
 {
     private const string RemovedValueKey = "REMOVED";
 

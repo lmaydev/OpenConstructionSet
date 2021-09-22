@@ -7,18 +7,13 @@ namespace OpenConstructionSet.Data;
 
 public class OcsDataContextBuilder : IOcsDataContextBuilder
 {
-    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsModService.Default, ModNameResolver.Default));
+    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(ModNameResolver.Default));
 
     public static OcsDataContextBuilder Default => _default.Value;
 
-    private readonly IOcsModService modService;
     private readonly IModNameResolver resolver;
 
-    public OcsDataContextBuilder(IOcsModService modService, IModNameResolver resolver)
-    {
-        this.modService = modService;
-        this.resolver = resolver;
-    }
+    public OcsDataContextBuilder(IModNameResolver resolver) => this.resolver = resolver;
 
     /// <summary>
     /// Builds a <see cref="OcsDataContext"/> from the provided options
@@ -76,11 +71,11 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
             }
         }
 
-        return new OcsDataContext(modService, items, name, lastId, header, info);
+        return new OcsDataContext(items, name, lastId, header, info);
 
         void ReadFile(ModFile file, bool active)
         {
-            using var reader = new OcsReader(new(File.OpenRead(file.FullName)));
+            using var reader = new OcsReader(File.OpenRead(file.FullName));
 
             var type = (FileType)reader.ReadInt();
 

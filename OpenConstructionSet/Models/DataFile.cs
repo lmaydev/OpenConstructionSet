@@ -32,9 +32,9 @@ public class DataFile
     /// <param name="type">The file's type identifier.</param>
     /// <param name="header">Optional header if the file is a mod.</param>
     /// <param name="lastId">The last ID used.</param>
-    /// <param name="info">Metadata from a mod's info file.</param>
     /// <param name="items">Collection of items</param>
-    public DataFile(FileType type, Header? header, int lastId, ModInfo? info = null, Dictionary<string, Item>? items = null)
+    /// <param name="info">Metadata from a mod's info file.</param>
+    public DataFile(FileType type, Header? header, int lastId, Dictionary<string, Item>? items = null, ModInfo? info = null)
     {
         Type = type;
         Header = header ?? new Header();

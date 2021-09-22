@@ -6,7 +6,7 @@ public sealed class OcsReader : IDisposable
 {
     private readonly BinaryReader reader;
 
-    public OcsReader(BinaryReader reader) => this.reader = reader;
+    public OcsReader(Stream stream) => reader = new(stream);
 
     public Item ReadItem()
     {

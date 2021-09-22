@@ -2,13 +2,13 @@
 
 public class ModNameResolver : IModNameResolver
 {
-    private static readonly Lazy<ModNameResolver> _default = new(() => new(OcsDiscoveryService.Default));
+    private static readonly Lazy<ModNameResolver> _default = new(() => new(OcsService.Default));
 
     public static ModNameResolver Default => _default.Value;
 
-    private readonly IOcsDiscoveryService discoveryService;
+    private readonly IOcsService discoveryService;
 
-    public ModNameResolver(IOcsDiscoveryService discoveryService) => this.discoveryService = discoveryService;
+    public ModNameResolver(IOcsService discoveryService) => this.discoveryService = discoveryService;
 
     public ModFile? Resolve(IEnumerable<ModFolder> modFolders, string mod)
     {
