@@ -1,7 +1,3 @@
 ﻿namespace OpenConstructionSet.Models;
 
-public record InstanceValues(string Target, Vector3 Position, Vector4 Rotation, string States)
-{
-    public InstanceValues(Instance instance) : this(instance.Target, instance.Position, instance.Rotation, instance.States)
-    { }
-}
+public sealed record InstanceValues(string Target, Vector3 Position, Vector4 Rotation, string States);

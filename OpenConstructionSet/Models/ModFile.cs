@@ -1,6 +1,6 @@
 ﻿namespace OpenConstructionSet.Models;
 
-public record ModFile(string FullName, Header Header, ModInfo? Info)
+public sealed record ModFile(string FullName, Header Header, ModInfo? Info)
 {
     public string FileName => Path.GetFileName(FullName);
 

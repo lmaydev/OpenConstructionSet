@@ -1,7 +1,8 @@
 ﻿namespace OpenConstructionSet.Models;
 
-public record Reference(string TargetId, ReferenceValues Values)
+public sealed record Reference(string TargetId, ReferenceValues Values, string Category)
 {
-    public Reference(KeyValuePair<string, ReferenceValues> pair) : this(pair.Key, pair.Value)
-    { }
+    private string? key = null;
+
+    public string Key => key ??= Category + TargetId;
 }

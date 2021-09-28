@@ -19,9 +19,9 @@ public static class ModelExtensions
 
     public static Reference Delete(this Reference reference) => reference with { Values = ReferenceValues.Deleted };
 
-    public static bool Deleted(this Reference reference) => reference.Values.Equals(ReferenceValues.Deleted);
+    public static bool IsDeleted(this Reference reference) => reference.Values.Equals(ReferenceValues.Deleted);
 
-    public static bool Deleted(this Instance instance) => string.IsNullOrEmpty(instance.Target);
+    public static bool IsDeleted(this Instance instance) => string.IsNullOrEmpty(instance.Target);
 
     public static Instance Delete(this Instance instance) => instance with { Target = "" };
 }

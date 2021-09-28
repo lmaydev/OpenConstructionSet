@@ -27,19 +27,15 @@ public sealed class OcsReader : IDisposable
 
         for (var i = 0; i < categoryCount; i++)
         {
-            var references = new List<Reference>();
-
-            var key = ReadString();
+            var category = ReadString();
 
             var referenceCount = ReadInt();
             for (var j = 0; j < referenceCount; j++)
             {
-                var reference = ReadReference();
+                var reference = ReadReference(category);
 
-                references.Add(reference);
+                item.References.Add(reference);
             }
-
-            item.References[key] = references;
         }
 
         // Instances
@@ -89,7 +85,7 @@ public sealed class OcsReader : IDisposable
         }
     }
 
-    public Reference ReadReference() => new(ReadString(), ReadReferenceValues());
+    public Reference ReadReference(string category) => new(ReadString(), ReadReferenceValues(), category);
 
     public ReferenceValues ReadReferenceValues() => new(ReadInt(), ReadInt(), ReadInt());
 
@@ -103,9 +99,7 @@ public sealed class OcsReader : IDisposable
     {
         var length = ReadInt();
 
-        var data = reader.ReadBytes(length);
-
-        return Encoding.UTF8.GetString(data.ToArray());
+        return Encoding.UTF8.GetString(reader.ReadBytes(length));
     }
 
     public string[] ReadStringList() => ReadString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);

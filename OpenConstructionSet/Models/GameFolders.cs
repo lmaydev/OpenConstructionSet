@@ -3,7 +3,7 @@
 /// <summary>
 /// POCO for the game's folders.
 /// </summary>
-public record GameFolders(string Game, ModFolder Data, ModFolder Mod, ModFolder? Content)
+public sealed record GameFolders(string Game, ModFolder Data, ModFolder Mod, ModFolder? Content)
 {
     /// <summary>
     /// Helper function to get the folders as an array.
