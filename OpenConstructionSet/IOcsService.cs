@@ -1,4 +1,5 @@
-﻿namespace OpenConstructionSet;
+﻿
+namespace OpenConstructionSet;
 
 public interface IOcsService
 {
@@ -8,6 +9,6 @@ public interface IOcsService
     GameFolders? FindGameFolders();
     GameFolders? FindGameFolders(string locatorId);
     Header? ReadHeader(string path);
-    string[] ReadLoadOrder(IEnumerable<ModFolder> folders);
-    bool SaveLoadOrder(IEnumerable<ModFolder> folders, string[] loadOrder);
+    string[] ReadLoadOrder(ModFolder folder);
+    bool SaveLoadOrder(ModFolder folder, string[] loadOrder);
 }

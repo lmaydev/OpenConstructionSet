@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace OpenConstructionSet.IO;
 
@@ -35,6 +34,18 @@ public static class OcsIOHelper
     public static string GetModPath(string folder, string mod) => Path.Combine(folder, Path.GetFileNameWithoutExtension(mod), mod.AddModExtension());
 
     public static Header? ReadHeader(OcsReader reader) => (FileType)reader.ReadInt() == FileType.Mod ? reader.ReadHeader() : null;
+
+    public static (Header header, int lastId, Dictionary<string, Item> items) ReadMod(this OcsReader reader)
+    {
+        var type = (FileType)reader.ReadInt();
+
+        if (type != FileType.Mod)
+        {
+            throw new InvalidDataException("Not a mod file");
+        }
+
+        return (reader.ReadHeader(), reader.ReadInt(), reader.ReadItems().ToDictionary(i => i.StringId));
+    }
 
     public static void WriteMod(this OcsWriter writer, Header? header, int lastId, IEnumerable<Item> items)
     {

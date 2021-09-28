@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet.Example.Scar.PathFindingFix", "OpenConstructionSet.Example.Scar.PathFindingFix\OpenConstructionSet.Example.Scar.PathFindingFix.csproj", "{45BF1B22-EB10-40CE-BC54-47BF41BF4325}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -30,6 +32,10 @@ Global
 		{2F0AFD96-694D-4153-B8F9-0E7BBF77D2CF}.Release|x64.Build.0 = Release|x64
 		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Release|x64.ActiveCfg = Release|Any CPU
+		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Debug|x64.ActiveCfg = Debug|x64
+		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Debug|x64.Build.0 = Debug|x64
+		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Release|x64.ActiveCfg = Release|x64
+		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

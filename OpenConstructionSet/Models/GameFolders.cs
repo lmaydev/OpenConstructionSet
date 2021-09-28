@@ -5,11 +5,9 @@
 /// </summary>
 public sealed record GameFolders(string Game, ModFolder Data, ModFolder Mod, ModFolder? Content)
 {
-    /// <summary>
-    /// Helper function to get the folders as an array.
-    /// </summary>
-    /// <returns>The folders in an arrray.</returns>
-    public ModFolder[] ToArray()
+    private ModFolder[]? array;
+
+    private ModFolder[] CreateArray()
     {
         var list = new List<ModFolder>();
 
@@ -30,4 +28,10 @@ public sealed record GameFolders(string Game, ModFolder Data, ModFolder Mod, Mod
 
         return list.ToArray();
     }
+
+    /// <summary>
+    /// Helper function to get the folders as an array.
+    /// </summary>
+    /// <returns>The folders in an arrray.</returns>
+    public ModFolder[] ToArray() => array ??= CreateArray();
 }

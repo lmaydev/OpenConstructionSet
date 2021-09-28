@@ -1,6 +1,5 @@
 ﻿using OpenConstructionSet.IO;
 using OpenConstructionSet.IO.Discovery;
-using System.Diagnostics.CodeAnalysis;
 
 namespace OpenConstructionSet;
 
@@ -76,7 +75,7 @@ public class OcsService : IOcsService
             return null;
         }
 
-        var result = new ModFolder(folder, new());
+        var result = new ModFolder(folder, new(StringComparer.OrdinalIgnoreCase));
 
         AddRange(Directory.GetFiles(folder, "*.base").Select(DiscoverFile));
         AddRange(Directory.GetFiles(folder, "*.mod").Select(DiscoverFile));
@@ -128,22 +127,18 @@ public class OcsService : IOcsService
         return new(file, header, info);
     }
 
-    public string[] ReadLoadOrder(IEnumerable<ModFolder> folders)
+    public string[] ReadLoadOrder(ModFolder folder)
     {
-        var path = folders.Select(f => Path.Combine(f.FullName, "mods.cfg")).FirstOrDefault(File.Exists);
+        var path = Path.Combine(folder.FullName, "mods.cfg");
 
-        return path is not null ? File.ReadAllLines(path) : Array.Empty<string>();
+        return File.Exists(path) ? File.ReadAllLines(path) : Array.Empty<string>();
     }
 
-    public bool SaveLoadOrder(IEnumerable<ModFolder> folders, string[] loadOrder)
+    public bool SaveLoadOrder(ModFolder folder, string[] loadOrder)
     {
-        var path = folders.Select(f => Path.Combine(f.FullName, "mods.cfg")).FirstOrDefault(File.Exists);
+        var path = Path.Combine(folder.FullName, "mods.cfg");
 
-        if (path is null)
-        {
-            return false;
-        }
-
+        File.Delete(path);
         File.WriteAllLines(path, loadOrder);
         return true;
     }

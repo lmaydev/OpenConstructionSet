@@ -1,7 +1,5 @@
-﻿using OpenConstructionSet.Collections;
-using OpenConstructionSet.IO;
+﻿using OpenConstructionSet.IO;
 using OpenConstructionSet.IO.Discovery;
-using System.ComponentModel;
 
 namespace OpenConstructionSet.Data;
 
@@ -35,11 +33,12 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
         var baseModFiles = baseMods is not null ? Resolve(baseMods) : Enumerable.Empty<ModFile>();
         var activeModFiles = activeMods is not null ? Resolve(activeMods) : Enumerable.Empty<ModFile>();
 
-        var items = new OcsRefDictionary<Entity>();
+        var baseItems = new Dictionary<string, Item>();
+        var items = new Dictionary<string, Item>();
 
         var lastId = 0;
 
-        Stack<ModFile> loaded = new();
+        ModFile? last = null;
 
         if (loadGameFiles == ModLoadType.Base)
         {
@@ -48,8 +47,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
 
         baseModFiles.ForEach(m => ReadFile(m, false));
 
-        // Set base data as original values. All changes after this will be part of the active mod.
-        (items as IChangeTracking)?.AcceptChanges();
+        items = baseItems.Values.ToDictionary(i => i.StringId, i => i.Duplicate());
 
         if (loadGameFiles == ModLoadType.Active)
         {
@@ -58,7 +56,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
 
         activeModFiles.DistinctBy(m => m.Name).ForEach(m => ReadFile(m, true));
 
-        if (loaded.TryPop(out var last))
+        if (last is not null)
         {
             if (header is null)
             {
@@ -71,7 +69,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
             }
         }
 
-        return new OcsDataContext(items, name, lastId, header, info);
+        return new OcsDataContext(items, baseItems, name, lastId, header, info);
 
         void ReadFile(ModFile file, bool active)
         {
@@ -88,22 +86,26 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
 
             lastId = Math.Max(lastId, reader.ReadInt());
 
-            reader.ReadItems().ForEach(AddOrUpdate);
+            reader.ReadItems().ForEach(i => AddOrUpdate(i, active));
 
             if (active)
             {
-                loaded.Push(file);
+                last = file;
             }
         }
 
-        void AddOrUpdate(Item data)
+        void AddOrUpdate(Item data, bool active)
         {
-            if (!items.TryGetValue(data.StringId, out var item))
-            {
-                item = items.New(data.StringId, data.Name, data.Type);
-            }
+            var dictionary = active ? items : baseItems;
 
-            item.Update(data);
+            if (dictionary.TryGetValue(data.StringId, out var item))
+            {
+                item.Update(data);
+            }
+            else
+            {
+                dictionary[data.StringId] = data;
+            }
         }
 
         void LoadGameFiles(bool active)

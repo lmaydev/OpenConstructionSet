@@ -1,74 +1,84 @@
-﻿using OpenConstructionSet.Collections;
-using OpenConstructionSet.IO;
-using System.ComponentModel;
+﻿using OpenConstructionSet.IO;
 
 namespace OpenConstructionSet.Data;
 
-public class OcsDataContext : IRevertibleChangeTracking
+public class OcsDataContext
 {
-    private readonly PropertyTracker properties = new();
+    private readonly Dictionary<string, Item> baseItems;
 
-    public OcsRefDictionary<Entity> Items { get; }
+    public Dictionary<string, Item> Items { get; }
     public string ModName { get; }
 
-    public int LastId
-    {
-        get => properties.Get<int>(nameof(LastId));
-
-        set => properties.Set(nameof(LastId), value);
-    }
+    public int LastId { get; set; }
 
     public Header Header { get; set; }
 
     public ModInfo? Info { get; set; }
 
-    public bool IsChanged => Items.IsChanged || properties.IsChanged;
-
-    public OcsDataContext(OcsRefDictionary<Entity> items, string modName, int lastId, Header? header = null, ModInfo? info = null)
+    public OcsDataContext(Dictionary<string, Item> items, Dictionary<string, Item> baseItems, string modName, int lastId, Header? header = null, ModInfo? info = null)
     {
         Items = items;
+        this.baseItems = baseItems;
         ModName = modName.AddModExtension();
         LastId = lastId;
         Header = header ?? new();
         Info = info ?? new();
     }
 
-    public Entity NewItem(ItemType type, string name)
+    public Item NewItem(ItemType type, string name)
     {
         LastId++;
 
-        return Items.New($"{LastId}-{ModName}", name, type);
-    }
-
-    public void RejectChanges()
-    {
-        properties.RejectChanges();
-
-        Items.RejectChanges();
-    }
-
-    void IChangeTracking.AcceptChanges()
-    {
-        properties.AcceptChanges();
-
-        (Items as IChangeTracking)?.AcceptChanges();
+        return new(type, 0, name, $"{LastId}-{ModName}", ItemChanges.New);
     }
 
     public void Save(string path)
     {
-        var items = new List<Item>();
+        path = Path.GetFullPath(path);
 
-        var changes = Items.GetChanges();
+        var changes = new List<Item>();
 
-        changes.Removed.Values.ForEach(item => items.Add(item.AsDeleted()));
+        var usedKeys = new HashSet<string>();
 
-        changes.Added.Values.ForEach(item => items.Add(item.GetChanges(true)));
+        foreach (var pair in Items)
+        {
+            usedKeys.Add(pair.Key);
+            var item = pair.Value;
 
-        changes.Modified.Values.ForEach(item => items.Add(item.GetChanges(false)));
+            if (!baseItems.TryGetValue(item.StringId, out var baseItem))
+            {
+                var newItem = item.Duplicate();
+
+                newItem.Changes = ItemChanges.New;
+
+                changes.Add(newItem);
+            }
+            else if (item.TryGetChanges(baseItem, out var changeItem))
+            {
+                changes.Add(changeItem);
+            }
+        }
+
+        foreach (var item in baseItems.Values)
+        {
+            if (usedKeys.Contains(item.StringId))
+            {
+                continue;
+            }
+
+            changes.Add(item.AsDeleted());
+        }
+
+        var directory = Path.GetDirectoryName(path);
+
+        if (directory is not null && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
 
         using var writer = new OcsWriter(File.Create(path));
 
-        writer.WriteMod(Header, LastId, items);
+        writer.WriteMod(Header, LastId, changes);
 
         if (Info is not null)
         {

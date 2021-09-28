@@ -1,5 +1,4 @@
 using OpenConstructionSet.Data;
-using OpenConstructionSet.Models;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,9 +9,6 @@ internal static class Program
 {
     private static void Main()
     {
-
-        var entity = new Entity(ItemType.Building, "", "");
-
         var options = new JsonSerializerOptions { WriteIndented = true, };
 
         options.Converters.Add(new JsonStringEnumConverter());
@@ -36,7 +32,7 @@ internal static class Program
 
         Console.WriteLine("Building game data");
 
-        var baseMods = OcsService.Default.ReadLoadOrder(folders.ToArray());
+        var baseMods = OcsService.Default.ReadLoadOrder(folders.Data);
 
         var stopWatch = new Stopwatch();
 
@@ -60,7 +56,7 @@ internal static class Program
 
         var count = 0;
 
-        dataContext.Items.Values.OfType(ItemType.Stats)
+        dataContext.Items.OfType(ItemType.Stats)
                                 .Where(i => i.Values.ContainsKey("attack"))
                                 .ForEach(item =>
                                 {

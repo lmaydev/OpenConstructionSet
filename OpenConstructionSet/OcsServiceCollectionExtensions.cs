@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenConstructionSet;
-using OpenConstructionSet.Data;
 using OpenConstructionSet.IO.Discovery;
 
 namespace Microsoft.Extensions.DependencyInjection;

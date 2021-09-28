@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace OpenConstructionSet.Models;
+﻿namespace OpenConstructionSet.Models;
 
 public sealed class Item
 {
