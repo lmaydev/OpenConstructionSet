@@ -1,9 +1,9 @@
 ﻿namespace OpenConstructionSet.Models;
 
 /// <summary>
-/// POCO for the game's folders.
+/// POCO representing an installation of the game.
 /// </summary>
-public sealed record GameFolders(string Game, ModFolder Data, ModFolder Mod, ModFolder? Content)
+public sealed record Installation(string Game, ModFolder Data, ModFolder Mod, ModFolder? Content, SaveFolder? Save)
 {
     private ModFolder[]? array;
 
@@ -33,5 +33,5 @@ public sealed record GameFolders(string Game, ModFolder Data, ModFolder Mod, Mod
     /// Helper function to get the folders as an array.
     /// </summary>
     /// <returns>The folders in an arrray.</returns>
-    public ModFolder[] ToArray() => array ??= CreateArray();
+    public ModFolder[] ToModFolderArray() => array ??= CreateArray();
 }

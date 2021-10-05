@@ -1,7 +1,11 @@
 ﻿namespace OpenConstructionSet.Models;
 
-public sealed record Instance(string Id, string Target, Vector3 Position, Vector4 Rotation, string States)
-{
-    public Instance(string id, InstanceValues values) : this(id, values.Target, values.Position, values.Rotation, values.States)
-    { }
-}
+/// <summary>
+/// Represents an instance from a game data file.
+/// </summary>
+/// <param name="Id">The instance's identifier.</param>
+/// <param name="Target">The StringId of the target <seealso cref="Item"/></param>
+/// <param name="Position">The position of the instance.</param>
+/// <param name="Rotation">The rotation of the instance.</param>
+/// <param name="States">The attached states.</param>
+public sealed record Instance(string Id, string Target, Vector3 Position, Vector4 Rotation, string States);

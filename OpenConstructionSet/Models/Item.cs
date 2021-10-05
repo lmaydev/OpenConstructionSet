@@ -1,20 +1,58 @@
 ﻿namespace OpenConstructionSet.Models;
 
+/// <summary>
+/// Represent an Item from a game data file.
+/// </summary>
 public sealed class Item
 {
+    /// <summary>
+    /// The values associated with the Item.
+    /// </summary>
     public Dictionary<string, object> Values { get; init; } = new();
 
+    /// <summary>
+    /// The references associated with the Item.
+    /// </summary>
     public List<Reference> References { get; init; } = new();
 
+    /// <summary>
+    /// The instances associated with the Item.
+    /// </summary>
     public List<Instance> Instances { get; init; } = new();
 
+    /// <summary>
+    /// The type of the Item.
+    /// </summary>
     public ItemType Type { get; set; }
+
+    /// <summary>
+    /// The unique id of this Item.
+    /// </summary>
     public string StringId { get; set; }
 
+    /// <summary>
+    /// Still not sure what this does.
+    /// </summary>
     public int Id { get; set; }
+
+    /// <summary>
+    /// The name of this Item.
+    /// </summary>
     public string Name { get; set; }
+
+    /// <summary>
+    /// Represents the state of changes to this item.
+    /// </summary>
     public ItemChanges Changes { get; set; }
 
+    /// <summary>
+    /// Initializes a new <c>Item</c>.
+    /// </summary>
+    /// <param name="type">Item type.</param>
+    /// <param name="id">Not sure, seems to be 0 for mod files.</param>
+    /// <param name="name">Item's name.</param>
+    /// <param name="stringId">Item's unique identifier</param>
+    /// <param name="changes">The state of changes to this item.</param>
     public Item(ItemType type, int id, string name, string stringId, ItemChanges changes)
     {
         Type = type;
@@ -24,6 +62,10 @@ public sealed class Item
         Changes = changes;
     }
 
+    /// <summary>
+    /// Duplicate's the current Item.
+    /// </summary>
+    /// <returns>A duplicate of the current Item.</returns>
     public Item Duplicate() => new(Type, Id, Name, StringId, Changes)
     {
         Values = new(Values),
@@ -31,11 +73,11 @@ public sealed class Item
         Instances = new(Instances),
     };
 
-    public Item AsDeleted() => new(Type, Id, Name, StringId, Changes)
-    {
-        Values = new Dictionary<string, object> { ["DELETED"] = true }
-    };
-
+    /// <summary>
+    /// Apply the changes from <c>item</c> to this item.
+    /// </summary>
+    /// <param name="item">A set of changes to be applied.</param>
+    /// <exception cref="InvalidOperationException">Items' types must match</exception>
     public void Update(Item item)
     {
         if (item.Type != Type)
@@ -83,6 +125,12 @@ public sealed class Item
         }
     }
 
+    /// <summary>
+    /// Attempts to get an <c>Item</c> representing the changes between this and the provided <c>baseItem</c>.
+    /// </summary>
+    /// <param name="baseItem">Base item to compare to.</param>
+    /// <param name="changes">If successful will contain the changes.</param>
+    /// <returns><c>true</c> if successful; otherwise, <c>false</c></returns>
     public bool TryGetChanges(Item baseItem, out Item changes)
     {
         var changed = Name != baseItem.Name;
@@ -153,7 +201,6 @@ public sealed class Item
 
             changed = true;
         }
-
 
         return changed;
     }

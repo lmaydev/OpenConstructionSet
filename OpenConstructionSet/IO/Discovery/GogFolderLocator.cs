@@ -3,18 +3,26 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OpenConstructionSet.IO.Discovery;
 
-public class GogFolderLocator : IFolderLocator
+/// <summary>
+/// Gog implementation of a <see cref="IInstallationLocator"/>
+/// </summary>
+public class GogFolderLocator : IInstallationLocator
 {
     private static readonly Lazy<GogFolderLocator> _default = new(() => new());
 
+    /// <summary>
+    /// Lazy initiated singlton for when DI is not being used
+    /// </summary>
     public static GogFolderLocator Default => _default.Value;
 
     private const string Key64 = @"SOFTWARE\WOW6432Node\GOG.com\Games\1193046833";
     private const string Key32 = @"SOFTWARE\GOG.com\Games\1193046833";
 
+    /// <inheritdoc/>
     public string Id { get; } = "Gog";
 
-    public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
+    /// <inheritdoc/>
+    public bool TryFind([MaybeNullWhen(false)] out LocatedFolders folders)
     {
         var registryKey = Registry.LocalMachine.OpenSubKey(Environment.Is64BitProcess ? Key64 : Key32);
 
@@ -32,7 +40,7 @@ public class GogFolderLocator : IFolderLocator
             return false;
         }
 
-        folders = new DiscoveredFolders(gameFolder, null);
+        folders = new LocatedFolders(gameFolder, null);
         return true;
     }
 }

@@ -2,15 +2,23 @@
 
 namespace OpenConstructionSet.IO.Discovery;
 
-public class LocalFolderLocator : IFolderLocator
+/// <summary>
+/// Implementation of a <see cref="IInstallationLocator"/> that looks for the folders in the working directory.
+/// </summary>
+public class LocalFolderLocator : IInstallationLocator
 {
     private static readonly Lazy<LocalFolderLocator> _default = new(() => new());
 
+    /// <summary>
+    /// Lazy initiated singlton for when DI is not being used
+    /// </summary>
     public static LocalFolderLocator Default => _default.Value;
 
+    /// <inheritdoc/>
     public string Id { get; } = "Local";
 
-    public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
+    /// <inheritdoc/>
+    public bool TryFind([MaybeNullWhen(false)] out LocatedFolders folders)
     {
         if (!Directory.Exists("data") || !Directory.Exists("mods"))
         {

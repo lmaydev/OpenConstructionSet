@@ -10,7 +10,8 @@
 		<PublishSingleFile>true</PublishSingleFile>
 		<TrimMode>link</TrimMode>
 		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
-		<Platforms>x64</Platforms>
+		<Platforms>AnyCPU</Platforms>
+		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>

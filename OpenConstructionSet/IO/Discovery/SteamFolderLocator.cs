@@ -4,15 +4,23 @@ using System.Text.RegularExpressions;
 
 namespace OpenConstructionSet.IO.Discovery;
 
-public class SteamFolderLocator : IFolderLocator
+/// <summary>
+/// Gog implementation of a <see cref="IInstallationLocator"/>
+/// </summary>
+public class SteamFolderLocator : IInstallationLocator
 {
     private static readonly Lazy<SteamFolderLocator> _default = new(() => new());
 
+    /// <summary>
+    /// Lazy initiated singlton for when DI is not being used
+    /// </summary>
     public static SteamFolderLocator Default => _default.Value;
 
+    /// <inheritdoc/>
     public string Id { get; } = "Steam";
 
-    public bool TryFind([MaybeNullWhen(false)] out DiscoveredFolders folders)
+    /// <inheritdoc/>
+    public bool TryFind([MaybeNullWhen(false)] out LocatedFolders folders)
     {
         var folder = SteamFolder();
 
@@ -48,7 +56,7 @@ public class SteamFolderLocator : IFolderLocator
             return false;
         }
 
-        folders = new DiscoveredFolders(gameFolder, contentFolder);
+        folders = new LocatedFolders(gameFolder, contentFolder);
         return true;
 
         string SteamFolder()

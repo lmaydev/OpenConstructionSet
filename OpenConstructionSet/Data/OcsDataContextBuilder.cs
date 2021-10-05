@@ -3,28 +3,36 @@ using OpenConstructionSet.IO.Discovery;
 
 namespace OpenConstructionSet.Data;
 
+/// <inheritdoc/>
 public class OcsDataContextBuilder : IOcsDataContextBuilder
 {
     private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(ModNameResolver.Default));
 
+    /// <summary>
+    /// Lazy initiated singlton for when DI is not being used
+    /// </summary>
     public static OcsDataContextBuilder Default => _default.Value;
 
     private readonly IModNameResolver resolver;
 
+    /// <summary>
+    /// Creates a new OcsDataContextBuilder instance.
+    /// </summary>
+    /// <param name="resolver">Used to resolve mod names to full paths.</param>
     public OcsDataContextBuilder(IModNameResolver resolver) => this.resolver = resolver;
 
     /// <summary>
     /// Builds a <see cref="OcsDataContext"/> from the provided options
     /// </summary>
     /// <param name="name">The name of the mod e.g. example.mod</param>
-    /// <param name="folders">A collection of folders used when resolving mod names. If loading game files or enabled mods <c>folders</c> can not be <c>null</c>.</param>
+    /// <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
+    /// <param name="folders">A collection of folders used when resolving mod names. If loading game files <c>folders</c> can not be <c>null</c>.</param>
     /// <param name="baseMods">A collection of mods to load as the base data.</param>
     /// <param name="activeMods">A collection of mods to load as active. When saving data from these mods will be saved along with any changes.</param>
-    /// <param name="header">Header for the new mod</param>
-    /// <param name="info"></param>
-    /// <param name="loadGameFiles"></param>
-    /// <param name="loadEnabledMods"></param>
-    /// <returns></returns>
+    /// <param name="header">Header for the new mod.</param>
+    /// <param name="info">Values for the mod's info file.</param>
+    /// <param name="loadGameFiles">If not <c>None</c> the base game files will be loaded as specified.</param>
+    /// <returns>An OcsDataContext built from the provded values.</returns>
     public OcsDataContext Build(string name, bool throwIfMissing = true, IEnumerable<ModFolder>? folders = null, IEnumerable<string>? baseMods = null,
         IEnumerable<string>? activeMods = null, Header? header = null, ModInfo? info = null, ModLoadType loadGameFiles = ModLoadType.None)
     {
@@ -77,12 +85,10 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
 
             var type = (FileType)reader.ReadInt();
 
-            if (type != FileType.Mod)
+            if (type == FileType.Mod)
             {
-                throw new InvalidOperationException($"Invalid file type. Expected Mod (16); received {type}");
+                reader.ReadHeader();
             }
-
-            reader.ReadHeader();
 
             lastId = Math.Max(lastId, reader.ReadInt());
 
@@ -97,6 +103,12 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
         void AddOrUpdate(Item data, bool active)
         {
             var dictionary = active ? items : baseItems;
+
+            if (data.IsDeleted())
+            {
+                dictionary.Remove(data.StringId);
+                return;
+            }
 
             if (dictionary.TryGetValue(data.StringId, out var item))
             {

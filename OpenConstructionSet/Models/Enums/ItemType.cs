@@ -5,6 +5,7 @@
 /// </summary>
 public enum ItemType
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     Building,
     Character,
     Weapon,
@@ -123,4 +124,5 @@ public enum ItemType
     BuildGrid,
     BuildingShell,
     ObjectTypeMax,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

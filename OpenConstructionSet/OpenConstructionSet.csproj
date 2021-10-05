@@ -4,7 +4,7 @@
 		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
-		<Platforms>x64</Platforms>
+		<Platforms>AnyCPU</Platforms>
 	</PropertyGroup>
 	
 	<!--Nuget package properties-->
@@ -21,9 +21,10 @@
 		<PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
 		<RepositoryType>github</RepositoryType>
-		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<MinimumPlatformVersion>7.0</MinimumPlatformVersion>
 		<DebugType>embedded</DebugType>
+		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Data\**" />
@@ -32,8 +33,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Remove="OcsServiceCollectionExtensions.cs" />
-	  <Compile Remove="Save.cs" />
-	  <Compile Remove="SaveFolder.cs" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Include="Data\IOcsDataContextBuilder.cs" />
@@ -42,7 +41,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
 	  <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
 	</ItemGroup>
 </Project>
