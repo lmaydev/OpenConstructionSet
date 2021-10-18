@@ -5,7 +5,7 @@ The OCS is a modding SDK for [Kenshi](https://lofigames.com/) written in C#
 It provides services for dealing with the various folders and data files used by the game.
 As well as providing a managed context for loading multiple mods for editing (Similar to FCS)
 
-[Documentation](/api/index.html)
+[Documentation](api/index.html)
 
 ## Features
 
