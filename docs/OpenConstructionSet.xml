@@ -1,0 +1,1291 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenConstructionSet</name>
+    </assembly>
+    <members>
+        <member name="T:OpenConstructionSet.CollectionExtensions">
+            <summary>
+            A collection of extensions for collections.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.CollectionExtensions.OfType(System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.Item},OpenConstructionSet.Models.ItemType)">
+            <summary>
+            Returns all <see cref="T:OpenConstructionSet.Models.Item"/>s of the given <see cref="T:OpenConstructionSet.Models.ItemType"/> from the collection.
+            </summary>
+            <param name="collection">A collection of items to filter.</param>
+            <param name="type">The type of item to return.</param>
+            <returns>All items from the collection with the given type.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.CollectionExtensions.OfType(System.Collections.Generic.IDictionary{System.String,OpenConstructionSet.Models.Item},OpenConstructionSet.Models.ItemType)">
+            <summary>
+            Returns all <see cref="T:OpenConstructionSet.Models.Item"/>s of the given <see cref="T:OpenConstructionSet.Models.ItemType"/> from the collection.
+            </summary>
+            <param name="dictionary">A dictionary of items to filter.</param>
+            <param name="type">The type of item to return.</param>
+            <returns>All items from the collection with the given type.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.IOcsService">
+            <summary>
+            The main service for the OpenConstructionSet.
+            Provides discovery and some saving/loading functions.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IOcsService.SupportedFolderLocators">
+            <summary>
+            The supported locator IDs.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IOcsService.DiscoverMod(System.String)">
+            <summary>
+            Discover the provided file reading it's header and info.
+            </summary>
+            <param name="file">The mod file to discover.</param>
+            <returns>A <c>ModFile</c> representing the file.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IOcsService.DiscoverModFolder(System.String)">
+            <summary>
+            Discover the provided folder and it's contained mods.
+            </summary>
+            <param name="folder">The mod folder to discover.</param>
+            <returns>A <c>ModFolder</c> representing the folder.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IOcsService.FindAllInstallations">
+            <summary>
+            Search using all installation locators and return any positive results.
+            </summary>
+            <returns>A dictionary of locatorID to Installation information.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IOcsService.FindInstallation">
+            <summary>
+            Search using all installation locators and return the first positive results.
+            </summary>
+            <returns>Details of the installation if found; otherwise, <c>null</c></returns>
+        </member>
+        <member name="M:OpenConstructionSet.IOcsService.FindInstallation(System.String)">
+            <summary>
+            Use the provided locator to find the installation details.
+            </summary>
+            <param name="locatorId">The ID of the locator to use.</param>
+            <returns>Details of the installation if found; otherwise, <c>null</c></returns>
+        </member>
+        <member name="M:OpenConstructionSet.IOcsService.ReadHeader(System.String)">
+            <summary>
+            Attempts to read the header of the provided file.
+            </summary>
+            <param name="path">The path of the mod file.</param>
+            <returns>The file's header if able to read; otherwise, null.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IOcsService.ReadLoadOrder(System.String)">
+            <summary>
+            Attempts to read the load order file. This file is contained in the game's data folder.
+            </summary>
+            <param name="folder">Data folder to find the file in.</param>
+            <returns>The collection of mod names from the load order. If the file cannot be found an empty array is returned.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IOcsService.SaveLoadOrder(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Save a collection of mod names to the load order file. This file is contained in the game's data folder.
+            </summary>
+            <param name="folder">Data folder to find the file in.</param>
+            <param name="loadOrder">List of mod names.</param>
+            <returns></returns>
+        </member>
+        <member name="T:OpenConstructionSet.IO.Discovery.GogFolderLocator">
+            <summary>
+            Gog implementation of a <see cref="T:OpenConstructionSet.IO.Discovery.IInstallationLocator"/>
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IO.Discovery.GogFolderLocator.Default">
+            <summary>
+            Lazy initiated singlton for when DI is not being used
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IO.Discovery.GogFolderLocator.Id">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.IO.Discovery.GogFolderLocator.TryFind(OpenConstructionSet.IO.LocatedFolders@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.IO.Discovery.IInstallationLocator">
+            <summary>
+            Used to locate game installations from various platforms.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IO.Discovery.IInstallationLocator.Id">
+            <summary>
+            The unique identifier for this locator.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.Discovery.IInstallationLocator.TryFind(OpenConstructionSet.IO.LocatedFolders@)">
+            <summary>
+            Attempt to find an installation.
+            </summary>
+            <param name="folders">If successful will be set to the located installation; otherwise, <c>null</c>.</param>
+            <returns><c>true</c> if an installation was found.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.IO.Discovery.IModNameResolver">
+            <summary>
+            Used to resolve a mod name (e.g. example.mod) to it's full path.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.Discovery.IModNameResolver.Resolve(System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.String)">
+            <summary>
+            Search the given folders for the specified mod.
+            </summary>
+            <param name="folders">A collection of folders to search.</param>
+            <param name="mod">Name of the mod to search for. e.g. example.mod</param>
+            <returns>A <c>ModFile</c> if the name cvould be resolved; otherwise, <c>null</c></returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.Discovery.IModNameResolver.Resolve(System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            Resolve all provided mods using the given folders.
+            </summary>
+            <param name="folders">A collection of folders to search.</param>
+            <param name="mods">A collection of mod names to search for. e.g. exmaple.mod</param>
+            <param name="throwIfMissing">
+            If <c>true</c> an exception will be thrown for any missing mods.
+            If <c>false</c> missing mods will be omitted from the results.
+            </param>
+            <returns>A collection of all mods that could be resolved.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.IO.Discovery.LocalFolderLocator">
+            <summary>
+            Implementation of a <see cref="T:OpenConstructionSet.IO.Discovery.IInstallationLocator"/> that looks for the folders in the working directory.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IO.Discovery.LocalFolderLocator.Default">
+            <summary>
+            Lazy initiated singlton for when DI is not being used
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IO.Discovery.LocalFolderLocator.Id">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.IO.Discovery.LocalFolderLocator.TryFind(OpenConstructionSet.IO.LocatedFolders@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.IO.Discovery.ModNameResolver">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.IO.Discovery.ModNameResolver.Default">
+            <summary>
+            Lazy initiated singlton for when DI is not being used
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.Discovery.ModNameResolver.#ctor(OpenConstructionSet.IOcsService)">
+            <summary>
+            Creates a new ModNameResolver instance.
+            </summary>
+            <param name="discoveryService">Service used when discovering files.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.Discovery.ModNameResolver.Resolve(System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.IO.Discovery.ModNameResolver.Resolve(System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.IO.Discovery.SteamFolderLocator">
+            <summary>
+            Gog implementation of a <see cref="T:OpenConstructionSet.IO.Discovery.IInstallationLocator"/>
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IO.Discovery.SteamFolderLocator.Default">
+            <summary>
+            Lazy initiated singlton for when DI is not being used
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IO.Discovery.SteamFolderLocator.Id">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.IO.Discovery.SteamFolderLocator.TryFind(OpenConstructionSet.IO.LocatedFolders@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.IO.OcsIOHelper">
+            <summary>
+            A collection of helper functions for dealing with the game's files.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.GetInfoPath(System.String)">
+            <summary>
+            Gets the path of the info file for the given mod file.
+            </summary>
+            <param name="mod">The file to get the info file name for.</param>
+            <returns>The path of the info file for the specified mod.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.WriteInfo(OpenConstructionSet.Models.ModInfo,System.IO.Stream)">
+            <summary>
+            Write the mod info to the stream.
+            </summary>
+            <param name="info">Mod info to be written.</param>
+            <param name="stream">Stream to write to.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.ReadInfo(System.IO.Stream)">
+            <summary>
+            Read the mod info from the given stream.
+            </summary>
+            <param name="stream">Stream to read from.</param>
+            <returns>The mod info read from the stream.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.GetModPath(OpenConstructionSet.Models.ModFolder,System.String)">
+            <summary>
+            Returns the full path of a mod from its' name.
+            If the mod has been discovered it's path will be used.
+            If not the path will be created using the folder and mod.
+            </summary>
+            <param name="folder">The mod folder.</param>
+            <param name="mod">The file name of the mod. e.g. example.mod</param>
+            <returns>The full path of a mod file.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.GetModPath(System.String,System.String)">
+            <summary>
+            Get the full path for the named mod in the given folder.
+            </summary>
+            <param name="folder">The folder that will contain the mod.</param>
+            <param name="mod">The name of the mod e.g. example.mod</param>
+            <returns>The path of thge named mod in the given folder.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.ReadHeader(OpenConstructionSet.IO.OcsReader)">
+            <summary>
+            Attempts to read the header of the given mod file.
+            </summary>
+            <param name="reader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.ReadMod(OpenConstructionSet.IO.OcsReader)">
+            <summary>
+            Reads the full mod file referenced by the reader.
+            </summary>
+            <param name="reader">Used to read the mod file.</param>
+            <returns>The header, last id and items from the mod.</returns>
+            <exception cref="T:System.IO.InvalidDataException">Not a mod file</exception>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.WriteMod(OpenConstructionSet.IO.OcsWriter,OpenConstructionSet.Models.Header,System.Int32,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.Item})">
+            <summary>
+            Write the mod to the given writer.
+            </summary>
+            <param name="writer">Used to write the mod.</param>
+            <param name="header">The header of the mod.</param>
+            <param name="lastId">The LastId used.</param>
+            <param name="items">Collection of items from the mod.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.ReadSave(OpenConstructionSet.IO.OcsReader)">
+            <summary>
+            Reads the save file referenced by the reader.
+            </summary>
+            <param name="reader">Used to read the save file.</param>
+            <returns>The last id and items from the save file.</returns>
+            <exception cref="T:System.IO.InvalidDataException">Not a save file</exception>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.WriteSave(OpenConstructionSet.IO.OcsWriter,System.Int32,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.Item})">
+            <summary>
+            Write the save file to the given writer.
+            </summary>
+            <param name="writer">Used to write the save.</param>
+            <param name="lastId">The LastId used.</param>
+            <param name="items">Collection of items from the mod.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsIOHelper.CorrectModFolder(OpenConstructionSet.Models.ModFile)">
+            <summary>
+            Determines if the mod is in a standard folder structure. 
+            </summary>
+            <param name="mod">The name of the mod e.g. example.mod</param>
+            <returns><c>true</c> if the mod is in a standard folder structure.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.IO.OcsReader">
+            <summary>
+            Reader for the game's data files.
+            Can read from a <c>Stream</c> or a byte buffer.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.#ctor(System.Byte[])">
+            <summary>
+            Initialise a new <c>OcsReader</c> to work against the provided buffer.
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.#ctor(System.IO.Stream)">
+            <summary>
+            Initialise a new <c>OcsReader</c> to work against the provided <c>Stream</c>.
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadItem">
+            <summary>
+            Read an <c>Item</c> from the data.
+            This includes the <c>Item</c>'s values, instances and references.
+            </summary>
+            <returns>An <c>Item</c> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadInstance">
+            <summary>
+            Read an <c>Instance</c> from the data.
+            </summary>
+            <returns>An <c>Instance</c> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadStrings">
+            <summary>
+            Reads a collection of strings from the data.
+            </summary>
+            <returns>A collection of strings read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadItems">
+            <summary>
+            Read a collection of <c>Item</c>s from the data.
+            </summary>
+            <returns>A collection of <c>Items</c>s read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadReference(System.String)">
+            <summary>
+            Read a <c>Reference</c> from the data.
+            </summary>
+            <param name="category">A category must be provided as the category data appears before.</param>
+            <returns>A <c>Reference</c> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadReferenceValues">
+            <summary>
+            Read a <c>ReferenceValues</c> object from the data.
+            </summary>
+            <returns>A <c>ReferenceValues</c> object read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadHeader">
+            <summary>
+            Read a <c>Header</c> object from the data.
+            </summary>
+            <returns>A <c>Hader</c> object read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadString">
+            <summary>
+            Read a string from the data.
+            </summary>
+            <returns>A string read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadStringList">
+            <summary>
+            Read a comma separated list from the data.
+            </summary>
+            <returns>An array of strings read from a comma separated list in the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadVector3">
+            <summary>
+            Read a <c>Vector3</c> object from the data.
+            </summary>
+            <returns>A <c>Vector3</c> object read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadVector4(System.Boolean)">
+            <summary>
+            Read a <c>Vector4</c> object from the data.
+            </summary>
+            <returns>A <c>Vector4</c> object read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadBool">
+            <summary>
+            Read a bool from the data.
+            </summary>
+            <returns>A bool read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadFloat">
+            <summary>
+            Read a float from the data.
+            </summary>
+            <returns>A float object read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadInt">
+            <summary>
+            Read an int from the data.
+            </summary>
+            <returns>An int read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.Dispose">
+            <summary>
+            Dispose the underlying stream if provided.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.IO.OcsWriter">
+            <summary>
+            Writer for the game's data files.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.#ctor(System.IO.Stream)">
+            <summary>
+            Initialise a new writer working against the given stream.
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Dispose">
+            <summary>
+            Dispose the underlying stream.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Item)">
+            <summary>
+            Write an <c>Item</c> to the stream.
+            </summary>
+            <param name="value">The <c>Item</c> to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Write a collection of objects to the stream.
+            T will be runtime bound to one of the Write methods. Passing an unsupported type will result in errors.
+            </summary>
+            <param name="collection">The collection to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Instance)">
+            <summary>
+            Write an <c>Instance</c> to the stream.
+            </summary>
+            <param name="value">The <c>Instance</c> to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Reference)">
+            <summary>
+            Write a <c>Reference</c> to the stream.
+            </summary>
+            <param name="value">The <c>Reference</c> to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.ReferenceValues)">
+            <summary>
+            Write a <c>ReferenceValues</c> object to the stream.
+            </summary>
+            <param name="value">The <c>ReferenceValues</c> object to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Header)">
+            <summary>
+            Write a <c>Header</c> object to the stream.
+            </summary>
+            <param name="value">The <c>Header</c> object to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(System.String)">
+            <summary>
+            Write a string to the stream.
+            </summary>
+            <param name="value">The string to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.FileValue)">
+            <summary>
+            Write a <c>FileValue</c> object to the stream.
+            </summary>
+            <param name="value">The <c>fileValue</c> object to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Vector3)">
+            <summary>
+            Write a <c>Vector3</c> object to the stream.
+            </summary>
+            <param name="value">The <c>Vector</c> object to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Vector4,System.Boolean)">
+            <summary>
+            Write a <c>Vector4</c> object to the stream.
+            </summary>
+            <param name="value">The <c>Vector4</c> object to write to stream.</param>
+            <param name="wFirst">If <c>true</c> the W value will be written first. Otherwise it will be written last.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(System.Boolean)">
+            <summary>
+            Write a bool to the stream.
+            </summary>
+            <param name="value">The bool to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(System.Single)">
+            <summary>
+            Write a float to the stream.
+            </summary>
+            <param name="value">The flaot to write to stream.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(System.Int32)">
+            <summary>
+            Write an int to the stream.
+            </summary>
+            <param name="value">The int to write to stream.</param>
+        </member>
+        <member name="T:OpenConstructionSet.IO.LocatedFolders">
+            <summary>
+            Represents the results of searching for a game folder.
+            </summary>
+            <param name="Installation">Root folder of the game. Contains the main exexutables.</param>
+            <param name="Content">Optional content folder. e.g. the steam workshop folder</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.LocatedFolders.#ctor(System.String,System.String)">
+            <summary>
+            Represents the results of searching for a game folder.
+            </summary>
+            <param name="Installation">Root folder of the game. Contains the main exexutables.</param>
+            <param name="Content">Optional content folder. e.g. the steam workshop folder</param>
+        </member>
+        <member name="P:OpenConstructionSet.IO.LocatedFolders.Mod">
+            <summary>
+            The mod folder of this installation.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IO.LocatedFolders.Data">
+            <summary>
+            The data folder of this installation.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IO.LocatedFolders.Save">
+            <summary>
+            The save folder of this installation.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.ModelExtensions">
+            <summary>
+            Collection of methods for working with models.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.ModelExtensions.Delete(OpenConstructionSet.Models.Item)">
+            <summary>
+            Returns a copy of <c>item</c> marked as deleted.
+            </summary>
+            <param name="item">The item to mark as deleted.</param>
+            <returns>A copy of the item marked as deleted.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.ModelExtensions.Delete(OpenConstructionSet.Models.Reference)">
+            <summary>
+            Return a copy of <c>reference</c> marked as deleted.
+            </summary>
+            <param name="reference">The reference to mark as deleted.</param>
+            <returns>A copy of the reference marked as deleted.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.ModelExtensions.Delete(OpenConstructionSet.Models.Instance)">
+            <summary>
+            Return a copy of <c>instance</c> marked as deleted.
+            </summary>
+            <param name="instance">The instance to mark as deleted.</param>
+            <returns>A copy of the instance marked as deleted.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.ModelExtensions.IsDeleted(OpenConstructionSet.Models.Item)">
+            <summary>
+            Determines if <c>item</c> is marked as deleted.
+            </summary>
+            <param name="item">The item to check.</param>
+            <returns><c>true</c> if <c>item</c> is marked as deleted.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.ModelExtensions.IsDeleted(OpenConstructionSet.Models.Reference)">
+            <summary>
+            Determines if <c>reference</c> is marked as deleted.
+            </summary>
+            <param name="reference">The reference to check.</param>
+            <returns><c>true</c> if <c>reference</c> is marked as deleted.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.ModelExtensions.IsDeleted(OpenConstructionSet.Models.Instance)">
+            <summary>
+            Determines if <c>instance</c> is marked as deleted.
+            </summary>
+            <param name="instance">The instance to check.</param>
+            <returns><c>true</c> if <c>instance</c> is marked as deleted.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Models.DataFile">
+            <summary>
+            Represents a game data file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.DataFile.Type">
+            <summary>
+            Identifies the file's type.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.DataFile.Header">
+            <summary>
+            Mod file header.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.DataFile.LastId">
+            <summary>
+            The last ID used.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.DataFile.Items">
+            <summary>
+            Collection of items within the mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.DataFile.Info">
+            <summary>
+            Contains the metadata from a mod's info file if it exists.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.DataFile.#ctor(OpenConstructionSet.Models.FileType,OpenConstructionSet.Models.Header,System.Int32,System.Collections.Generic.Dictionary{System.String,OpenConstructionSet.Models.Item},OpenConstructionSet.Models.ModInfo)">
+            <summary>
+            Create a new data file.
+            </summary>
+            <param name="type">The file's type identifier.</param>
+            <param name="header">Optional header if the file is a mod.</param>
+            <param name="lastId">The last ID used.</param>
+            <param name="items">Collection of items</param>
+            <param name="info">Metadata from a mod's info file.</param>
+        </member>
+        <member name="T:OpenConstructionSet.Models.FileType">
+            <summary>
+            Type identifier for data files.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Models.FileType.Save">
+            <summary>
+            A save file. Supports .save, .platoon and .zone
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Models.FileType.Mod">
+            <summary>
+            A mod file.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.ItemChanges">
+            <summary>
+            Change types for items.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Models.ItemChanges.Changed">
+            <summary>
+            The item was changed by the active mod.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Models.ItemChanges.New">
+            <summary>
+            Added by the active mod.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Models.ItemChanges.Renamed">
+            <summary>
+            The item's name was changed by the active mod.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.ItemType">
+            <summary>
+            Type identifier for Items.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.ModLoadType">
+            <summary>
+            Used to specifiy how a mod should be loaded into a <seealso cref="T:OpenConstructionSet.Data.OcsDataContext"/>
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Models.ModLoadType.None">
+            <summary>
+            Do not load. Default value.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Models.ModLoadType.Base">
+            <summary>
+            Load as base data.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Models.ModLoadType.Active">
+            <summary>
+            Load as part of the active mod.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.FileValue">
+            <summary>
+            Represents a path value from a data file.
+            </summary>
+            <param name="Path">The value of this value.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.FileValue.#ctor(System.String)">
+            <summary>
+            Represents a path value from a data file.
+            </summary>
+            <param name="Path">The value of this value.</param>
+        </member>
+        <member name="T:OpenConstructionSet.Models.Header">
+            <summary>
+            Representation of a mod file's header.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Header.Dependencies">
+            <summary>
+            A list of mod names (e.g. exmaple.mod) that this mod is dependent on.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Header.References">
+            <summary>
+            A list of mod names (e.g. example.mod) that this mod referenced.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Header.Version">
+            <summary>
+            The version of the mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Header.Author">
+            <summary>
+            The author of the mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Header.Description">
+            <summary>
+            A description of the mod.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Header.#ctor">
+            <summary>
+            Initialise a new empty <c>Header</c>.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Header.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Initialize a new <c>Header</c>
+            </summary>
+            <param name="version">The mod's version.</param>
+            <param name="author">The mod's author.</param>
+            <param name="description">A description of the mod.</param>
+        </member>
+        <member name="T:OpenConstructionSet.Models.Installation">
+            <summary>
+            POCO representing an installation of the game.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Installation.#ctor(System.String,OpenConstructionSet.Models.ModFolder,OpenConstructionSet.Models.ModFolder,OpenConstructionSet.Models.ModFolder,OpenConstructionSet.Models.SaveFolder)">
+            <summary>
+            POCO representing an installation of the game.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Installation.ToModFolderArray">
+            <summary>
+            Helper function to get the folders as an array.
+            </summary>
+            <returns>The folders in an arrray.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Models.Instance">
+            <summary>
+            Represents an instance from a game data file.
+            </summary>
+            <param name="Id">The instance's identifier.</param>
+            <param name="Target">The StringId of the target <seealso cref="T:OpenConstructionSet.Models.Item"/></param>
+            <param name="Position">The position of the instance.</param>
+            <param name="Rotation">The rotation of the instance.</param>
+            <param name="States">The attached states.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Instance.#ctor(System.String,System.String,OpenConstructionSet.Models.Vector3,OpenConstructionSet.Models.Vector4,System.String)">
+            <summary>
+            Represents an instance from a game data file.
+            </summary>
+            <param name="Id">The instance's identifier.</param>
+            <param name="Target">The StringId of the target <seealso cref="T:OpenConstructionSet.Models.Item"/></param>
+            <param name="Position">The position of the instance.</param>
+            <param name="Rotation">The rotation of the instance.</param>
+            <param name="States">The attached states.</param>
+        </member>
+        <member name="T:OpenConstructionSet.Models.Item">
+            <summary>
+            Represent an Item from a game data file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Item.Values">
+            <summary>
+            The values associated with the Item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Item.References">
+            <summary>
+            The references associated with the Item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Item.Instances">
+            <summary>
+            The instances associated with the Item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Item.Type">
+            <summary>
+            The type of the Item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Item.StringId">
+            <summary>
+            The unique id of this Item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Item.Id">
+            <summary>
+            Still not sure what this does.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Item.Name">
+            <summary>
+            The name of this Item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Item.Changes">
+            <summary>
+            Represents the state of changes to this item.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Item.#ctor(OpenConstructionSet.Models.ItemType,System.Int32,System.String,System.String,OpenConstructionSet.Models.ItemChanges)">
+            <summary>
+            Initializes a new <c>Item</c>.
+            </summary>
+            <param name="type">Item type.</param>
+            <param name="id">Not sure, seems to be 0 for mod files.</param>
+            <param name="name">Item's name.</param>
+            <param name="stringId">Item's unique identifier</param>
+            <param name="changes">The state of changes to this item.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Item.Duplicate">
+            <summary>
+            Duplicate's the current Item.
+            </summary>
+            <returns>A duplicate of the current Item.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Item.Update(OpenConstructionSet.Models.Item)">
+            <summary>
+            Apply the changes from <c>item</c> to this item.
+            </summary>
+            <param name="item">A set of changes to be applied.</param>
+            <exception cref="T:System.InvalidOperationException">Items' types must match</exception>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Item.TryGetChanges(OpenConstructionSet.Models.Item,OpenConstructionSet.Models.Item@)">
+            <summary>
+            Attempts to get an <c>Item</c> representing the changes between this and the provided <c>baseItem</c>.
+            </summary>
+            <param name="baseItem">Base item to compare to.</param>
+            <param name="changes">If successful will contain the changes.</param>
+            <returns><c>true</c> if successful; otherwise, <c>false</c></returns>
+        </member>
+        <member name="T:OpenConstructionSet.Models.ModFile">
+            <summary>
+            Represents a mod file.
+            </summary>
+            <param name="FullName">Full path of the file.</param>
+            <param name="Header">Header of the mod.</param>
+            <param name="Info">Associated information.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.ModFile.#ctor(System.String,OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo)">
+            <summary>
+            Represents a mod file.
+            </summary>
+            <param name="FullName">Full path of the file.</param>
+            <param name="Header">Header of the mod.</param>
+            <param name="Info">Associated information.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Models.ModFile.FileName">
+            <summary>
+            The name of the file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.ModFile.Name">
+            <summary>
+            The name of the mod.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.ModFolder">
+            <summary>
+            Representation of a mod folder.
+            Provides methods for discovery and working with the contained mods.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.ModFolder.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,OpenConstructionSet.Models.ModFile})">
+            <summary>
+            Representation of a mod folder.
+            Provides methods for discovery and working with the contained mods.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.ModInfo">
+            <summary>
+            POCO class representing a mod's info file.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.ModInfo.#ctor">
+            <summary>
+            Creates an empty ModInfo instance.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.ModInfo.#ctor(System.UInt32,System.String,System.String,System.String[],System.Byte,System.Nullable{System.DateTime})">
+            <summary>
+            Creates a populated ModInfo instance.
+            </summary>
+            <param name="id"></param>
+            <param name="mod"></param>
+            <param name="title"></param>
+            <param name="tags"></param>
+            <param name="visibility"></param>
+            <param name="lastUpdate"></param>
+        </member>
+        <member name="P:OpenConstructionSet.Models.ModInfo.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.ModInfo.Mod">
+            <summary>
+            Mod name.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.ModInfo.Title">
+            <summary>
+            Mod title.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.ModInfo.Tags">
+            <summary>
+            Mod Tags.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.ModInfo.Visibility">
+            <summary>
+            Mod visibility.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.ModInfo.LastUpdate">
+            <summary>
+            Last updated date/time.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.Reference">
+            <summary>
+            Represents a reference from a game data files.
+            </summary>
+            <param name="TargetId">The StringId of the item being referenced</param>
+            <param name="Values">The values assigned to this reference.</param>
+            <param name="Category">The category of this reference.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Reference.#ctor(System.String,OpenConstructionSet.Models.ReferenceValues,System.String)">
+            <summary>
+            Represents a reference from a game data files.
+            </summary>
+            <param name="TargetId">The StringId of the item being referenced</param>
+            <param name="Values">The values assigned to this reference.</param>
+            <param name="Category">The category of this reference.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Reference.Key">
+            <summary>
+            Lazy initialised key.
+            To identify a reference you need combine TargetId and Category.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.ReferenceValues">
+            <summary>
+            Represents the values assigned to a <see cref="T:OpenConstructionSet.Models.Reference"/> in the game data files.
+            </summary>
+            <param name="Value0">Value 0</param>
+            <param name="Value1">Value 1</param>
+            <param name="Value2">Value 2</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.ReferenceValues.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Represents the values assigned to a <see cref="T:OpenConstructionSet.Models.Reference"/> in the game data files.
+            </summary>
+            <param name="Value0">Value 0</param>
+            <param name="Value1">Value 1</param>
+            <param name="Value2">Value 2</param>
+        </member>
+        <member name="P:OpenConstructionSet.Models.ReferenceValues.Deleted">
+            <summary>
+            A <see cref="T:OpenConstructionSet.Models.Reference"/> with these values is marked as deleted.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.Save">
+            <summary>
+            Represents a single save directory structure.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Save.#ctor(System.String)">
+            <summary>
+            Represents a single save directory structure.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Save.PlatoonFiles">
+            <summary>
+            A collection containing the paths of all platoon files.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Save.ZoneFiles">
+            <summary>
+            A collection containing the paths of all zone files.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Save.Name">
+            <summary>
+            Name of the save.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Save.SaveFile">
+            <summary>
+            Path of the save file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Save.PortraitsTexture">
+            <summary>
+            Path to the portraits text.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Save.ZoneFolder">
+            <summary>
+            Path of the Zone folder.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.Save.PlatoonFolder">
+            <summary>
+            Path of the Platoon folder
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.SaveFolder">
+            <summary>
+            Represents the game's save folder.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Models.SaveFolder.#ctor(System.String)">
+            <summary>
+            Represents the game's save folder.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Models.SaveFolder.Saves">
+            <summary>
+            A collection of <see cref="T:OpenConstructionSet.Models.Save"/>s.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Models.Vector3">
+            <summary>
+            Represents a position from the game data files.
+            </summary>
+            <param name="X">X value.</param>
+            <param name="Y">Y value.</param>
+            <param name="Z">Z value.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Vector3.#ctor(System.Single,System.Single,System.Single)">
+            <summary>
+            Represents a position from the game data files.
+            </summary>
+            <param name="X">X value.</param>
+            <param name="Y">Y value.</param>
+            <param name="Z">Z value.</param>
+        </member>
+        <member name="T:OpenConstructionSet.Models.Vector4">
+            <summary>
+            Represents a Rotation from the game data files.
+            </summary>
+            <param name="W">W value.</param>
+            <param name="X">X value.</param>
+            <param name="Y">Y value.</param>
+            <param name="Z">Z value.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.Vector4.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Represents a Rotation from the game data files.
+            </summary>
+            <param name="W">W value.</param>
+            <param name="X">X value.</param>
+            <param name="Y">Y value.</param>
+            <param name="Z">Z value.</param>
+        </member>
+        <member name="T:OpenConstructionSet.OcsConstants">
+            <summary>
+            Useful constants for working with the OCS.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.OcsConstants.BaseMods">
+            <summary>
+            The names of the game's data and mod files.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.OcsConstants.InfoTags">
+            <summary>
+            The valid categories for a mod's info file.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.OcsConstants.DefaultSaveFolder">
+            <summary>
+            The default location of the save folder.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.OcsService">
+            <summary>
+            The main service for the OpenConstructionSet.
+            Provides discovery and some saving/loading functions.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.OcsService.Default">
+            <summary>
+            Lazy initiated singlton for when DI is not being used
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.OcsService.SupportedFolderLocators">
+            <summary>
+            The supported locator IDs.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.#ctor(System.Collections.Generic.IEnumerable{OpenConstructionSet.IO.Discovery.IInstallationLocator})">
+            <summary>
+            Creates a new <c>OcsService</c> instance.
+            </summary>
+            <param name="locators">Collection of locators used to find installations.</param>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.FindAllInstallations">
+            <summary>
+            Search using all installation locators and return any positive results.
+            </summary>
+            <returns>A dictionary of locatorID to Installation information.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.FindInstallation(System.String)">
+            <summary>
+            Use the provided locator to find the installation details.
+            </summary>
+            <param name="locatorId">The ID of the locator to use.</param>
+            <returns>Details of the installation if found; otherwise, <c>null</c></returns>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.FindInstallation">
+            <summary>
+            Search using all installation locators and return the first positive results.
+            </summary>
+            <returns>Details of the installation if found; otherwise, <c>null</c></returns>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.DiscoverModFolder(System.String)">
+            <summary>
+            Discover the provided folder and it's contained mods.
+            </summary>
+            <param name="folder">The mod folder to discover.</param>
+            <returns>A <c>ModFolder</c> representing the folder.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.DiscoverMod(System.String)">
+            <summary>
+            Discovery the provided mod file reading it's header and info.
+            </summary>
+            <param name="file">The mod file to discover.</param>
+            <returns>A <c>ModFile</c> representing the file.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.DiscoverSave(System.String)">
+            <summary>
+            Discover the files in the given individual save folder
+            </summary>
+            <param name="folder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.DiscoverSaveFolder(System.String)">
+            <summary>
+            Discover the provided save folder and contained saves.
+            </summary>
+            <param name="folder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.ReadLoadOrder(System.String)">
+            <summary>
+            Attempts to read the load order file. This file is contained in the game's data folder.
+            </summary>
+            <param name="folder">Data folder to find the file in.</param>
+            <returns>The collection of mod names from the load order. If the file cannot be found an empty array is returned.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.SaveLoadOrder(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Save a collection of mod names to the load order file. This file is contained in the game's data folder.
+            </summary>
+            <param name="folder">Data folder to find the file in.</param>
+            <param name="loadOrder">List of mod names.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenConstructionSet.OcsService.ReadHeader(System.String)">
+            <summary>
+            Attempts to read the header of the provided file.
+            </summary>
+            <param name="path">The path of the mod file.</param>
+            <returns>The file's header if able to read; otherwise, null.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Data.IOcsDataContextBuilder">
+            <summary>
+            Used to build <see cref="T:OpenConstructionSet.Data.OcsDataContext"/> instances.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.IOcsDataContextBuilder.Build(System.String,System.Boolean,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo,OpenConstructionSet.Models.ModLoadType)">
+            <summary>
+            Build a <c>OcsDataContext</c> from the provided information.
+            </summary>
+            <param name="name">The name of the new mod. e.g. example.mod</param>
+            <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
+            <param name="folders">A collection of folders to use when resolving mod names to their path.</param>
+            <param name="baseMods">A collection of mod names or paths to be loaded as base data.</param>
+            <param name="activeMods">A collection of mod names or paths to loaded as active data.</param>
+            <param name="header">The header to use for the mod.</param>
+            <param name="info">The info to use for this mod.</param>
+            <param name="loadGameFiles">If not null and not <c>ModLoadType</c>.None will load the game's base data files as specified.</param>
+            <returns>A <see cref="T:OpenConstructionSet.Data.OcsDataContext"/></returns>
+        </member>
+        <member name="T:OpenConstructionSet.Data.OcsDataContext">
+            <summary>
+            Multiple mod files can be loaded into a context as base or active items.
+            Allows the editing and saving of the active mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.Items">
+            <summary>
+            Collection of active items.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.ModName">
+            <summary>
+            The name of the mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.LastId">
+            <summary>
+            Tracks the last ID used for an Item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.Header">
+            <summary>
+            The header that will be stored in the mod file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.Info">
+            <summary>
+            The data for the mod's .info file.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContext.#ctor(System.Collections.Generic.Dictionary{System.String,OpenConstructionSet.Models.Item},System.Collections.Generic.Dictionary{System.String,OpenConstructionSet.Models.Item},System.String,System.Int32,OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo)">
+            <summary>
+            Creates a new OcsDataContext instance.
+            </summary>
+            <param name="items">The active data for editing.</param>
+            <param name="baseItems">The base data.</param>
+            <param name="modName">The name of the mod.</param>
+            <param name="lastId">The last used ID. This should be the largest from all the mods loaded.</param>
+            <param name="header">An optional header for the active mod.</param>
+            <param name="info">Optional values the mod's info file.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContext.NewItem(OpenConstructionSet.Models.ItemType,System.String)">
+            <summary>
+            Generates a new ID and creates an item with it.
+            LastId will be increased.
+            </summary>
+            <param name="type">The type of item to create.</param>
+            <param name="name">The name of the new item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContext.Save(System.String)">
+            <summary>
+            Saves the active mod to the given path.
+            </summary>
+            <param name="path">The path to save the mod to.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContext.Save(OpenConstructionSet.Models.ModFolder)">
+            <summary>
+            Saves the active mod into the given folder.
+            </summary>
+            <param name="folder">The mod folder to save to.</param>
+        </member>
+        <member name="T:OpenConstructionSet.Data.OcsDataContextBuilder">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContextBuilder.Default">
+            <summary>
+            Lazy initiated singlton for when DI is not being used
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContextBuilder.#ctor(OpenConstructionSet.IO.Discovery.IModNameResolver)">
+            <summary>
+            Creates a new OcsDataContextBuilder instance.
+            </summary>
+            <param name="resolver">Used to resolve mod names to full paths.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContextBuilder.Build(System.String,System.Boolean,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo,OpenConstructionSet.Models.ModLoadType)">
+            <summary>
+            Builds a <see cref="T:OpenConstructionSet.Data.OcsDataContext"/> from the provided options
+            </summary>
+            <param name="name">The name of the mod e.g. example.mod</param>
+            <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
+            <param name="folders">A collection of folders used when resolving mod names. If loading game files <c>folders</c> can not be <c>null</c>.</param>
+            <param name="baseMods">A collection of mods to load as the base data.</param>
+            <param name="activeMods">A collection of mods to load as active. When saving data from these mods will be saved along with any changes.</param>
+            <param name="header">Header for the new mod.</param>
+            <param name="info">Values for the mod's info file.</param>
+            <param name="loadGameFiles">If not <c>None</c> the base game files will be loaded as specified.</param>
+            <returns>An OcsDataContext built from the provded values.</returns>
+        </member>
+    </members>
+</doc>

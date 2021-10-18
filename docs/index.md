@@ -1,179 +1,81 @@
-# The Open Construction Set
+#### [OpenConstructionSet](index 'index')
+### Namespaces
+<a name='OpenConstructionSet'></a>
+## OpenConstructionSet Namespace
 
-The OCS is a modding SDK for [Kenshi](https://lofigames.com/) written in C#
+| Classes | |
+| :--- | :--- |
+| [CollectionExtensions](FWc82w3EK+Efojdw03oX_w 'OpenConstructionSet.CollectionExtensions') | A collection of extensions for collections.<br/> |
+| [ModelExtensions](d4l5JwZnO8DdkML7qnh_1g 'OpenConstructionSet.ModelExtensions') | Collection of methods for working with models.<br/> |
+| [OcsConstants](O2L+5TDEXLJlnEZi6p3X+A 'OpenConstructionSet.OcsConstants') | Useful constants for working with the OCS.<br/> |
+| [OcsService](vk7pKCZDraxUCiJOEKS3Rg 'OpenConstructionSet.OcsService') | The main service for the OpenConstructionSet.<br/>Provides discovery and some saving/loading functions.<br/> |
 
-It provides services for dealing with the various folders and data files used by the game.
-As well as providing a managed context for loading multiple mods for editing (Similar to FCS)
+| Interfaces | |
+| :--- | :--- |
+| [IOcsService](pMeR1KBG0zWkoR01rh3e5A 'OpenConstructionSet.IOcsService') | The main service for the OpenConstructionSet.<br/>Provides discovery and some saving/loading functions.<br/> |
+  
+<a name='OpenConstructionSet_Data'></a>
+## OpenConstructionSet.Data Namespace
 
-[Documentation](api/index.html)
+| Classes | |
+| :--- | :--- |
+| [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q 'OpenConstructionSet.Data.OcsDataContext') | Multiple mod files can be loaded into a context as base or active items.<br/>Allows the editing and saving of the active mod.<br/> |
+| [OcsDataContextBuilder](jaTbJrj9nKbQhW7+tZRZPg 'OpenConstructionSet.Data.OcsDataContextBuilder') | Used to build [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q 'OpenConstructionSet.Data.OcsDataContext') instances.<br/> |
 
-## Features
+| Interfaces | |
+| :--- | :--- |
+| [IOcsDataContextBuilder](wggJ0NkCl5tSu595OCPJxA 'OpenConstructionSet.Data.IOcsDataContextBuilder') | Used to build [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q 'OpenConstructionSet.Data.OcsDataContext') instances.<br/> |
+  
+<a name='OpenConstructionSet_IO'></a>
+## OpenConstructionSet.IO Namespace
 
- - Load, edit and save the game's data files. Currently supports .mod, .info, .base, .save, .zone, .platoon, .level.
- - Read and save the current enabled mods and load order.
- - Locate Steam and Gog installations of the game and it's folders. Including Steam's Workshop content folder and save.
- - Discover the structure of mod and save folders as well as the files contained.
- - Load multiple base and/or active mods into an OcsDataContext for editing. 
- - Save the active mod from an OcsDataContext.
+| Classes | |
+| :--- | :--- |
+| [LocatedFolders](jgv6_uiXfDVLa_l1InGCGA 'OpenConstructionSet.IO.LocatedFolders') | Represents the results of searching for a game folder.<br/> |
+| [OcsIOHelper](JZTSUWDp1bIPbzqkTvZY3Q 'OpenConstructionSet.IO.OcsIOHelper') | A collection of helper functions for dealing with the game's files.<br/> |
+| [OcsReader](T57tcFO5x0tbza6wZBV1Ww 'OpenConstructionSet.IO.OcsReader') | Reader for the game's data files.<br/>Can read from a `Stream` or a byte buffer.<br/> |
+| [OcsWriter](ZpKxsyHEFPikx37jMDDXsg 'OpenConstructionSet.IO.OcsWriter') | Writer for the game's data files.<br/> |
+  
+<a name='OpenConstructionSet_IO_Discovery'></a>
+## OpenConstructionSet.IO.Discovery Namespace
 
-## Introduction
-### Project Setup
-Add a reference to the main nuget (https://www.nuget.org/packages/OpenConstructionSet/)
+| Classes | |
+| :--- | :--- |
+| [GogFolderLocator](5SutPr2lrfLoH95lQlVPRg 'OpenConstructionSet.IO.Discovery.GogFolderLocator') | Gog implementation of a [IInstallationLocator](bMvjGP8yI9R4AfcWyvP7gQ 'OpenConstructionSet.IO.Discovery.IInstallationLocator') |
+| [LocalFolderLocator](rPXbOqKGJHUGKeNPKtAAmA 'OpenConstructionSet.IO.Discovery.LocalFolderLocator') | Implementation of a [IInstallationLocator](bMvjGP8yI9R4AfcWyvP7gQ 'OpenConstructionSet.IO.Discovery.IInstallationLocator') that looks for the folders in the working directory.<br/> |
+| [ModNameResolver](xvEgYqo1OTNhvugSHWg4lg 'OpenConstructionSet.IO.Discovery.ModNameResolver') | Used to resolve a mod name (e.g. example.mod) to it's full path.<br/> |
+| [SteamFolderLocator](BDvQhQsErjN5ilWJbjNpng 'OpenConstructionSet.IO.Discovery.SteamFolderLocator') | Gog implementation of a [IInstallationLocator](bMvjGP8yI9R4AfcWyvP7gQ 'OpenConstructionSet.IO.Discovery.IInstallationLocator') |
 
-Optionally add the dependency injection nuget (https://www.nuget.org/packages/OpenConstructionSet.DependencyInjection/)
+| Interfaces | |
+| :--- | :--- |
+| [IInstallationLocator](bMvjGP8yI9R4AfcWyvP7gQ 'OpenConstructionSet.IO.Discovery.IInstallationLocator') | Used to locate game installations from various platforms.<br/> |
+| [IModNameResolver](ocgulCoOZ5rxutpWQSp2oA 'OpenConstructionSet.IO.Discovery.IModNameResolver') | Used to resolve a mod name (e.g. example.mod) to it's full path.<br/> |
+  
+<a name='OpenConstructionSet_Models'></a>
+## OpenConstructionSet.Models Namespace
 
-### Accessing the Services
+| Classes | |
+| :--- | :--- |
+| [DataFile](q_8MggXJ9Yoajs1dvqB03g 'OpenConstructionSet.Models.DataFile') | Represents a game data file.<br/> |
+| [FileValue](xqcMg7X3TDoX+y5NsSzu9Q 'OpenConstructionSet.Models.FileValue') | Represents a path value from a data file.<br/> |
+| [Header](bjExWrZuBlRDCiIUljjMrA 'OpenConstructionSet.Models.Header') | Representation of a mod file's header.<br/> |
+| [Installation](d9dvAYmZXntxn1p8iGWqPw 'OpenConstructionSet.Models.Installation') | POCO representing an installation of the game.<br/> |
+| [Instance](NhOPiCtebmQnk5Ll2Sv0og 'OpenConstructionSet.Models.Instance') | Represents an instance from a game data file.<br/> |
+| [Item](Z9pYmp3jhG_PhNCQ0nlOeg 'OpenConstructionSet.Models.Item') | Represent an Item from a game data file.<br/> |
+| [ModFile](yIT20v2GHuAcdx4EIfntcw 'OpenConstructionSet.Models.ModFile') | Represents a mod file.<br/> |
+| [ModFolder](0h0FW6YI9iSflrhSD7PySw 'OpenConstructionSet.Models.ModFolder') | Representation of a mod folder.<br/>Provides methods for discovery and working with the contained mods.<br/> |
+| [ModInfo](h0vCAhsmAC6iWOaLYw25cg 'OpenConstructionSet.Models.ModInfo') | POCO class representing a mod's info file.<br/> |
+| [Reference](keNdBWwXoST05c_g6wF_4w 'OpenConstructionSet.Models.Reference') | Represents a reference from a game data files.<br/> |
+| [ReferenceValues](12EeLen8x83ZM11p+0cSKw 'OpenConstructionSet.Models.ReferenceValues') | Represents the values assigned to a [Reference](keNdBWwXoST05c_g6wF_4w 'OpenConstructionSet.Models.Reference') in the game data files.<br/> |
+| [Save](lSeaf7mywqVjOzlI14k6Ow 'OpenConstructionSet.Models.Save') | Represents a single save directory structure.<br/> |
+| [SaveFolder](V_zortZPS59vW0ZEiqO+Gg 'OpenConstructionSet.Models.SaveFolder') | Represents the game's save folder.<br/> |
+| [Vector3](KCFzybM8YwCd4Tco51d3aw 'OpenConstructionSet.Models.Vector3') | Represents a position from the game data files.<br/> |
+| [Vector4](zA17UDSwA7W6ghyYo5XyCQ 'OpenConstructionSet.Models.Vector4') | Represents a Rotation from the game data files.<br/> |
 
-#### Using Dependency Injection
-Once you have a reference to the dependency injection assembly simple add OCS to your services.
-
-    services.UseOpenContructionSet();
-
-This will setup `IOcsService` and `IOcsDataContextBuilder` for injection.
-
-#### Using the "Default" system
-While the project is designed to be used with dependency injection there is a secondary system for use if that isn't desirable.
-
-All services provide a static lazy initialized singleton property called Default.
-This property when first accessed will in turn access the Default property of it's dependencies to build an instance.
-After this first call all subsequent calls will return the same instance.
-
-    OcsService.Default.FindAllInstallations();
-
-### Finding Installations and Discovering Game Folders
-
-The `OcsService` provides methods for finding and exploring the game's folder structure.
-
-#### Find the first locatable installation
-By default the order of searching is Steam, Gog and Local.
-
-    Installation? installation = OcsService.Default.FindInstallation();
-    
-    if (installation is null)
-    {
-        // Game could not be located
-    }
-
-#### Find a specific installation
-    Installation? steam = OcsService.Default.FindInstallation("Steam");
-    
-    if (steam is null)
-    {
-        // Game could not be located
-    }
-    
-#### Find all installlations
-
-    Dictionary<string, Installation> installations = OcsService.Default.FindAllInstallations();
-    if (installations.TryGetValue("Gog", out var gog))
-    {
-        // GOG installation located
-    }
-
-#### The Installation object
-The `Installation` object will contain information about the installations folder and structure.
-
-It will contain up to 4 folders depending on which exist.
-
- 1. `Data` - The data folder stores the game's base data files and configuration files.
- 2. `Mods` - The standard mod folder.
- 3. `Content` (Optional) - Currently used for storing the Steam Workshop content folder.
- 4. `Save` (Optional) - This refers to old style save directory located in the game's root folder.
-
-The first 3 are represented as `ModFolder` objects.
-These contain information about the mods within the folder. Including header, info and full path.
-
-The `Save` property is a `SaveFolder` object and contains information about the contained saves and their folder structure.
-
-### Structure of a Data File.
-LastId - the last number used to generate a StringID for an item e.g. 17-gamedata.quack for Greenlander
-Header - Only included in mod files (Type 16) contains the meta data that is displayed in the launcher.
-Items - collection of data items representing all in game entities. e.g. Building, Stats, Race
-
-When OCS reads data files the Items are returned as a dictionary keyed by their StringID.
-
-### The OcsDataContext
-
-Once built allows editing of the data and saving any changes to a mod.
-
-It works similar to FCS. You can load any number of base or active mods for editing.
-
-#### Building
-
-To get an `OcsDataContext` instance you must use the `IOcsDataContextBuilder` (or `OcsDataContextBuilder.Default`)
-
-##### The Build method
-
-This method takes all the required information and uses it to build a data context.
-
-    OcsDataContext Build(string name, bool throwIfMissing = true, IEnumerable<ModFolder>? folders = null, IEnumerable<string>? baseMods = null, IEnumerable<string>? activeMods = null, Header? header = null, ModInfo? info = null, ModLoadType loadGameFiles = ModLoadType.None)
-
- - name - (Required) The name of the new mod.
- - throwIfMissing - If `true` missing mod files will generate exceptions. Otherwise they will be ignored.
- - folders - A collection of `ModFolder` objects to use when searching for a mods full path. Required if loading the game's data files.
- - basdeMods - A collection of mod names, file names or paths to load as base data. The base data will be loaded before applying the active mods on top.
- - activeMods - A collection of mod names, file names or paths to load as active. These mods will be applied on top of the base data and will form part of the changes saved to the new mod.
- - header - contains the meta data shown in the launcher (i.e. author, version, dependencies etc)
- - info - contains additional information about the mod. This takes the form of the .info file that is used for Steam Workshop et al.
- - loadGameFiles - if set to `ModLoadType.Active` or `ModLoadType.Base` the game's data files will be loaded into the context as specified. Passing `ModLoadType.None` will cause them not to be loaded.
-
-The following example builds the base data from the game's data files and all enabled mods whilst ignoring missing mods.
-
-    var installation = OcsService.Default.FindInstallation() ?? throw new Exception("Game not found");
-    
-    var enabledMods = OcsService.Default.ReadLoadOrder(installation.Data.FullName);
-    
-    var context = OcsDataContextBuilder.Default.Build(
-	    "Mod Name",
-	    throwIfMissing: false,
-	    folders: installation.ToModFolderArray(),
-	    baseMods: enabledMods,
-	    activeMods: new[] { "active.mod" },
-	    header: new Header(1, "LMayDev", "Description"),
-	    info: new ModInfo(0, "Name", "Title", OcsConstants.InfoTags[1..2], 0, DateTime.Now),
-	    loadGameFiles: ModLoadType.Base);
-    
-    // edit context.Items here
-    
-    context.Save(installation.Mod);
-
-### Loading Files
-
-#### Save Files (Type 15)
-Save files include .save, .zone, .platoon and .level
-
-##### Load
-    var (lastId, items) = new OcsReader(File.ReadAllBytes(@"\path\to\file")).ReadSave();
-##### Save
-    using var stream = File.Create(@"\path\to\file");
-    new OcsWriter(stream).WriteSave(lastId, items.Values);
-
-#### Mod files (Type 16)
-Mod files include .base and .mod
-
-##### Load
-    var (lastId, header, items) = new OcsReader(File.ReadAllBytes(@"\path\to\file")).ReadMod();
-##### Save
-    using var stream = File.Create(@"\path\to\file");
-    new OcsWriter(stream).WriteMod(lastId, header, items.Values);
-
-#### Mod .info file
-Many mods come with an additional .info file that contains information used by Steam Workshop and others applications.
-
-##### Load
-    using var stream = File.OpenRead(@"\path\to\info\file");
-    var info = OcsIOHelper.ReadInfo(stream);
-
-##### Save
-    using var stream = File.Create(@"\path\to\info\file");
-    info.WriteInfo(stream);
-
-#### Load Order / Enabled mods
-This refers to the mods that are ticked in the launcher and their order.
-
-##### Load
-    var enabledMods = OcsService.Default.ReadLoadOrder(installation.Data.FullName);
-    var enabledMods = OcsService.Default.ReadLoadOrder("path/to/game/data/");
-##### Save
-    OcsService.Default.SaveLoadOrder(installation.Data.FullName, enabledMods);
-    OcsService.Default.SaveLoadOrder("path/to/game/data/", enabledMods);
+| Enums | |
+| :--- | :--- |
+| [FileType](TujeFsxyMe5rTsbAWARcfA 'OpenConstructionSet.Models.FileType') | Type identifier for data files.<br/> |
+| [ItemChanges](_oC5WqPLP5mn+3ivU_9TVQ 'OpenConstructionSet.Models.ItemChanges') | Change types for items.<br/> |
+| [ItemType](QKunUA3okX9+HGcnTOur3g 'OpenConstructionSet.Models.ItemType') | Type identifier for Items.<br/> |
+| [ModLoadType](A5j7r8wm6GxqIgX_lVyVRQ 'OpenConstructionSet.Models.ModLoadType') | Used to specifiy how a mod should be loaded into a  |
+  

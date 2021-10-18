@@ -1,10 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<KenshiFolder>C:\Program Files (x86)\Steam\steamapps\common\Kenshi\</KenshiFolder>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
 		<Platforms>AnyCPU</Platforms>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<MinimumPlatformVersion>7.0</MinimumPlatformVersion>
+		<DebugType>embedded</DebugType>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
+		<DefaultDocumentationFileNameMode>Md5</DefaultDocumentationFileNameMode>
+		<DefaultDocumentationRemoveFileExtensionFromLinks>true</DefaultDocumentationRemoveFileExtensionFromLinks>
+		<DefaultDocumentationGeneratedPages>Types, Members</DefaultDocumentationGeneratedPages>
 	</PropertyGroup>
 	
 	<!--Nuget package properties-->
@@ -21,10 +28,6 @@
 		<PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
 		<RepositoryType>github</RepositoryType>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<MinimumPlatformVersion>7.0</MinimumPlatformVersion>
-		<DebugType>embedded</DebugType>
-		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Data\**" />
@@ -40,6 +43,10 @@
 	  <Compile Include="Data\OcsDataContextBuilder.cs" />
 	</ItemGroup>
 	<ItemGroup>
+	  <PackageReference Include="DefaultDocumentation" Version="0.7.9">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	  <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 	  <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
 	</ItemGroup>
