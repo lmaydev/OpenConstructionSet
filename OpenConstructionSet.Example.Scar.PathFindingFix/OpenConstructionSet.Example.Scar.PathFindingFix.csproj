@@ -12,6 +12,7 @@
 		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
 		<Platforms>AnyCPU</Platforms>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>
 
 	<ItemGroup>
