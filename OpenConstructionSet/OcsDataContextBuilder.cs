@@ -1,25 +1,32 @@
-﻿using OpenConstructionSet.IO;
+﻿using OpenConstructionSet.Data;
+using OpenConstructionSet.IO;
 using OpenConstructionSet.IO.Discovery;
 
-namespace OpenConstructionSet.Data;
+namespace OpenConstructionSet;
 
 /// <inheritdoc/>
 public class OcsDataContextBuilder : IOcsDataContextBuilder
 {
-    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(ModNameResolver.Default));
+    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsService.Default, ModNameResolver.Default));
 
     /// <summary>
     /// Lazy initiated singlton for when DI is not being used
     /// </summary>
     public static OcsDataContextBuilder Default => _default.Value;
 
+    private readonly IOcsService ocsService;
     private readonly IModNameResolver resolver;
 
     /// <summary>
     /// Creates a new OcsDataContextBuilder instance.
     /// </summary>
+    /// <param name="ocsService">Used to read enabled mod list.</param>
     /// <param name="resolver">Used to resolve mod names to full paths.</param>
-    public OcsDataContextBuilder(IModNameResolver resolver) => this.resolver = resolver;
+    public OcsDataContextBuilder(IOcsService ocsService, IModNameResolver resolver)
+    {
+        this.ocsService = ocsService;
+        this.resolver = resolver;
+    }
 
     /// <summary>
     /// Builds a <see cref="OcsDataContext"/> from the provided options
@@ -32,9 +39,11 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
     /// <param name="header">Header for the new mod.</param>
     /// <param name="info">Values for the mod's info file.</param>
     /// <param name="loadGameFiles">If not <c>None</c> the base game files will be loaded as specified.</param>
-    /// <returns>An OcsDataContext built from the provded values.</returns>
+    /// <param name="loadEnabledMods">If not <c>ModLoadType</c>.None will load the game's enabled mod files as specified.</param>
+    /// <returns>An OcsDataContext built from the provided values.</returns>
     public OcsDataContext Build(string name, bool throwIfMissing = true, IEnumerable<ModFolder>? folders = null, IEnumerable<string>? baseMods = null,
-        IEnumerable<string>? activeMods = null, Header? header = null, ModInfo? info = null, ModLoadType loadGameFiles = ModLoadType.None)
+        IEnumerable<string>? activeMods = null, Header? header = null, ModInfo? info = null, ModLoadType loadGameFiles = ModLoadType.None,
+        ModLoadType loadEnabledMods = ModLoadType.None)
     {
         folders ??= Enumerable.Empty<ModFolder>();
 
@@ -53,6 +62,11 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
             LoadGameFiles(false);
         }
 
+        if (loadEnabledMods == ModLoadType.Base)
+        {
+            LoadEnabledMods(false);
+        }    
+
         baseModFiles.ForEach(m => ReadFile(m, false));
 
         items = baseItems.Values.ToDictionary(i => i.StringId, i => i.Duplicate());
@@ -60,6 +74,11 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
         if (loadGameFiles == ModLoadType.Active)
         {
             LoadGameFiles(true);
+        }
+
+        if (loadEnabledMods == ModLoadType.Active)
+        {
+            LoadEnabledMods(true);
         }
 
         activeModFiles.DistinctBy(m => m.Name).ForEach(m => ReadFile(m, true));
@@ -123,6 +142,23 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
         void LoadGameFiles(bool active)
         {
             Resolve(OcsConstants.BaseMods).ForEach(m => ReadFile(m, active));
+        }
+
+        void LoadEnabledMods(bool active)
+        {
+            var loadOrder = folders.Select(f => ocsService.ReadLoadOrder(f.FullName)).FirstOrDefault(lo => lo is not null);
+
+            if (loadOrder is null)
+            {
+                if (throwIfMissing)
+                {
+                    throw new Exception("Could not read enabled mods");
+                }
+
+                return;
+            }
+
+            var mods = Resolve(loadOrder);
         }
 
         IEnumerable<ModFile> Resolve(IEnumerable<string> mods)

@@ -32,19 +32,6 @@
 		<RepositoryType>github</RepositoryType>
 	</PropertyGroup>
 	<ItemGroup>
-		<Compile Remove="Data\**" />
-		<EmbeddedResource Remove="Data\**" />
-		<None Remove="Data\**" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Remove="OcsServiceCollectionExtensions.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="Data\IOcsDataContextBuilder.cs" />
-		<Compile Include="Data\OcsDataContext.cs" />
-		<Compile Include="Data\OcsDataContextBuilder.cs" />
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="DefaultDocumentation" Version="0.7.9">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

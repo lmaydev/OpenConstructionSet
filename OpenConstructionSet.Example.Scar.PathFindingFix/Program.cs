@@ -47,9 +47,7 @@ Console.WriteLine();
 
 Console.Write("Reading load order... ");
 
-var enabledMods = OcsService.Default.ReadLoadOrder(installation.Data.FullName).ToList();
-
-var baseMods = new List<string>(enabledMods);
+var baseMods = new List<string>(installation.EnabledMods);
 
 // Don't patch ourselves or SCAR's mod
 baseMods.Remove(ModFileName);
@@ -60,6 +58,7 @@ if (!baseMods.Any())
     // No mods found to patch
     Console.WriteLine("failed!");
     Console.WriteLine("No mods found to patch");
+    Console.ReadKey();
     return;
 }
 
@@ -94,7 +93,7 @@ var header = new Header(referenceHeader.Version,
                         "OpenConstructionSet Compatibility patch to apply core values from SCAR's pathfinding fix to custom races");
 
 header.References.Add(ReferenceModName);
-header.Dependencies.AddRange(enabledMods);
+header.Dependencies.AddRange(baseMods);
 
 var info = new ModInfo(0, ModName, ModName, new[] { "Gameplay" }, 0, DateTime.UtcNow);
 
@@ -133,16 +132,15 @@ context.Save(installation.Mod);
 
 Console.WriteLine("done");
 
-if (!enabledMods.Contains(ModFileName))
-{
-    enabledMods.Add(ModFileName);
+var enabledMods = installation.EnabledMods.ToList();
 
-    OcsService.Default.SaveLoadOrder(installation.Data.FullName, enabledMods);
+enabledMods.RemoveAll(s => s == ModFileName);
+enabledMods.Add(ModFileName);
 
-    Console.WriteLine("Added patch to load order");
-}
+OcsService.Default.SaveLoadOrder(installation.Data.FullName, enabledMods);
 
 Console.WriteLine();
+Console.WriteLine("Added patch to end of load order");
 
 Console.Write("Press any key to exit...");
 Console.ReadKey();

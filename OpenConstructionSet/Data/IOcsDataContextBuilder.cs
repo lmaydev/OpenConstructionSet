@@ -15,7 +15,16 @@ public interface IOcsDataContextBuilder
     /// <param name="activeMods">A collection of mod names or paths to loaded as active data.</param>
     /// <param name="header">The header to use for the mod.</param>
     /// <param name="info">The info to use for this mod.</param>
-    /// <param name="loadGameFiles">If not null and not <c>ModLoadType</c>.None will load the game's base data files as specified.</param>
+    /// <param name="loadGameFiles">If not <c>ModLoadType</c>.None will load the game's base data files as specified.</param>
+    /// <param name="loadEnabledMods">If not <c>ModLoadType</c>.None will load the game's enabled mod files as specified.</param>
     /// <returns>A <see cref="OcsDataContext"/></returns>
-    OcsDataContext Build(string name, bool throwIfMissing = true, IEnumerable<ModFolder>? folders = null, IEnumerable<string>? baseMods = null, IEnumerable<string>? activeMods = null, Header? header = null, ModInfo? info = null, ModLoadType loadGameFiles = ModLoadType.None);
+    OcsDataContext Build(string name,
+                         bool throwIfMissing = true,
+                         IEnumerable<ModFolder>? folders = null,
+                         IEnumerable<string>? baseMods = null,
+                         IEnumerable<string>? activeMods = null,
+                         Header? header = null,
+                         ModInfo? info = null,
+                         ModLoadType loadGameFiles = ModLoadType.None,
+                         ModLoadType loadEnabledMods = ModLoadType.None);
 }

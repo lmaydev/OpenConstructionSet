@@ -70,7 +70,10 @@ By default the order of searching is Steam, Gog and Local.
     }
 
 #### The Installation object
+
 The `Installation` object will contain information about the installations folder and structure.
+
+The `EnabledMods` property contains the enabled mods in load order.
 
 It will contain up to 4 folders depending on which exist.
 
@@ -169,10 +172,9 @@ Many mods come with an additional .info file that contains information used by S
 
 #### Load Order / Enabled mods
 This refers to the mods that are ticked in the launcher and their order.
+They can be accessed from an `Installation` object or accessed manually as below.
 
 ##### Load
-    var enabledMods = OcsService.Default.ReadLoadOrder(installation.Data.FullName);
     var enabledMods = OcsService.Default.ReadLoadOrder("path/to/game/data/");
 ##### Save
-    OcsService.Default.SaveLoadOrder(installation.Data.FullName, enabledMods);
     OcsService.Default.SaveLoadOrder("path/to/game/data/", enabledMods);

@@ -88,7 +88,7 @@ public class OcsService : IOcsService
 
         var save = Directory.Exists(discovered.Save) ? DiscoverSaveFolder(discovered.Save) : null;
 
-        return new(discovered.Installation, data, mod, content, save);
+        return new(discovered.Installation, ReadLoadOrder(data.FullName) ?? Array.Empty<string>(), data, mod, content, save);
     }
 
     /// <summary>
@@ -146,9 +146,7 @@ public class OcsService : IOcsService
             return null;
         }
 
-        var header = ReadHeader(file);
-
-        if (header is null)
+        if (!this.TryReadHeader(file, out var header))
         {
             return null;
         }
@@ -160,7 +158,17 @@ public class OcsService : IOcsService
         if (File.Exists(infoPath))
         {
             using var stream = File.OpenRead(infoPath);
-            info = OcsIOHelper.ReadInfo(stream);
+
+            try
+            {
+                info = OcsIOHelper.ReadInfo(stream);
+            }
+            catch(Exception ex)
+            {
+                // TODO log exception
+
+                info = null;
+            }
         }
 
         return new(file, header, info);
@@ -189,7 +197,7 @@ public class OcsService : IOcsService
 
         if (Directory.Exists(result.PlatoonFolder))
         {
-            result.PlatoonFiles.AddRange(Directory.GetFiles(result.PlatoonFolder, "*.zone"));
+            result.PlatoonFiles.AddRange(Directory.GetFiles(result.PlatoonFolder, "*.platoon"));
         }
 
         return result;
@@ -229,11 +237,11 @@ public class OcsService : IOcsService
     /// </summary>
     /// <param name="folder">Data folder to find the file in.</param>
     /// <returns>The collection of mod names from the load order. If the file cannot be found an empty array is returned.</returns>
-    public string[] ReadLoadOrder(string folder)
+    public string[]? ReadLoadOrder(string folder)
     {
         var path = Path.Combine(folder, "mods.cfg");
 
-        return File.Exists(path) ? File.ReadAllLines(path) : Array.Empty<string>();
+        return File.Exists(path) ? File.ReadAllLines(path) : null;
     }
 
     /// <summary>

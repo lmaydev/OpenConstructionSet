@@ -56,8 +56,8 @@ public interface IOcsService
     /// Attempts to read the load order file. This file is contained in the game's data folder.
     /// </summary>
     /// <param name="folder">Data folder to find the file in.</param>
-    /// <returns>The collection of mod names from the load order. If the file cannot be found an empty array is returned.</returns>
-    string[] ReadLoadOrder(string folder);
+    /// <returns>The collection of mod names from the load order. If the file cannot be found <c>null</c> is returned.</returns>
+    string[]? ReadLoadOrder(string folder);
 
     /// <summary>
     /// Save a collection of mod names to the load order file. This file is contained in the game's data folder.

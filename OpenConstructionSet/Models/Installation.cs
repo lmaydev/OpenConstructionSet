@@ -3,7 +3,7 @@
 /// <summary>
 /// POCO representing an installation of the game.
 /// </summary>
-public sealed record Installation(string Game, ModFolder Data, ModFolder Mod, ModFolder? Content, SaveFolder? Save)
+public sealed record Installation(string Game, string[] EnabledMods, ModFolder Data, ModFolder Mod, ModFolder? Content, SaveFolder? Save)
 {
     private ModFolder[]? array;
 
