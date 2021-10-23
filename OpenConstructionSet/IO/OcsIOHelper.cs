@@ -71,12 +71,12 @@ public static class OcsIOHelper
     /// <param name="reader">Used to read the mod file.</param>
     /// <returns>The header, last id and items from the mod.</returns>
     /// <exception cref="InvalidDataException">Not a mod file</exception>
-    public static (Header header, int lastId, Dictionary<string, Item> items) ReadMod(this OcsReader reader)
+    public static (Header header, int lastId, List<Item> items) ReadMod(this OcsReader reader)
     {
         var type = (FileType)reader.ReadInt();
 
         return type == FileType.Mod
-            ? (reader.ReadHeader(), reader.ReadInt(), reader.ReadItems().ToDictionary(i => i.StringId))
+            ? (reader.ReadHeader(), reader.ReadInt(), reader.ReadItems().ToList())
             : throw new InvalidDataException("Not a mod file");
     }
 
@@ -104,12 +104,12 @@ public static class OcsIOHelper
     /// <param name="reader">Used to read the save file.</param>
     /// <returns>The last id and items from the save file.</returns>
     /// <exception cref="InvalidDataException">Not a save file</exception>
-    public static (int lastId, Dictionary<string, Item> items) ReadSave(this OcsReader reader)
+    public static (int lastId, List<Item> items) ReadSave(this OcsReader reader)
     {
         var type = (FileType)reader.ReadInt();
 
         return type == FileType.Save
-            ? (reader.ReadInt(), reader.ReadItems().ToDictionary(i => i.StringId))
+            ? (reader.ReadInt(), reader.ReadItems().ToList())
             : throw new InvalidDataException("Not a save file");
     }
 

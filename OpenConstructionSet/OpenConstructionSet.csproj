@@ -24,8 +24,10 @@
 		<Version>0</Version>
 		<Authors>lmaydev</Authors>
 		<Description>
-			A wrapper SDK for the Forgotten Construction Set.
-			Allows creating, loading, querying, editing and saving of mods and game data.
+			The OCS is a modding SDK for Kenshi (https://lofigames.com/) written in C#
+
+			It provides services for dealing with the various folders and data files used by the game.
+			As well as providing a managed context for loading multiple mods for editing (Similar to FCS)
 		</Description>
 		<PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>

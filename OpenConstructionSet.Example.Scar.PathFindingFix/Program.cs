@@ -75,7 +75,6 @@ if (referenceMod is null)
     return;
 }
 
-Console.WriteLine();
 Console.Write("Loading data... ");
 
 // Read SCAR's mod
@@ -83,7 +82,7 @@ using var reader = new OcsReader(File.OpenRead(referenceMod.FullName));
 (var referenceHeader, _, var items) = reader.ReadMod();
 
 // Extract core values from the Greenlander race item
-var greenlander = items["17-gamedata.quack"];
+var greenlander = items.Find(i => i.StringId == "17-gamedata.quack")!;
 var pathfindAcceleration = greenlander.Values["pathfind acceleration"];
 var waterAvoidance = greenlander.Values["water avoidance"];
 

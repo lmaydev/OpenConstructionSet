@@ -48,15 +48,17 @@ public sealed class OcsReader : IDisposable
 
         for (var i = 0; i < categoryCount; i++)
         {
-            var category = ReadString();
+            var name = ReadString();
+
+            var category = new ReferenceCategory(name, new());
 
             var referenceCount = ReadInt();
             for (var j = 0; j < referenceCount; j++)
             {
-                var reference = ReadReference(category);
-
-                item.References.Add(reference);
+                category.References.Add(ReadReference());
             }
+
+            item.ReferenceCategories.Add(category);
         }
 
         // Instances
@@ -123,7 +125,7 @@ public sealed class OcsReader : IDisposable
     /// </summary>
     /// <param name="category">A category must be provided as the category data appears before.</param>
     /// <returns>A <c>Reference</c> read from the data.</returns>
-    public Reference ReadReference(string category) => new(ReadString(), ReadReferenceValues(), category);
+    public Reference ReadReference() => new(ReadString(), ReadReferenceValues());
 
     /// <summary>
     /// Read a <c>ReferenceValues</c> object from the data.

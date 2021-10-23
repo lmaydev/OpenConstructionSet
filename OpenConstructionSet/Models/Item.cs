@@ -1,4 +1,6 @@
-﻿namespace OpenConstructionSet.Models;
+﻿using OpenConstructionSet.Collections;
+
+namespace OpenConstructionSet.Models;
 
 /// <summary>
 /// Represent an Item from a game data file.
@@ -13,12 +15,12 @@ public sealed class Item
     /// <summary>
     /// The references associated with the Item.
     /// </summary>
-    public List<Reference> References { get; init; } = new();
+    public ReferenceCategoryCollection ReferenceCategories { get; private set; } = new();
 
     /// <summary>
     /// The instances associated with the Item.
     /// </summary>
-    public List<Instance> Instances { get; init; } = new();
+    public InstanceCollection Instances { get; private set; } = new();
 
     /// <summary>
     /// The type of the Item.
@@ -69,8 +71,8 @@ public sealed class Item
     public Item Duplicate() => new(Type, Id, Name, StringId, Changes)
     {
         Values = new(Values),
-        References = new(References),
-        Instances = new(Instances),
+        ReferenceCategories = new(ReferenceCategories.Select(c => new ReferenceCategory(c))),
+        Instances = new(Instances)
     };
 
     /// <summary>
@@ -96,11 +98,9 @@ public sealed class Item
 
         foreach (var instance in item.Instances)
         {
-            var current = Instances.FindIndex(i => i.Id == instance.Id);
-
-            if (current != -1)
+            if (Instances.Contains(instance))
             {
-                Instances.RemoveAt(current);
+                Instances.Remove(instance);
             }
 
             if (!instance.IsDeleted())
@@ -109,18 +109,27 @@ public sealed class Item
             }
         }
 
-        foreach (var reference in item.References)
+        foreach (var category in item.ReferenceCategories)
         {
-            var current = References.FindIndex(i => i.Key == reference.Key);
+            var baseCategory = ReferenceCategories.FindById(category.Name);
 
-            if (current != -1)
+            if (baseCategory is null)
             {
-                References.RemoveAt(current);
+                ReferenceCategories.Add(category with { });
             }
-
-            if (!reference.IsDeleted())
+            else
             {
-                References.Add(reference);
+                foreach (var reference in category.References)
+                {
+                    if (reference.IsDeleted())
+                    {
+                        baseCategory.References.RemoveById(reference.TargetId);
+                    }
+                    else
+                    {
+                        baseCategory.References.Add(reference);
+                    }
+                }
             }
         }
     }
@@ -152,7 +161,7 @@ public sealed class Item
         {
             usedKeys.Add(instance.Id);
 
-            var baseIndex = baseItem.Instances.FindIndex(i => i.Id == instance.Id);
+            var baseIndex = baseItem.Instances.IndexOfId(instance.Id);
 
             if (baseIndex == -1 || baseItem.Instances[baseIndex] != instance)
             {
@@ -176,30 +185,61 @@ public sealed class Item
 
         usedKeys.Clear();
 
-        foreach (var reference in References)
+        var usedCategories = new HashSet<string>();
+
+        foreach (var category in ReferenceCategories)
         {
-            usedKeys.Add(reference.Key);
+            usedCategories.Add(category.Name);
 
-            var baseIndex = baseItem.References.FindIndex(i => i.Key == reference.Key);
+            var baseCategory = baseItem.ReferenceCategories.FindById(category.Name);
 
-            if (baseIndex == -1 || baseItem.References[baseIndex] != reference)
+            if (baseCategory is null)
             {
-                changes.References.Add(reference);
+                changes.ReferenceCategories.Add(category with { });
+            }
+            else
+            {
+                var newCategory = new ReferenceCategory(category.Name, new());
 
-                changed = true;
+                foreach (var reference in category.References)
+                {
+                    usedKeys.Add(reference.TargetId);
+
+                    var baseReference = baseCategory.References.FindById(reference.TargetId);
+
+                    if (baseReference is null || reference != baseReference)
+                    {
+                        newCategory.References.Add(reference);
+                    }
+                }
+
+                foreach (var baseReference in baseCategory.References)
+                {
+                    if (usedKeys.Contains(baseReference.TargetId))
+                    {
+                        continue;
+                    }
+
+                    newCategory.References.Add(baseReference.Delete());
+                }
+
+                usedKeys.Clear();
+
+                if (newCategory.References.Any())
+                {
+                    changes.ReferenceCategories.Add(newCategory);
+                }
             }
         }
 
-        foreach (var baseReference in baseItem.References)
+        foreach (var baseCategory in baseItem.ReferenceCategories)
         {
-            if (usedKeys.Contains(baseReference.Key))
+            if (usedCategories.Contains(baseCategory.Name))
             {
                 continue;
             }
 
-            changes.References.Add(baseReference.Delete());
-
-            changed = true;
+            changes.ReferenceCategories.Add(new(baseCategory.Name, new(baseCategory.References.Select(r => r.Delete()))));
         }
 
         return changed;

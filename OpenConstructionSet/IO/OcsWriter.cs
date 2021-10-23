@@ -53,17 +53,17 @@ public sealed class OcsWriter : IDisposable
             WriteDictionary(type);
         }
 
-        Write(value.References.Count);
-        foreach (var category in value.References.GroupBy(r => r.Category))
+        Write(value.ReferenceCategories.Count);
+        foreach (var category in value.ReferenceCategories)
         {
-            if (!category.Any())
+            if (!category.References.Any())
             {
                 continue;
             }
 
-            Write(category.Key);
+            Write(category.Name);
 
-            Write(category);
+            Write(category.References);
         }
 
         Write(value.Instances);
