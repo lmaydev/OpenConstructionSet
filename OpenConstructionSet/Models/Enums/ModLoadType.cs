@@ -1,6 +1,4 @@
-﻿using OpenConstructionSet.Data;
-
-namespace OpenConstructionSet.Models;
+﻿namespace OpenConstructionSet.Models;
 
 /// <summary>
 /// Used to specifiy how a mod should be loaded into a <seealso cref="OcsDataContext"/>

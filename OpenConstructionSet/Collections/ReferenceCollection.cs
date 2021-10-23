@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OpenConstructionSet.Collections;
+﻿namespace OpenConstructionSet.Collections;
 
 public class ReferenceCollection : OcsCollection<Reference>
 {

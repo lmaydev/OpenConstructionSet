@@ -1,5 +1,4 @@
-﻿using OpenConstructionSet.Data;
-using OpenConstructionSet.IO;
+﻿using OpenConstructionSet.IO;
 using OpenConstructionSet.IO.Discovery;
 
 namespace OpenConstructionSet;
@@ -65,7 +64,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
         if (loadEnabledMods == ModLoadType.Base)
         {
             LoadEnabledMods(false);
-        }    
+        }
 
         baseModFiles.ForEach(m => ReadFile(m, false));
 

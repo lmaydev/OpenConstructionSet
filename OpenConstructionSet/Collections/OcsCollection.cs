@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace OpenConstructionSet.Collections;
 
@@ -30,7 +25,7 @@ public abstract class OcsCollection<T> : IList<T>
     public void CopyTo(T[] array, int arrayIndex) => list.CopyTo(array, arrayIndex);
     public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
     public int IndexOf(T item) => list.IndexOf(item);
-    
+
     public void Insert(int index, T item)
     {
         RemoveById(GetId(item));
@@ -46,7 +41,7 @@ public abstract class OcsCollection<T> : IList<T>
     public T? FindById(string id) => list.Find(i => GetId(i) == id);
 
     public int IndexOfId(string id) => list.FindIndex(i => GetId(i) == id);
-    
+
     public bool RemoveById(string id)
     {
         var index = IndexOfId(id);

@@ -1,6 +1,4 @@
-﻿using OpenConstructionSet.Collections;
-
-namespace OpenConstructionSet.Models;
+﻿namespace OpenConstructionSet.Models;
 
 /// <summary>
 /// Represent an Item from a game data file.

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace OpenConstructionSet;
 
@@ -19,7 +14,7 @@ public static class TryPatternExtensions
     /// <param name="folder">Data folder to find the file in.</param>
     /// <param name="enabledMods">If successful will contain the collection of mod names from the load order.</param>
     /// <returns><c>true</c> if the load order can be read.</returns>
-    public static bool TryReadLoadOrder(this IOcsService service, string folder, [MaybeNullWhen(false)]out string[] enabledMods)
+    public static bool TryReadLoadOrder(this IOcsService service, string folder, [MaybeNullWhen(false)] out string[] enabledMods)
     {
         try
         {
@@ -27,7 +22,7 @@ public static class TryPatternExtensions
 
             return enabledMods is not null;
         }
-        catch(Exception ex)
+        catch (Exception)
         {
             // TODO log exception
         }
@@ -51,7 +46,7 @@ public static class TryPatternExtensions
 
             return header is not null;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // TODO log exception
         }

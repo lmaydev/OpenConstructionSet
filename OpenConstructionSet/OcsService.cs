@@ -163,7 +163,7 @@ public class OcsService : IOcsService
             {
                 info = OcsIOHelper.ReadInfo(stream);
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 // TODO log exception
 
