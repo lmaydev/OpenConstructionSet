@@ -13,8 +13,4 @@ Implements [System.IEquatable&lt;](https://docs.microsoft.com/en-us/dotnet/api/S
 
 | Constructors | |
 | :--- | :--- |
-| [Reference(string, ReferenceValues, string)](D53GZ6cCkjyU1xNAWaSyXA 'OpenConstructionSet.Models.Reference.Reference(string, OpenConstructionSet.Models.ReferenceValues, string)') | Represents a reference from a game data files.<br/> |
-
-| Properties | |
-| :--- | :--- |
-| [Key](j9DJ_Q0Y0EzN61KCIXUXZA 'OpenConstructionSet.Models.Reference.Key') | Lazy initialised key.<br/>To identify a reference you need combine TargetId and Category.<br/> |
+| [Reference(string, ReferenceValues)](92MMfX7imX3TQF0ZeQGdoA 'OpenConstructionSet.Models.Reference.Reference(string, OpenConstructionSet.Models.ReferenceValues)') | Represents a reference from a game data files.<br/> |

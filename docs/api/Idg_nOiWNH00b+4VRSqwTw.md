@@ -3,7 +3,7 @@
 ## OcsService.ReadLoadOrder(string) Method
 Attempts to read the load order file. This file is contained in the game's data folder.  
 ```csharp
-public string[] ReadLoadOrder(string folder);
+public string[]? ReadLoadOrder(string folder);
 ```
 #### Parameters
 <a name='OpenConstructionSet_OcsService_ReadLoadOrder(string)_folder'></a>

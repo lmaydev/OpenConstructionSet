@@ -27,7 +27,7 @@ Implements [System.IDisposable](https://docs.microsoft.com/en-us/dotnet/api/Syst
 | [ReadInt()](Y4FZWZcwV+JXgPmcatuFKA 'OpenConstructionSet.IO.OcsReader.ReadInt()') | Read an int from the data.<br/> |
 | [ReadItem()](R6psZ2mXoqLrb_OUnvEKWQ 'OpenConstructionSet.IO.OcsReader.ReadItem()') | Read an `Item` from the data.<br/>This includes the `Item`'s values, instances and references.<br/> |
 | [ReadItems()](V1Gr2oNsMnHvuRbWDmibzQ 'OpenConstructionSet.IO.OcsReader.ReadItems()') | Read a collection of `Item`s from the data.<br/> |
-| [ReadReference(string)](GXvdnjoLtl9Hplgjtjb8JQ 'OpenConstructionSet.IO.OcsReader.ReadReference(string)') | Read a `Reference` from the data.<br/> |
+| [ReadReference()](hC9HBEDTBrnN2QHsvbHnyQ 'OpenConstructionSet.IO.OcsReader.ReadReference()') | Read a `Reference` from the data.<br/> |
 | [ReadReferenceValues()](AtOGe_mvtA0NUeUtD8DGFQ 'OpenConstructionSet.IO.OcsReader.ReadReferenceValues()') | Read a `ReferenceValues` object from the data.<br/> |
 | [ReadString()](nemnE4YEXaghkbPfYU4t_w 'OpenConstructionSet.IO.OcsReader.ReadString()') | Read a string from the data.<br/> |
 | [ReadStringList()](r3VU2EORXYdz9PXCY5t3Rw 'OpenConstructionSet.IO.OcsReader.ReadStringList()') | Read a comma separated list from the data.<br/> |

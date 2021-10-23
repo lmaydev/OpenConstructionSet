@@ -25,6 +25,89 @@
             <param name="type">The type of item to return.</param>
             <returns>All items from the collection with the given type.</returns>
         </member>
+        <member name="T:OpenConstructionSet.Data.IOcsDataContextBuilder">
+            <summary>
+            Used to build <see cref="T:OpenConstructionSet.Data.OcsDataContext"/> instances.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.IOcsDataContextBuilder.Build(System.String,System.Boolean,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo,OpenConstructionSet.Models.ModLoadType,OpenConstructionSet.Models.ModLoadType)">
+            <summary>
+            Build a <c>OcsDataContext</c> from the provided information.
+            </summary>
+            <param name="name">The name of the new mod. e.g. example.mod</param>
+            <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
+            <param name="folders">A collection of folders to use when resolving mod names to their path.</param>
+            <param name="baseMods">A collection of mod names or paths to be loaded as base data.</param>
+            <param name="activeMods">A collection of mod names or paths to loaded as active data.</param>
+            <param name="header">The header to use for the mod.</param>
+            <param name="info">The info to use for this mod.</param>
+            <param name="loadGameFiles">If not <c>ModLoadType</c>.None will load the game's base data files as specified.</param>
+            <param name="loadEnabledMods">If not <c>ModLoadType</c>.None will load the game's enabled mod files as specified.</param>
+            <returns>A <see cref="T:OpenConstructionSet.Data.OcsDataContext"/></returns>
+        </member>
+        <member name="T:OpenConstructionSet.Data.OcsDataContext">
+            <summary>
+            Multiple mod files can be loaded into a context as base or active items.
+            Allows the editing and saving of the active mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.Items">
+            <summary>
+            Collection of active items.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.ModName">
+            <summary>
+            The name of the mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.LastId">
+            <summary>
+            Tracks the last ID used for an Item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.Header">
+            <summary>
+            The header that will be stored in the mod file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.OcsDataContext.Info">
+            <summary>
+            The data for the mod's .info file.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContext.#ctor(System.Collections.Generic.Dictionary{System.String,OpenConstructionSet.Models.Item},System.Collections.Generic.Dictionary{System.String,OpenConstructionSet.Models.Item},System.String,System.Int32,OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo)">
+            <summary>
+            Creates a new OcsDataContext instance.
+            </summary>
+            <param name="items">The active data for editing.</param>
+            <param name="baseItems">The base data.</param>
+            <param name="modName">The name of the mod.</param>
+            <param name="lastId">The last used ID. This should be the largest from all the mods loaded.</param>
+            <param name="header">An optional header for the active mod.</param>
+            <param name="info">Optional values the mod's info file.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContext.NewItem(OpenConstructionSet.Models.ItemType,System.String)">
+            <summary>
+            Generates a new ID and creates an item with it.
+            LastId will be increased.
+            </summary>
+            <param name="type">The type of item to create.</param>
+            <param name="name">The name of the new item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContext.Save(System.String)">
+            <summary>
+            Saves the active mod to the given path.
+            </summary>
+            <param name="path">The path to save the mod to.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.OcsDataContext.Save(OpenConstructionSet.Models.ModFolder)">
+            <summary>
+            Saves the active mod into the given folder.
+            </summary>
+            <param name="folder">The mod folder to save to.</param>
+        </member>
         <member name="T:OpenConstructionSet.IOcsService">
             <summary>
             The main service for the OpenConstructionSet.
@@ -81,7 +164,7 @@
             Attempts to read the load order file. This file is contained in the game's data folder.
             </summary>
             <param name="folder">Data folder to find the file in.</param>
-            <returns>The collection of mod names from the load order. If the file cannot be found an empty array is returned.</returns>
+            <returns>The collection of mod names from the load order. If the file cannot be found <c>null</c> is returned.</returns>
         </member>
         <member name="M:OpenConstructionSet.IOcsService.SaveLoadOrder(System.String,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
@@ -335,7 +418,7 @@
             </summary>
             <returns>A collection of <c>Items</c>s read from the data.</returns>
         </member>
-        <member name="M:OpenConstructionSet.IO.OcsReader.ReadReference(System.String)">
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadReference">
             <summary>
             Read a <c>Reference</c> from the data.
             </summary>
@@ -733,7 +816,7 @@
             POCO representing an installation of the game.
             </summary>
         </member>
-        <member name="M:OpenConstructionSet.Models.Installation.#ctor(System.String,OpenConstructionSet.Models.ModFolder,OpenConstructionSet.Models.ModFolder,OpenConstructionSet.Models.ModFolder,OpenConstructionSet.Models.SaveFolder)">
+        <member name="M:OpenConstructionSet.Models.Installation.#ctor(System.String,System.String[],OpenConstructionSet.Models.ModFolder,OpenConstructionSet.Models.ModFolder,OpenConstructionSet.Models.ModFolder,OpenConstructionSet.Models.SaveFolder)">
             <summary>
             POCO representing an installation of the game.
             </summary>
@@ -774,7 +857,7 @@
             The values associated with the Item.
             </summary>
         </member>
-        <member name="P:OpenConstructionSet.Models.Item.References">
+        <member name="P:OpenConstructionSet.Models.Item.ReferenceCategories">
             <summary>
             The references associated with the Item.
             </summary>
@@ -935,21 +1018,13 @@
             </summary>
             <param name="TargetId">The StringId of the item being referenced</param>
             <param name="Values">The values assigned to this reference.</param>
-            <param name="Category">The category of this reference.</param>
         </member>
-        <member name="M:OpenConstructionSet.Models.Reference.#ctor(System.String,OpenConstructionSet.Models.ReferenceValues,System.String)">
+        <member name="M:OpenConstructionSet.Models.Reference.#ctor(System.String,OpenConstructionSet.Models.ReferenceValues)">
             <summary>
             Represents a reference from a game data files.
             </summary>
             <param name="TargetId">The StringId of the item being referenced</param>
             <param name="Values">The values assigned to this reference.</param>
-            <param name="Category">The category of this reference.</param>
-        </member>
-        <member name="P:OpenConstructionSet.Models.Reference.Key">
-            <summary>
-            Lazy initialised key.
-            To identify a reference you need combine TargetId and Category.
-            </summary>
         </member>
         <member name="T:OpenConstructionSet.Models.ReferenceValues">
             <summary>
@@ -1086,6 +1161,36 @@
             The default location of the save folder.
             </summary>
         </member>
+        <member name="T:OpenConstructionSet.OcsDataContextBuilder">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.OcsDataContextBuilder.Default">
+            <summary>
+            Lazy initiated singlton for when DI is not being used
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.OcsDataContextBuilder.#ctor(OpenConstructionSet.IOcsService,OpenConstructionSet.IO.Discovery.IModNameResolver)">
+            <summary>
+            Creates a new OcsDataContextBuilder instance.
+            </summary>
+            <param name="ocsService">Used to read enabled mod list.</param>
+            <param name="resolver">Used to resolve mod names to full paths.</param>
+        </member>
+        <member name="M:OpenConstructionSet.OcsDataContextBuilder.Build(System.String,System.Boolean,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo,OpenConstructionSet.Models.ModLoadType,OpenConstructionSet.Models.ModLoadType)">
+            <summary>
+            Builds a <see cref="T:OpenConstructionSet.Data.OcsDataContext"/> from the provided options
+            </summary>
+            <param name="name">The name of the mod e.g. example.mod</param>
+            <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
+            <param name="folders">A collection of folders used when resolving mod names. If loading game files <c>folders</c> can not be <c>null</c>.</param>
+            <param name="baseMods">A collection of mods to load as the base data.</param>
+            <param name="activeMods">A collection of mods to load as active. When saving data from these mods will be saved along with any changes.</param>
+            <param name="header">Header for the new mod.</param>
+            <param name="info">Values for the mod's info file.</param>
+            <param name="loadGameFiles">If not <c>None</c> the base game files will be loaded as specified.</param>
+            <param name="loadEnabledMods">If not <c>ModLoadType</c>.None will load the game's enabled mod files as specified.</param>
+            <returns>An OcsDataContext built from the provided values.</returns>
+        </member>
         <member name="T:OpenConstructionSet.OcsService">
             <summary>
             The main service for the OpenConstructionSet.
@@ -1177,115 +1282,28 @@
             <param name="path">The path of the mod file.</param>
             <returns>The file's header if able to read; otherwise, null.</returns>
         </member>
-        <member name="T:OpenConstructionSet.Data.IOcsDataContextBuilder">
+        <member name="T:OpenConstructionSet.TryPatternExtensions">
             <summary>
-            Used to build <see cref="T:OpenConstructionSet.Data.OcsDataContext"/> instances.
+            Provides Try/Out patterns to existing interface methods.
             </summary>
         </member>
-        <member name="M:OpenConstructionSet.Data.IOcsDataContextBuilder.Build(System.String,System.Boolean,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo,OpenConstructionSet.Models.ModLoadType)">
+        <member name="M:OpenConstructionSet.TryPatternExtensions.TryReadLoadOrder(OpenConstructionSet.IOcsService,System.String,System.String[]@)">
             <summary>
-            Build a <c>OcsDataContext</c> from the provided information.
+            Attempts to read the load order file. This file is contained in the game's data folder.
             </summary>
-            <param name="name">The name of the new mod. e.g. example.mod</param>
-            <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
-            <param name="folders">A collection of folders to use when resolving mod names to their path.</param>
-            <param name="baseMods">A collection of mod names or paths to be loaded as base data.</param>
-            <param name="activeMods">A collection of mod names or paths to loaded as active data.</param>
-            <param name="header">The header to use for the mod.</param>
-            <param name="info">The info to use for this mod.</param>
-            <param name="loadGameFiles">If not null and not <c>ModLoadType</c>.None will load the game's base data files as specified.</param>
-            <returns>A <see cref="T:OpenConstructionSet.Data.OcsDataContext"/></returns>
+            <param name="service">The service to call the method on.</param>
+            <param name="folder">Data folder to find the file in.</param>
+            <param name="enabledMods">If successful will contain the collection of mod names from the load order.</param>
+            <returns><c>true</c> if the load order can be read.</returns>
         </member>
-        <member name="T:OpenConstructionSet.Data.OcsDataContext">
+        <member name="M:OpenConstructionSet.TryPatternExtensions.TryReadHeader(OpenConstructionSet.IOcsService,System.String,OpenConstructionSet.Models.Header@)">
             <summary>
-            Multiple mod files can be loaded into a context as base or active items.
-            Allows the editing and saving of the active mod.
+            Attempts to read the header of the provided file.
             </summary>
-        </member>
-        <member name="P:OpenConstructionSet.Data.OcsDataContext.Items">
-            <summary>
-            Collection of active items.
-            </summary>
-        </member>
-        <member name="P:OpenConstructionSet.Data.OcsDataContext.ModName">
-            <summary>
-            The name of the mod.
-            </summary>
-        </member>
-        <member name="P:OpenConstructionSet.Data.OcsDataContext.LastId">
-            <summary>
-            Tracks the last ID used for an Item.
-            </summary>
-        </member>
-        <member name="P:OpenConstructionSet.Data.OcsDataContext.Header">
-            <summary>
-            The header that will be stored in the mod file.
-            </summary>
-        </member>
-        <member name="P:OpenConstructionSet.Data.OcsDataContext.Info">
-            <summary>
-            The data for the mod's .info file.
-            </summary>
-        </member>
-        <member name="M:OpenConstructionSet.Data.OcsDataContext.#ctor(System.Collections.Generic.Dictionary{System.String,OpenConstructionSet.Models.Item},System.Collections.Generic.Dictionary{System.String,OpenConstructionSet.Models.Item},System.String,System.Int32,OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo)">
-            <summary>
-            Creates a new OcsDataContext instance.
-            </summary>
-            <param name="items">The active data for editing.</param>
-            <param name="baseItems">The base data.</param>
-            <param name="modName">The name of the mod.</param>
-            <param name="lastId">The last used ID. This should be the largest from all the mods loaded.</param>
-            <param name="header">An optional header for the active mod.</param>
-            <param name="info">Optional values the mod's info file.</param>
-        </member>
-        <member name="M:OpenConstructionSet.Data.OcsDataContext.NewItem(OpenConstructionSet.Models.ItemType,System.String)">
-            <summary>
-            Generates a new ID and creates an item with it.
-            LastId will be increased.
-            </summary>
-            <param name="type">The type of item to create.</param>
-            <param name="name">The name of the new item.</param>
-            <returns></returns>
-        </member>
-        <member name="M:OpenConstructionSet.Data.OcsDataContext.Save(System.String)">
-            <summary>
-            Saves the active mod to the given path.
-            </summary>
-            <param name="path">The path to save the mod to.</param>
-        </member>
-        <member name="M:OpenConstructionSet.Data.OcsDataContext.Save(OpenConstructionSet.Models.ModFolder)">
-            <summary>
-            Saves the active mod into the given folder.
-            </summary>
-            <param name="folder">The mod folder to save to.</param>
-        </member>
-        <member name="T:OpenConstructionSet.Data.OcsDataContextBuilder">
-            <inheritdoc/>
-        </member>
-        <member name="P:OpenConstructionSet.Data.OcsDataContextBuilder.Default">
-            <summary>
-            Lazy initiated singlton for when DI is not being used
-            </summary>
-        </member>
-        <member name="M:OpenConstructionSet.Data.OcsDataContextBuilder.#ctor(OpenConstructionSet.IO.Discovery.IModNameResolver)">
-            <summary>
-            Creates a new OcsDataContextBuilder instance.
-            </summary>
-            <param name="resolver">Used to resolve mod names to full paths.</param>
-        </member>
-        <member name="M:OpenConstructionSet.Data.OcsDataContextBuilder.Build(System.String,System.Boolean,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo,OpenConstructionSet.Models.ModLoadType)">
-            <summary>
-            Builds a <see cref="T:OpenConstructionSet.Data.OcsDataContext"/> from the provided options
-            </summary>
-            <param name="name">The name of the mod e.g. example.mod</param>
-            <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
-            <param name="folders">A collection of folders used when resolving mod names. If loading game files <c>folders</c> can not be <c>null</c>.</param>
-            <param name="baseMods">A collection of mods to load as the base data.</param>
-            <param name="activeMods">A collection of mods to load as active. When saving data from these mods will be saved along with any changes.</param>
-            <param name="header">Header for the new mod.</param>
-            <param name="info">Values for the mod's info file.</param>
-            <param name="loadGameFiles">If not <c>None</c> the base game files will be loaded as specified.</param>
-            <returns>An OcsDataContext built from the provded values.</returns>
+            <param name="service">The service to call the method on.</param>
+            <param name="path">The path of the mod file.</param>
+            <param name="header">Will contain the read header if successful.</param>
+            <returns><c>true</c> if header can be read.</returns>
         </member>
     </members>
 </doc>

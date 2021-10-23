@@ -3,7 +3,7 @@
 ## Item.Instances Property
 The instances associated with the Item.  
 ```csharp
-public System.Collections.Generic.List<OpenConstructionSet.Models.Instance> Instances { get; set; }
+public OpenConstructionSet.Collections.InstanceCollection Instances { get; set; }
 ```
 #### Property Value
-[System.Collections.Generic.List&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.List-1 'System.Collections.Generic.List`1')[Instance](NhOPiCtebmQnk5Ll2Sv0og 'OpenConstructionSet.Models.Instance')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.List-1 'System.Collections.Generic.List`1')
+[OpenConstructionSet.Collections.InstanceCollection](https://docs.microsoft.com/en-us/dotnet/api/OpenConstructionSet.Collections.InstanceCollection 'OpenConstructionSet.Collections.InstanceCollection')

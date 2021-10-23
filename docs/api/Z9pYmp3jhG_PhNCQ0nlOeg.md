@@ -18,7 +18,7 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 | [Id](q0TQPPiG0_yrymoT8Dkk_Q 'OpenConstructionSet.Models.Item.Id') | Still not sure what this does.<br/> |
 | [Instances](VqMsRcp2Mh70nGQa0TkLug 'OpenConstructionSet.Models.Item.Instances') | The instances associated with the Item.<br/> |
 | [Name](Cr8pxh8OLSz7Vpf4CtXAUg 'OpenConstructionSet.Models.Item.Name') | The name of this Item.<br/> |
-| [References](9BjySY03RHUat35ukxTjkg 'OpenConstructionSet.Models.Item.References') | The references associated with the Item.<br/> |
+| [ReferenceCategories](coy5li5UOIB6ZiknEP3dng 'OpenConstructionSet.Models.Item.ReferenceCategories') | The references associated with the Item.<br/> |
 | [StringId](ksJeZX7hjDahBN8_LtGHTw 'OpenConstructionSet.Models.Item.StringId') | The unique id of this Item.<br/> |
 | [Type](cRdkJJKG6zJ6ZO_zyGOXOQ 'OpenConstructionSet.Models.Item.Type') | The type of the Item.<br/> |
 | [Values](9HCl4mhDRcgJrBaQbBchYw 'OpenConstructionSet.Models.Item.Values') | The values associated with the Item.<br/> |

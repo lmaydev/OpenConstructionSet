@@ -8,7 +8,9 @@
 | [CollectionExtensions](FWc82w3EK+Efojdw03oX_w 'OpenConstructionSet.CollectionExtensions') | A collection of extensions for collections.<br/> |
 | [ModelExtensions](d4l5JwZnO8DdkML7qnh_1g 'OpenConstructionSet.ModelExtensions') | Collection of methods for working with models.<br/> |
 | [OcsConstants](O2L+5TDEXLJlnEZi6p3X+A 'OpenConstructionSet.OcsConstants') | Useful constants for working with the OCS.<br/> |
+| [OcsDataContextBuilder](U44ADOjq83qr6ihsRA01VQ 'OpenConstructionSet.OcsDataContextBuilder') | Used to build [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q 'OpenConstructionSet.Data.OcsDataContext') instances.<br/> |
 | [OcsService](vk7pKCZDraxUCiJOEKS3Rg 'OpenConstructionSet.OcsService') | The main service for the OpenConstructionSet.<br/>Provides discovery and some saving/loading functions.<br/> |
+| [TryPatternExtensions](8+MvwvK7uGNIiBHKRIh29A 'OpenConstructionSet.TryPatternExtensions') | Provides Try/Out patterns to existing interface methods.<br/> |
 
 | Interfaces | |
 | :--- | :--- |
@@ -20,7 +22,6 @@
 | Classes | |
 | :--- | :--- |
 | [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q 'OpenConstructionSet.Data.OcsDataContext') | Multiple mod files can be loaded into a context as base or active items.<br/>Allows the editing and saving of the active mod.<br/> |
-| [OcsDataContextBuilder](jaTbJrj9nKbQhW7+tZRZPg 'OpenConstructionSet.Data.OcsDataContextBuilder') | Used to build [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q 'OpenConstructionSet.Data.OcsDataContext') instances.<br/> |
 
 | Interfaces | |
 | :--- | :--- |
