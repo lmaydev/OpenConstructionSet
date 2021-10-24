@@ -17,7 +17,7 @@ Implements [IModNameResolver](ocgulCoOZ5rxutpWQSp2oA.md 'OpenConstructionSet.IO.
 
 | Properties | |
 | :--- | :--- |
-| [Default](04JpsqNLVDkK2h61BhWNSw.md 'OpenConstructionSet.IO.Discovery.ModNameResolver.Default') | Lazy initiated singlton for when DI is not being used<br/> |
+| [Default](04JpsqNLVDkK2h61BhWNSw.md 'OpenConstructionSet.IO.Discovery.ModNameResolver.Default') | Lazy initiated singleton for when DI is not being used<br/> |
 
 | Methods | |
 | :--- | :--- |

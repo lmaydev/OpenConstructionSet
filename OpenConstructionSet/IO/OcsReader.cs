@@ -123,7 +123,6 @@ public sealed class OcsReader : IDisposable
     /// <summary>
     /// Read a <c>Reference</c> from the data.
     /// </summary>
-    /// <param name="category">A category must be provided as the category data appears before.</param>
     /// <returns>A <c>Reference</c> read from the data.</returns>
     public Reference ReadReference() => new(ReadString(), ReadReferenceValues());
 

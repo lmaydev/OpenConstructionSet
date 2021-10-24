@@ -6,4 +6,4 @@ The references associated with the Item.
 public OpenConstructionSet.Collections.ReferenceCategoryCollection ReferenceCategories { get; set; }
 ```
 #### Property Value
-[OpenConstructionSet.Collections.ReferenceCategoryCollection](https://docs.microsoft.com/en-us/dotnet/api/OpenConstructionSet.Collections.ReferenceCategoryCollection 'OpenConstructionSet.Collections.ReferenceCategoryCollection')
+[ReferenceCategoryCollection](Z_8mczU4ty2AYSnLk19kjA.md 'OpenConstructionSet.Collections.ReferenceCategoryCollection')

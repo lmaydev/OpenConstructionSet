@@ -18,7 +18,7 @@ Implements [IOcsService](pMeR1KBG0zWkoR01rh3e5A.md 'OpenConstructionSet.IOcsServ
 
 | Properties | |
 | :--- | :--- |
-| [Default](WoJL0QxFavF7Hgl0aBIKiw.md 'OpenConstructionSet.OcsService.Default') | Lazy initiated singlton for when DI is not being used<br/> |
+| [Default](WoJL0QxFavF7Hgl0aBIKiw.md 'OpenConstructionSet.OcsService.Default') | Lazy initiated singleton for when DI is not being used<br/> |
 | [SupportedFolderLocators](CclrmW1bn9pvIUNlPrG7Jg.md 'OpenConstructionSet.OcsService.SupportedFolderLocators') | The supported locator IDs.<br/> |
 
 | Methods | |

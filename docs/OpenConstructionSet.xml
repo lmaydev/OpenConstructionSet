@@ -25,25 +25,163 @@
             <param name="type">The type of item to return.</param>
             <returns>All items from the collection with the given type.</returns>
         </member>
-        <member name="T:OpenConstructionSet.Data.IOcsDataContextBuilder">
+        <member name="T:OpenConstructionSet.Collections.InstanceCollection">
             <summary>
-            Used to build <see cref="T:OpenConstructionSet.Data.OcsDataContext"/> instances.
+            A collection of <see cref="T:OpenConstructionSet.Models.Instance"/>s unique by their Id.
             </summary>
         </member>
-        <member name="M:OpenConstructionSet.Data.IOcsDataContextBuilder.Build(System.String,System.Boolean,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo,OpenConstructionSet.Models.ModLoadType,OpenConstructionSet.Models.ModLoadType)">
+        <member name="M:OpenConstructionSet.Collections.InstanceCollection.#ctor">
             <summary>
-            Build a <c>OcsDataContext</c> from the provided information.
+            Create a new empty collection of <see cref="T:OpenConstructionSet.Models.Instance"/>s.
             </summary>
-            <param name="name">The name of the new mod. e.g. example.mod</param>
-            <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
-            <param name="folders">A collection of folders to use when resolving mod names to their path.</param>
-            <param name="baseMods">A collection of mod names or paths to be loaded as base data.</param>
-            <param name="activeMods">A collection of mod names or paths to loaded as active data.</param>
-            <param name="header">The header to use for the mod.</param>
-            <param name="info">The info to use for this mod.</param>
-            <param name="loadGameFiles">If not <c>ModLoadType</c>.None will load the game's base data files as specified.</param>
-            <param name="loadEnabledMods">If not <c>ModLoadType</c>.None will load the game's enabled mod files as specified.</param>
-            <returns>A <see cref="T:OpenConstructionSet.Data.OcsDataContext"/></returns>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.InstanceCollection.#ctor(System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.Instance})">
+            <summary>
+            Build the collection from the provided collection of <see cref="T:OpenConstructionSet.Models.Instance"/>s.
+            </summary>
+            <param name="collection">Collection of items to start with.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.InstanceCollection.GetId(OpenConstructionSet.Models.Instance)">
+            <summary>
+            Return the <see cref="T:OpenConstructionSet.Models.Instance"/>'s <c>Id</c> property.
+            </summary>
+            <param name="item">The item to get the <c>Id</c> from.</param>
+            <returns>The item's <c>Id</c></returns>
+        </member>
+        <member name="T:OpenConstructionSet.Collections.OcsCollection`1">
+            <summary>
+            Custom collection that prevents items with duplicate identifiers being added.
+            </summary>
+            <typeparam name="T">The type of items contained by the collection.</typeparam>
+        </member>
+        <member name="F:OpenConstructionSet.Collections.OcsCollection`1.list">
+            <summary>
+            Internal list storing the items.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.#ctor">
+            <summary>
+            Create a new empty collection.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Create a collection from the provided colleciton.
+            </summary>
+            <param name="collection"></param>
+        </member>
+        <member name="P:OpenConstructionSet.Collections.OcsCollection`1.Item(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Collections.OcsCollection`1.Count">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Collections.OcsCollection`1.IsReadOnly">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.Add(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.Contains(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.CopyTo(`0[],System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.IndexOf(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.Insert(System.Int32,`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.GetId(`0)">
+            <summary>
+            When implemented in child classes will return the identifier of the given item.
+            </summary>
+            <param name="item">The item who's identifier is needed.</param>
+            <returns>The identifier of the provided item.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.Remove(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.RemoveAt(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.FindById(System.String)">
+            <summary>
+            Find an item from it's identifier.
+            </summary>
+            <param name="id">The identifier of the item to look for.</param>
+            <returns>The item with a matching identifier if found; otherwise, <c>null</c></returns>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.FindIndexById(System.String)">
+            <summary>
+            Find the index of an item with the given identifier.
+            </summary>
+            <param name="id">The identifier of the item to look for.</param>
+            <returns>The index of the item with a matching identifier if found; otherwise, <c>-1</c></returns>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.OcsCollection`1.RemoveById(System.String)">
+            <summary>
+            Attempt to remove an item with a matching identifier.
+            </summary>
+            <param name="id">The identifier of the item to remove.</param>
+            <returns><c>true</c> if an item with the match identifier was found and removed; otherwise, <c>false</c></returns>
+        </member>
+        <member name="T:OpenConstructionSet.Collections.ReferenceCategoryCollection">
+            <summary>
+            Collection of <see cref="T:OpenConstructionSet.Models.ReferenceCategory"/> objects unique by their Name.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.ReferenceCategoryCollection.#ctor">
+            <summary>
+            Creates a new empty collection.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.ReferenceCategoryCollection.#ctor(System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ReferenceCategory})">
+            <summary>
+            Build the collection from the provided collection of <see cref="T:OpenConstructionSet.Models.ReferenceCategory"/> objects.
+            </summary>
+            <param name="collection">Collection of items to start with.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.ReferenceCategoryCollection.GetId(OpenConstructionSet.Models.ReferenceCategory)">
+            <summary>
+            Return the <see cref="T:OpenConstructionSet.Models.ReferenceCategory"/>'s <c>Name</c> property.
+            </summary>
+            <param name="item">The item to get the <c>Name</c> from.</param>
+            <returns>The item's <c>Name</c></returns>
+        </member>
+        <member name="T:OpenConstructionSet.Collections.ReferenceCollection">
+            <summary>
+            A collection of <see cref="T:OpenConstructionSet.Models.Reference"/>s unique by their TargetId.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.ReferenceCollection.#ctor">
+            <summary>
+            Create a new empty collection of <see cref="T:OpenConstructionSet.Models.Reference"/>s.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.ReferenceCollection.#ctor(System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.Reference})">
+            <summary>
+            Build the collection from the provided collection of <see cref="T:OpenConstructionSet.Models.Reference"/>s.
+            </summary>
+            <param name="collection">Collection of items to start with.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Collections.ReferenceCollection.GetId(OpenConstructionSet.Models.Reference)">
+            <summary>
+            Return the <see cref="T:OpenConstructionSet.Models.Reference"/>'s <c>TargetId</c> property.
+            </summary>
+            <param name="item">The item to get the <c>TargetID</c> from.</param>
+            <returns>The item's <c>TargetId</c></returns>
         </member>
         <member name="T:OpenConstructionSet.Data.OcsDataContext">
             <summary>
@@ -107,6 +245,26 @@
             Saves the active mod into the given folder.
             </summary>
             <param name="folder">The mod folder to save to.</param>
+        </member>
+        <member name="T:OpenConstructionSet.IOcsDataContextBuilder">
+            <summary>
+            Used to build <see cref="T:OpenConstructionSet.Data.OcsDataContext"/> instances.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IOcsDataContextBuilder.Build(System.String,System.Boolean,System.Collections.Generic.IEnumerable{OpenConstructionSet.Models.ModFolder},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},OpenConstructionSet.Models.Header,OpenConstructionSet.Models.ModInfo,OpenConstructionSet.Models.ModLoadType,OpenConstructionSet.Models.ModLoadType)">
+            <summary>
+            Build a <c>OcsDataContext</c> from the provided information.
+            </summary>
+            <param name="name">The name of the new mod. e.g. example.mod</param>
+            <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
+            <param name="folders">A collection of folders to use when resolving mod names to their path.</param>
+            <param name="baseMods">A collection of mod names or paths to be loaded as base data.</param>
+            <param name="activeMods">A collection of mod names or paths to loaded as active data.</param>
+            <param name="header">The header to use for the mod.</param>
+            <param name="info">The info to use for this mod.</param>
+            <param name="loadGameFiles">If not <c>ModLoadType</c>.None will load the game's base data files as specified.</param>
+            <param name="loadEnabledMods">If not <c>ModLoadType</c>.None will load the game's enabled mod files as specified.</param>
+            <returns>A <see cref="T:OpenConstructionSet.Data.OcsDataContext"/></returns>
         </member>
         <member name="T:OpenConstructionSet.IOcsService">
             <summary>
@@ -181,7 +339,7 @@
         </member>
         <member name="P:OpenConstructionSet.IO.Discovery.GogFolderLocator.Default">
             <summary>
-            Lazy initiated singlton for when DI is not being used
+            Lazy initiated singleton for when DI is not being used
             </summary>
         </member>
         <member name="P:OpenConstructionSet.IO.Discovery.GogFolderLocator.Id">
@@ -239,7 +397,7 @@
         </member>
         <member name="P:OpenConstructionSet.IO.Discovery.LocalFolderLocator.Default">
             <summary>
-            Lazy initiated singlton for when DI is not being used
+            Lazy initiated singleton for when DI is not being used
             </summary>
         </member>
         <member name="P:OpenConstructionSet.IO.Discovery.LocalFolderLocator.Id">
@@ -253,7 +411,7 @@
         </member>
         <member name="P:OpenConstructionSet.IO.Discovery.ModNameResolver.Default">
             <summary>
-            Lazy initiated singlton for when DI is not being used
+            Lazy initiated singleton for when DI is not being used
             </summary>
         </member>
         <member name="M:OpenConstructionSet.IO.Discovery.ModNameResolver.#ctor(OpenConstructionSet.IOcsService)">
@@ -275,7 +433,7 @@
         </member>
         <member name="P:OpenConstructionSet.IO.Discovery.SteamFolderLocator.Default">
             <summary>
-            Lazy initiated singlton for when DI is not being used
+            Lazy initiated singleton for when DI is not being used
             </summary>
         </member>
         <member name="P:OpenConstructionSet.IO.Discovery.SteamFolderLocator.Id">
@@ -422,7 +580,6 @@
             <summary>
             Read a <c>Reference</c> from the data.
             </summary>
-            <param name="category">A category must be provided as the category data appears before.</param>
             <returns>A <c>Reference</c> read from the data.</returns>
         </member>
         <member name="M:OpenConstructionSet.IO.OcsReader.ReadReferenceValues">
@@ -1026,6 +1183,27 @@
             <param name="TargetId">The StringId of the item being referenced</param>
             <param name="Values">The values assigned to this reference.</param>
         </member>
+        <member name="T:OpenConstructionSet.Models.ReferenceCategory">
+            <summary>
+            A collection of references grouped by a category name.
+            </summary>
+            <param name="Name">The name of the category.</param>
+            <param name="References">The references contained within this category.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.ReferenceCategory.#ctor(System.String,OpenConstructionSet.Collections.ReferenceCollection)">
+            <summary>
+            A collection of references grouped by a category name.
+            </summary>
+            <param name="Name">The name of the category.</param>
+            <param name="References">The references contained within this category.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Models.ReferenceCategory.#ctor(OpenConstructionSet.Models.ReferenceCategory)">
+            <summary>
+            Copy constructor.
+            Creates a new instance from the original.
+            </summary>
+            <param name="original"></param>
+        </member>
         <member name="T:OpenConstructionSet.Models.ReferenceValues">
             <summary>
             Represents the values assigned to a <see cref="T:OpenConstructionSet.Models.Reference"/> in the game data files.
@@ -1166,7 +1344,7 @@
         </member>
         <member name="P:OpenConstructionSet.OcsDataContextBuilder.Default">
             <summary>
-            Lazy initiated singlton for when DI is not being used
+            Lazy initiated singleton for when DI is not being used
             </summary>
         </member>
         <member name="M:OpenConstructionSet.OcsDataContextBuilder.#ctor(OpenConstructionSet.IOcsService,OpenConstructionSet.IO.Discovery.IModNameResolver)">
@@ -1199,7 +1377,7 @@
         </member>
         <member name="P:OpenConstructionSet.OcsService.Default">
             <summary>
-            Lazy initiated singlton for when DI is not being used
+            Lazy initiated singleton for when DI is not being used
             </summary>
         </member>
         <member name="P:OpenConstructionSet.OcsService.SupportedFolderLocators">

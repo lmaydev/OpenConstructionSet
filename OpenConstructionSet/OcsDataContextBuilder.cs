@@ -9,7 +9,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
     private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsService.Default, ModNameResolver.Default));
 
     /// <summary>
-    /// Lazy initiated singlton for when DI is not being used
+    /// Lazy initiated singleton for when DI is not being used
     /// </summary>
     public static OcsDataContextBuilder Default => _default.Value;
 

@@ -6,7 +6,7 @@ public class ModNameResolver : IModNameResolver
     private static readonly Lazy<ModNameResolver> _default = new(() => new(OcsService.Default));
 
     /// <summary>
-    /// Lazy initiated singlton for when DI is not being used
+    /// Lazy initiated singleton for when DI is not being used
     /// </summary>
     public static ModNameResolver Default => _default.Value;
 

@@ -159,7 +159,7 @@ public sealed class Item
         {
             usedKeys.Add(instance.Id);
 
-            var baseIndex = baseItem.Instances.IndexOfId(instance.Id);
+            var baseIndex = baseItem.Instances.FindIndexById(instance.Id);
 
             if (baseIndex == -1 || baseItem.Instances[baseIndex] != instance)
             {

@@ -14,7 +14,18 @@
 
 | Interfaces | |
 | :--- | :--- |
+| [IOcsDataContextBuilder](r4RI8NnQPrFwlGRexUtVqQ.md 'OpenConstructionSet.IOcsDataContextBuilder') | Used to build [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext') instances.<br/> |
 | [IOcsService](pMeR1KBG0zWkoR01rh3e5A.md 'OpenConstructionSet.IOcsService') | The main service for the OpenConstructionSet.<br/>Provides discovery and some saving/loading functions.<br/> |
+  
+<a name='OpenConstructionSet_Collections'></a>
+## OpenConstructionSet.Collections Namespace
+
+| Classes | |
+| :--- | :--- |
+| [InstanceCollection](j8W5ea9+YYuv04AThMEs_w.md 'OpenConstructionSet.Collections.InstanceCollection') | A collection of [Instance](NhOPiCtebmQnk5Ll2Sv0og.md 'OpenConstructionSet.Models.Instance')s unique by their Id.<br/> |
+| [OcsCollection&lt;T&gt;](CpJitxHTJ7jJqLOu30sQbg.md 'OpenConstructionSet.Collections.OcsCollection&lt;T&gt;') | Custom collection that prevents items with duplicate identifiers being added.<br/> |
+| [ReferenceCategoryCollection](Z_8mczU4ty2AYSnLk19kjA.md 'OpenConstructionSet.Collections.ReferenceCategoryCollection') | Collection of [ReferenceCategory](FGzdlKUriLoI15zgK9th4g.md 'OpenConstructionSet.Models.ReferenceCategory') objects unique by their Name.<br/> |
+| [ReferenceCollection](A_iVrzvkVjBWCRYQ141Zbw.md 'OpenConstructionSet.Collections.ReferenceCollection') | A collection of [Reference](keNdBWwXoST05c_g6wF_4w.md 'OpenConstructionSet.Models.Reference')s unique by their TargetId.<br/> |
   
 <a name='OpenConstructionSet_Data'></a>
 ## OpenConstructionSet.Data Namespace
@@ -22,10 +33,6 @@
 | Classes | |
 | :--- | :--- |
 | [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext') | Multiple mod files can be loaded into a context as base or active items.<br/>Allows the editing and saving of the active mod.<br/> |
-
-| Interfaces | |
-| :--- | :--- |
-| [IOcsDataContextBuilder](wggJ0NkCl5tSu595OCPJxA.md 'OpenConstructionSet.Data.IOcsDataContextBuilder') | Used to build [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext') instances.<br/> |
   
 <a name='OpenConstructionSet_IO'></a>
 ## OpenConstructionSet.IO Namespace
@@ -67,6 +74,7 @@
 | [ModFolder](0h0FW6YI9iSflrhSD7PySw.md 'OpenConstructionSet.Models.ModFolder') | Representation of a mod folder.<br/>Provides methods for discovery and working with the contained mods.<br/> |
 | [ModInfo](h0vCAhsmAC6iWOaLYw25cg.md 'OpenConstructionSet.Models.ModInfo') | POCO class representing a mod's info file.<br/> |
 | [Reference](keNdBWwXoST05c_g6wF_4w.md 'OpenConstructionSet.Models.Reference') | Represents a reference from a game data files.<br/> |
+| [ReferenceCategory](FGzdlKUriLoI15zgK9th4g.md 'OpenConstructionSet.Models.ReferenceCategory') | A collection of references grouped by a category name.<br/> |
 | [ReferenceValues](12EeLen8x83ZM11p+0cSKw.md 'OpenConstructionSet.Models.ReferenceValues') | Represents the values assigned to a [Reference](keNdBWwXoST05c_g6wF_4w.md 'OpenConstructionSet.Models.Reference') in the game data files.<br/> |
 | [Save](lSeaf7mywqVjOzlI14k6Ow.md 'OpenConstructionSet.Models.Save') | Represents a single save directory structure.<br/> |
 | [SaveFolder](V_zortZPS59vW0ZEiqO+Gg.md 'OpenConstructionSet.Models.SaveFolder') | Represents the game's save folder.<br/> |

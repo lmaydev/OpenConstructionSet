@@ -6,4 +6,4 @@ The instances associated with the Item.
 public OpenConstructionSet.Collections.InstanceCollection Instances { get; set; }
 ```
 #### Property Value
-[OpenConstructionSet.Collections.InstanceCollection](https://docs.microsoft.com/en-us/dotnet/api/OpenConstructionSet.Collections.InstanceCollection 'OpenConstructionSet.Collections.InstanceCollection')
+[InstanceCollection](j8W5ea9+YYuv04AThMEs_w.md 'OpenConstructionSet.Collections.InstanceCollection')

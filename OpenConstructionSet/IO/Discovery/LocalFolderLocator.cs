@@ -10,7 +10,7 @@ public class LocalFolderLocator : IInstallationLocator
     private static readonly Lazy<LocalFolderLocator> _default = new(() => new());
 
     /// <summary>
-    /// Lazy initiated singlton for when DI is not being used
+    /// Lazy initiated singleton for when DI is not being used
     /// </summary>
     public static LocalFolderLocator Default => _default.Value;
 

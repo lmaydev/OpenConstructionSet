@@ -11,7 +11,7 @@ public class GogFolderLocator : IInstallationLocator
     private static readonly Lazy<GogFolderLocator> _default = new(() => new());
 
     /// <summary>
-    /// Lazy initiated singlton for when DI is not being used
+    /// Lazy initiated singleton for when DI is not being used
     /// </summary>
     public static GogFolderLocator Default => _default.Value;
 

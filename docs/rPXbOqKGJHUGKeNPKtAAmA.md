@@ -13,7 +13,7 @@ Implements [IInstallationLocator](bMvjGP8yI9R4AfcWyvP7gQ.md 'OpenConstructionSet
 
 | Properties | |
 | :--- | :--- |
-| [Default](7fCyafFE4AOj_EYilY304g.md 'OpenConstructionSet.IO.Discovery.LocalFolderLocator.Default') | Lazy initiated singlton for when DI is not being used<br/> |
+| [Default](7fCyafFE4AOj_EYilY304g.md 'OpenConstructionSet.IO.Discovery.LocalFolderLocator.Default') | Lazy initiated singleton for when DI is not being used<br/> |
 | [Id](Tv3mcoHT33E64PPIlq8i5g.md 'OpenConstructionSet.IO.Discovery.LocalFolderLocator.Id') | The unique identifier for this locator.<br/> |
 
 | Methods | |

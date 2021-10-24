@@ -1,4 +1,4 @@
-﻿namespace OpenConstructionSet.Data;
+﻿namespace OpenConstructionSet;
 
 /// <summary>
 /// Used to build <see cref="OcsDataContext"/> instances.

@@ -17,7 +17,7 @@ public class OcsService : IOcsService
     }));
 
     /// <summary>
-    /// Lazy initiated singlton for when DI is not being used
+    /// Lazy initiated singleton for when DI is not being used
     /// </summary>
     public static OcsService Default => _default.Value;
 

@@ -90,9 +90,10 @@ The first 3 are represented as `ModFolder` objects. These contain information ab
 The `Save` property is a `SaveFolder` object and contains information about the contained saves and their folder structure.
 
 ### Structure of a Data File.
- - LastId - the last number used to generate a StringID for an item e.g. 17-gamedata.quack for Greenlander.
+ - Type - Integer indicating the type of the file. Currently 15 (save) and 16 (mod) are supported.
+ - LastId - The last number used to generate a StringID for an item e.g. 17-gamedata.quack for Greenlander.
  - Header - Only included in mod files (Type 16) contains the meta data that is displayed in the launcher.
- - Items - collection of data items representing all in game entities. e.g. Building, Stats, Race
+ - Items - Collection of data items representing all in game entities. e.g. Building, Stats, Race
 
 ### The OcsDataContext
 
@@ -118,6 +119,7 @@ This method takes all the required information and uses it to build a data conte
  - header - contains the meta data shown in the launcher (i.e. author, version, dependencies etc)
  - info - contains additional information about the mod. This takes the form of the .info file that is used for Steam Workshop et al.
  - loadGameFiles - if set to `ModLoadType.Active` or `ModLoadType.Base` the game's data files will be loaded into the context as specified. Passing `ModLoadType.None` will cause them not to be loaded.
+ - loadEnabledMods - As above but it will load the enabled mods in load order.
 
 The following example builds the base data from the game's data files and all enabled mods whilst ignoring missing mods.
 
@@ -146,7 +148,7 @@ Save files include .save, .zone, .platoon and .level
     var (lastId, items) = new OcsReader(File.ReadAllBytes(@"\path\to\file")).ReadSave();
 ##### Save
     using var stream = File.Create(@"\path\to\file");
-    new OcsWriter(stream).WriteSave(lastId, items.Values);
+    new OcsWriter(stream).WriteSave(lastId, items);
 
 #### Mod files (Type 16)
 Mod files include .base and .mod
@@ -155,7 +157,7 @@ Mod files include .base and .mod
     var (lastId, header, items) = new OcsReader(File.ReadAllBytes(@"\path\to\file")).ReadMod();
 ##### Save
     using var stream = File.Create(@"\path\to\file");
-    new OcsWriter(stream).WriteMod(lastId, header, items.Values);
+    new OcsWriter(stream).WriteMod(lastId, header, items);
 
 #### Mod .info file
 Many mods come with an additional .info file that contains information used by Steam Workshop and others applications.

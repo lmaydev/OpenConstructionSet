@@ -4,12 +4,12 @@
 Used to build [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext') instances.  
 ```csharp
 public class OcsDataContextBuilder :
-OpenConstructionSet.Data.IOcsDataContextBuilder
+OpenConstructionSet.IOcsDataContextBuilder
 ```
 
 Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; OcsDataContextBuilder  
 
-Implements [IOcsDataContextBuilder](wggJ0NkCl5tSu595OCPJxA.md 'OpenConstructionSet.Data.IOcsDataContextBuilder')  
+Implements [IOcsDataContextBuilder](r4RI8NnQPrFwlGRexUtVqQ.md 'OpenConstructionSet.IOcsDataContextBuilder')  
 
 | Constructors | |
 | :--- | :--- |
@@ -17,7 +17,7 @@ Implements [IOcsDataContextBuilder](wggJ0NkCl5tSu595OCPJxA.md 'OpenConstructionS
 
 | Properties | |
 | :--- | :--- |
-| [Default](ZOofc9eXLyzJ8GlzWL6tXw.md 'OpenConstructionSet.OcsDataContextBuilder.Default') | Lazy initiated singlton for when DI is not being used<br/> |
+| [Default](ZOofc9eXLyzJ8GlzWL6tXw.md 'OpenConstructionSet.OcsDataContextBuilder.Default') | Lazy initiated singleton for when DI is not being used<br/> |
 
 | Methods | |
 | :--- | :--- |

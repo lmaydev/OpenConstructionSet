@@ -12,7 +12,7 @@ public class SteamFolderLocator : IInstallationLocator
     private static readonly Lazy<SteamFolderLocator> _default = new(() => new());
 
     /// <summary>
-    /// Lazy initiated singlton for when DI is not being used
+    /// Lazy initiated singleton for when DI is not being used
     /// </summary>
     public static SteamFolderLocator Default => _default.Value;
 
