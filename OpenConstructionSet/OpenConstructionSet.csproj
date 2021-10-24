@@ -12,9 +12,9 @@
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Docs' ">
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>$(SolutionDir)/docs/api/OpenConstructionSet.xml</DocumentationFile>
+		<DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
 		<DefaultDocumentationFileNameMode>Md5</DefaultDocumentationFileNameMode>
-		<DefaultDocumentationRemoveFileExtensionFromLinks>true</DefaultDocumentationRemoveFileExtensionFromLinks>
+		<DefaultDocumentationRemoveFileExtensionFromLinks>false</DefaultDocumentationRemoveFileExtensionFromLinks>
 		<DefaultDocumentationGeneratedPages>Types, Members</DefaultDocumentationGeneratedPages>
 	</PropertyGroup>
 	

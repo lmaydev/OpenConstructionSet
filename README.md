@@ -6,6 +6,8 @@ The OCS is a modding SDK for [Kenshi](https://lofigames.com/) written in C#
 It provides services for dealing with the various folders and data files used by the game.
 As well as providing a managed context for loading multiple mods for editing (Similar to FCS)
 
+[Documentation](docs/index.md)
+
 ## Features
 
  - Load, edit and save the game's data files. Currently supports .mod, .info, .base, .save, .zone, .platoon, .level.
@@ -34,6 +36,7 @@ This will setup `IOcsService` and `IOcsDataContextBuilder` for injection.
 While the project is designed to be used with dependency injection there is a secondary system for use if that isn't desirable.
 
 All services provide a static lazy initialized singleton property called Default.
+
 This property when first accessed will in turn access the Default property of it's dependencies to build an instance.
 After this first call all subsequent calls will return the same instance.
 
@@ -77,22 +80,19 @@ The `EnabledMods` property contains the enabled mods in load order.
 
 It will contain up to 4 folders depending on which exist.
 
- 1. `Data` - The data folder stores the game's base data files and configuration files.
- 2. `Mods` - The standard mod folder.
- 3. `Content` (Optional) - Currently used for storing the Steam Workshop content folder.
- 4. `Save` (Optional) - This refers to old style save directory located in the game's root folder.
+ - `Data` - The data folder stores the game's base data files and configuration files.
+ - `Mods` - The standard mod folder.
+ - `Content` (Optional) - Currently used for storing the Steam Workshop content folder.
+ - `Save` (Optional) - This refers to old style save directory located in the game's root folder.
 
-The first 3 are represented as `ModFolder` objects.
-These contain information about the mods within the folder. Including header, info and full path.
+The first 3 are represented as `ModFolder` objects. These contain information about the mods within the folder. Including header, info and full path.
 
 The `Save` property is a `SaveFolder` object and contains information about the contained saves and their folder structure.
 
 ### Structure of a Data File.
-LastId - the last number used to generate a StringID for an item e.g. 17-gamedata.quack for Greenlander
-Header - Only included in mod files (Type 16) contains the meta data that is displayed in the launcher.
-Items - collection of data items representing all in game entities. e.g. Building, Stats, Race
-
-When OCS reads data files the Items are returned as a dictionary keyed by their StringID.
+ - LastId - the last number used to generate a StringID for an item e.g. 17-gamedata.quack for Greenlander.
+ - Header - Only included in mod files (Type 16) contains the meta data that is displayed in the launcher.
+ - Items - collection of data items representing all in game entities. e.g. Building, Stats, Race
 
 ### The OcsDataContext
 
@@ -123,17 +123,15 @@ The following example builds the base data from the game's data files and all en
 
     var installation = OcsService.Default.FindInstallation() ?? throw new Exception("Game not found");
     
-    var enabledMods = OcsService.Default.ReadLoadOrder(installation.Data.FullName);
-    
     var context = OcsDataContextBuilder.Default.Build(
-	    "Mod Name",
-	    throwIfMissing: false,
-	    folders: installation.ToModFolderArray(),
-	    baseMods: enabledMods,
-	    activeMods: new[] { "active.mod" },
-	    header: new Header(1, "LMayDev", "Description"),
-	    info: new ModInfo(0, "Name", "Title", OcsConstants.InfoTags[1..2], 0, DateTime.Now),
-	    loadGameFiles: ModLoadType.Base);
+        "Mod Name",
+        throwIfMissing: false,
+        folders: installation.ToModFolderArray(),
+        activeMods: new[] { "active.mod" },
+        header: new Header(1, "LMayDev", "Description"),
+        info: new ModInfo(0, "Name", "Title", OcsConstants.InfoTags[1..2], 0, DateTime.Now),
+        loadGameFiles: ModLoadType.Base,
+        loadEnabledMods: ModLoadType.Base);
     
     // edit context.Items here
     
@@ -172,6 +170,7 @@ Many mods come with an additional .info file that contains information used by S
 
 #### Load Order / Enabled mods
 This refers to the mods that are ticked in the launcher and their order.
+
 They can be accessed from an `Installation` object or accessed manually as below.
 
 ##### Load
