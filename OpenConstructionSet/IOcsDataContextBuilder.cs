@@ -10,7 +10,7 @@ public interface IOcsDataContextBuilder
     /// </summary>
     /// <param name="name">The name of the new mod. e.g. example.mod</param>
     /// <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
-    /// <param name="folders">A collection of folders to use when resolving mod names to their path.</param>
+    /// <param name="installation">Game installation to use. If null an attempt will be made to discover one.</param>
     /// <param name="baseMods">A collection of mod names or paths to be loaded as base data.</param>
     /// <param name="activeMods">A collection of mod names or paths to loaded as active data.</param>
     /// <param name="header">The header to use for the mod.</param>
@@ -20,7 +20,7 @@ public interface IOcsDataContextBuilder
     /// <returns>A <see cref="OcsDataContext"/></returns>
     OcsDataContext Build(string name,
                          bool throwIfMissing = true,
-                         IEnumerable<ModFolder>? folders = null,
+                         Installation? installation = null,
                          IEnumerable<string>? baseMods = null,
                          IEnumerable<string>? activeMods = null,
                          Header? header = null,

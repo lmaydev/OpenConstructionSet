@@ -107,7 +107,7 @@ var info = new ModInfo(0, ModName, ModName, new[] { "Gameplay" }, 0, DateTime.Ut
 
 var context = OcsDataContextBuilder.Default.Build(
     ModFileName,
-    folders: installation.ToModFolderArray(),
+    installation: installation,
     baseMods: baseMods,
     header: header,
     info: info,
@@ -136,18 +136,17 @@ foreach (var race in races)
 Console.WriteLine();
 Console.Write("Saving... ");
 
-context.Save(installation.Mod);
+context.Save();
 
 Console.WriteLine("done");
-
-var enabledMods = installation.EnabledMods.ToList();
-
-enabledMods.RemoveAll(s => s == ModFileName);
-enabledMods.Add(ModFileName);
-
-OcsDiscoveryService.Default.SaveLoadOrder(installation.Data.FullName, enabledMods);
-
 Console.WriteLine();
+
+// Remove this mod and then add to the end of the load order.
+installation.EnabledMods.RemoveAll(s => s == ModFileName);
+installation.EnabledMods.Add(ModFileName);
+
+OcsIOService.Default.SaveEnabledMods(installation);
+
 Console.WriteLine("Added patch to end of load order");
 
 Console.Write("Press any key to exit...");

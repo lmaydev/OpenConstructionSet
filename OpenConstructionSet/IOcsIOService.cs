@@ -42,17 +42,24 @@ public interface IOcsIOService
     void Write(ModInfo info, Stream stream);
 
     /// <summary>
-    /// Attempts to read the load order file. This file is contained in the game's data folder.
+    /// Attempts to read the enabled mods and load order from the specified file.
     /// </summary>
-    /// <param name="folder">Data folder to find the file in.</param>
-    /// <returns>The collection of mod names from the load order. If the file cannot be found <c>null</c> is returned.</returns>
-    string[]? ReadLoadOrder(string folder);
+    /// <param name="file">The file containing the enabled mods and load order.</param>
+    /// <returns>A collection of enabled mod names in load order. If the file cannot be found <c>null</c> is returned.</returns>
+    string[]? ReadEnabledMods(string file);
 
     /// <summary>
     /// Save a collection of mod names to the load order file. This file is contained in the game's data folder.
     /// </summary>
-    /// <param name="folder">Data folder to find the file in.</param>
-    /// <param name="loadOrder">List of mod names.</param>
-    /// <returns></returns>
-    bool SaveLoadOrder(string folder, IEnumerable<string> loadOrder);
+    /// <param name="file">The file to store the enabled mods and load order to.</param>
+    /// <param name="mods">List of enabled mod names in load order.</param>
+    /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
+    void SaveEnabledMods(string file, IEnumerable<string> mods);
+
+    /// <summary>
+    /// Save the enabled mods and load order for this installation to file.
+    /// </summary>
+    /// <param name="installation">The installation who's enabled mods and load order should be saved.</param>
+    /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
+    void SaveEnabledMods(Installation installation);
 }

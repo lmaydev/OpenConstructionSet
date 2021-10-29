@@ -8,11 +8,13 @@
 		<DebugType>embedded</DebugType>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Configurations>Debug;Release;Docs</Configurations>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
+		<DisableDefaultDocumentation>true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Docs' ">
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
+		<DisableDefaultDocumentation>false</DisableDefaultDocumentation>
 		<DefaultDocumentationFileNameMode>Md5</DefaultDocumentationFileNameMode>
 		<DefaultDocumentationRemoveFileExtensionFromLinks>false</DefaultDocumentationRemoveFileExtensionFromLinks>
 		<DefaultDocumentationGeneratedPages>Types, Members</DefaultDocumentationGeneratedPages>

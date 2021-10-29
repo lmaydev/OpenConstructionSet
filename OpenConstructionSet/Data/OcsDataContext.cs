@@ -9,6 +9,7 @@ namespace OpenConstructionSet.Data;
 public class OcsDataContext
 {
     private readonly IOcsIOService ioService;
+    private readonly Installation installation;
     private readonly Dictionary<string, Item> baseItems;
 
     /// <summary>
@@ -40,15 +41,17 @@ public class OcsDataContext
     /// Creates a new OcsDataContext instance.
     /// </summary>
     /// <param name="ioService">The IO service.</param>
+    /// <param name="installation">The installation to use.</param>
     /// <param name="items">The active data for editing.</param>
     /// <param name="baseItems">The base data.</param>
     /// <param name="modName">The name of the mod.</param>
     /// <param name="lastId">The last used ID. This should be the largest from all the mods loaded.</param>
     /// <param name="header">An optional header for the active mod.</param>
     /// <param name="info">Optional values the mod's info file.</param>
-    public OcsDataContext(IOcsIOService ioService, Dictionary<string, Item> items, Dictionary<string, Item> baseItems, string modName, int lastId, Header? header = null, ModInfo? info = null)
+    public OcsDataContext(IOcsIOService ioService, Installation installation, Dictionary<string, Item> items, Dictionary<string, Item> baseItems, string modName, int lastId, Header? header = null, ModInfo? info = null)
     {
         this.ioService = ioService;
+        this.installation = installation;
         Items = items;
         this.baseItems = baseItems;
         ModName = modName.AddModExtension();
@@ -138,4 +141,9 @@ public class OcsDataContext
     /// </summary>
     /// <param name="folder">The mod folder to save to.</param>
     public void Save(ModFolder folder) => Save(OcsPathHelper.GetModPath(folder, ModName));
+
+    /// <summary>
+    /// Saves the active mod into the installation's mod folder.
+    /// </summary>
+    public void Save() => Save(installation.Mod);
 }

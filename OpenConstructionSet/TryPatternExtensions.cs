@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OpenConstructionSet;
 
@@ -8,17 +8,17 @@ namespace OpenConstructionSet;
 public static class TryPatternExtensions
 {
     /// <summary>
-    /// Attempts to read the load order file. This file is contained in the game's data folder.
+    /// Attempts to read the enabled mods and load order from file in the given directory. This should the be the game's data folder.
     /// </summary>
-    /// <param name="service">The service to call the method on.</param>
+    /// <param name="service">The service to wrap.</param>
     /// <param name="folder">Data folder to find the file in.</param>
     /// <param name="enabledMods">If successful will contain the collection of mod names from the load order.</param>
     /// <returns><c>true</c> if the load order can be read.</returns>
-    public static bool TryReadLoadOrder(this IOcsIOService service, string folder, [MaybeNullWhen(false)] out string[] enabledMods)
+    public static bool TryReadEnabledMods(this IOcsIOService service, string folder, [MaybeNullWhen(false)] out string[] enabledMods)
     {
         try
         {
-            enabledMods = service.ReadLoadOrder(folder);
+            enabledMods = service.ReadEnabledMods(folder);
 
             return enabledMods is not null;
         }
@@ -34,7 +34,7 @@ public static class TryPatternExtensions
     /// <summary>
     /// Attempts to read the header of the provided file.
     /// </summary>
-    /// <param name="service">The service to call the method on.</param>
+    /// <param name="service">The service to wrap.</param>
     /// <param name="path">The path of the mod file.</param>
     /// <param name="header">Will contain the read header if successful.</param>
     /// <returns><c>true</c> if header can be read.</returns>

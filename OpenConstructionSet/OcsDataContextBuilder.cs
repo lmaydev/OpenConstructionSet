@@ -1,5 +1,4 @@
-﻿using OpenConstructionSet.IO;
-using OpenConstructionSet.IO.Discovery;
+﻿using OpenConstructionSet.IO.Discovery;
 
 namespace OpenConstructionSet;
 
@@ -13,41 +12,30 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
     /// </summary>
     public static OcsDataContextBuilder Default => _default.Value;
 
-    private readonly IOcsDiscoveryService ocsService;
+    private readonly IOcsDiscoveryService discoveryService;
     private readonly IOcsIOService ioService;
     private readonly IModNameResolver resolver;
 
     /// <summary>
     /// Creates a new OcsDataContextBuilder instance.
     /// </summary>
-    /// <param name="ocsService">Used to read enabled mod list.</param>
+    /// <param name="discoveryService">Used to read enabled mod list.</param>
     /// <param name="ioService">Used to read files.</param>
     /// <param name="resolver">Used to resolve mod names to full paths.</param>
-    public OcsDataContextBuilder(IOcsDiscoveryService ocsService, IOcsIOService ioService, IModNameResolver resolver)
+    public OcsDataContextBuilder(IOcsDiscoveryService discoveryService, IOcsIOService ioService, IModNameResolver resolver)
     {
-        this.ocsService = ocsService;
+        this.discoveryService = discoveryService;
         this.ioService = ioService;
         this.resolver = resolver;
     }
 
-    /// <summary>
-    /// Builds a <see cref="OcsDataContext"/> from the provided options
-    /// </summary>
-    /// <param name="name">The name of the mod e.g. example.mod</param>
-    /// <param name="throwIfMissing">If <c>true</c> missing mods will cause exceptions to be thrown.</param>
-    /// <param name="folders">A collection of folders used when resolving mod names. If loading game files <c>folders</c> can not be <c>null</c>.</param>
-    /// <param name="baseMods">A collection of mods to load as the base data.</param>
-    /// <param name="activeMods">A collection of mods to load as active. When saving data from these mods will be saved along with any changes.</param>
-    /// <param name="header">Header for the new mod.</param>
-    /// <param name="info">Values for the mod's info file.</param>
-    /// <param name="loadGameFiles">If not <c>None</c> the base game files will be loaded as specified.</param>
-    /// <param name="loadEnabledMods">If not <c>ModLoadType</c>.None will load the game's enabled mod files as specified.</param>
-    /// <returns>An OcsDataContext built from the provided values.</returns>
-    public OcsDataContext Build(string name, bool throwIfMissing = true, IEnumerable<ModFolder>? folders = null, IEnumerable<string>? baseMods = null,
+    /// <inheritdoc />
+    public OcsDataContext Build(string name, bool throwIfMissing = true, Installation? installation = null, IEnumerable<string>? baseMods = null,
         IEnumerable<string>? activeMods = null, Header? header = null, ModInfo? info = null, ModLoadType loadGameFiles = ModLoadType.None,
         ModLoadType loadEnabledMods = ModLoadType.None)
     {
-        folders ??= Enumerable.Empty<ModFolder>();
+        // if installation is null try and discover one. If this returns null throw an exception
+        installation ??= discoveryService.FindInstallation() ?? throw new Exception("Could not locate game");
 
         var baseModFiles = baseMods is not null ? Resolve(baseMods) : Enumerable.Empty<ModFile>();
         var activeModFiles = activeMods is not null ? Resolve(activeMods) : Enumerable.Empty<ModFile>();
@@ -98,7 +86,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
             }
         }
 
-        return new OcsDataContext(ioService, items, baseItems, name, lastId, header, info);
+        return new OcsDataContext(ioService, installation, items, baseItems, name, lastId, header, info);
 
         void ReadFile(ModFile file, bool active)
         {
@@ -148,24 +136,12 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
 
         void LoadEnabledMods(bool active)
         {
-            var loadOrder = folders.Select(f => ioService.ReadLoadOrder(f.FullName)).FirstOrDefault(lo => lo is not null);
-
-            if (loadOrder is null)
-            {
-                if (throwIfMissing)
-                {
-                    throw new Exception("Could not read enabled mods");
-                }
-
-                return;
-            }
-
-            var mods = Resolve(loadOrder);
+            var mods = Resolve(installation.EnabledMods);
         }
 
         IEnumerable<ModFile> Resolve(IEnumerable<string> mods)
         {
-            return resolver.Resolve(folders, mods, throwIfMissing).DistinctBy(m => m.Name);
+            return resolver.Resolve(installation.ToModFolderArray(), mods, throwIfMissing).DistinctBy(m => m.Name);
         }
     }
 }

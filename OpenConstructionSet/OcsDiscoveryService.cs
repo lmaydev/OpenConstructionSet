@@ -91,7 +91,9 @@ public class OcsDiscoveryService : IOcsDiscoveryService
 
         var save = Directory.Exists(discovered.Save) ? DiscoverSaveFolder(discovered.Save) : null;
 
-        return new(discovered.Installation, ioService.ReadLoadOrder(data.FullName) ?? Array.Empty<string>(), data, mod, content, save);
+        var enabledMods = ioService.ReadEnabledMods(Path.Combine(data.FullName, OcsConstants.EnabledModFile))?.ToList() ?? new();
+
+        return new(discovered.Installation, enabledMods, data, mod, content, save);
     }
 
     /// <summary>

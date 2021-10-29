@@ -38,4 +38,9 @@ public static class OcsConstants
     /// The default location of the save folder.
     /// </summary>
     public static readonly string DefaultSaveFolder = Path.Combine(GetFolderPath(SpecialFolder.LocalApplicationData), "kenshi", "save");
+
+    /// <summary>
+    /// The name of the file that stores the enabled mods and load order.
+    /// </summary>
+    public static readonly string EnabledModFile = "mods.cfg";
 }
