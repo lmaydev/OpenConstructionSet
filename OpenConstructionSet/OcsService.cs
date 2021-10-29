@@ -9,7 +9,7 @@ namespace OpenConstructionSet;
 /// </summary>
 public class OcsService : IOcsService
 {
-    private static readonly Lazy<OcsService> _default = new(() => new(new IInstallationLocator[]
+    private static readonly Lazy<OcsService> _default = new(() => new(OcsIOService.Default, new IInstallationLocator[]
     {
         SteamFolderLocator.Default,
         GogFolderLocator.Default,
@@ -22,6 +22,7 @@ public class OcsService : IOcsService
     public static OcsService Default => _default.Value;
 
     private readonly Dictionary<string, IInstallationLocator> locators;
+    private readonly IOcsIOService ioService;
 
     /// <summary>
     /// The supported locator IDs.
@@ -31,11 +32,13 @@ public class OcsService : IOcsService
     /// <summary>
     /// Creates a new <c>OcsService</c> instance.
     /// </summary>
+    /// <param name="ioService">Used to read files.</param>
     /// <param name="locators">Collection of locators used to find installations.</param>
-    public OcsService(IEnumerable<IInstallationLocator> locators)
+    public OcsService(IOcsIOService ioService, IEnumerable<IInstallationLocator> locators)
     {
         this.locators = locators.ToDictionary(l => l.Id);
         SupportedFolderLocators = locators.Select(l => l.Id).ToArray();
+        this.ioService = ioService;
     }
 
     /// <summary>
@@ -151,17 +154,15 @@ public class OcsService : IOcsService
             return null;
         }
 
-        var infoPath = OcsIOHelper.GetInfoPath(file);
+        var infoPath = OcsPathHelper.GetInfoPath(file);
 
         ModInfo? info = null;
 
         if (File.Exists(infoPath))
         {
-            using var stream = File.OpenRead(infoPath);
-
             try
             {
-                info = OcsIOHelper.ReadInfo(stream);
+                info = ioService.ReadInfo(infoPath);
             }
             catch (Exception)
             {
@@ -179,6 +180,7 @@ public class OcsService : IOcsService
     /// </summary>
     /// <param name="folder"></param>
     /// <returns></returns>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Public API")]
     public Save? DiscoverSave(string folder)
     {
         folder = Path.GetFullPath(folder);
@@ -263,17 +265,5 @@ public class OcsService : IOcsService
     /// </summary>
     /// <param name="path">The path of the mod file.</param>
     /// <returns>The file's header if able to read; otherwise, null.</returns>
-    public Header? ReadHeader(string path)
-    {
-        path = path.AddModExtension();
-
-        if (!File.Exists(path))
-        {
-            return null;
-        }
-
-        using var reader = new OcsReader(File.OpenRead(path));
-
-        return OcsIOHelper.ReadHeader(reader);
-    }
+    public Header? ReadHeader(string path) => ioService.ReadHeader(path.AddModExtension());
 }

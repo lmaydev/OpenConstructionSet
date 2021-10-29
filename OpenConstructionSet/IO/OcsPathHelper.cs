@@ -5,7 +5,7 @@ namespace OpenConstructionSet.IO;
 /// <summary>
 /// A collection of helper functions for dealing with the game's files.
 /// </summary>
-public static class OcsIOHelper
+public static class OcsPathHelper
 {
     /// <summary>
     /// Gets the path of the info file for the given mod file.
@@ -20,20 +20,6 @@ public static class OcsIOHelper
 
         return Path.Combine(folder, $"_{name}.info");
     }
-
-    /// <summary>
-    /// Write the mod info to the stream.
-    /// </summary>
-    /// <param name="info">Mod info to be written.</param>
-    /// <param name="stream">Stream to write to.</param>
-    public static void WriteInfo(this ModInfo info, Stream stream) => new XmlSerializer(typeof(ModInfo)).Serialize(stream, info);
-
-    /// <summary>
-    /// Read the mod info from the given stream.
-    /// </summary>
-    /// <param name="stream">Stream to read from.</param>
-    /// <returns>The mod info read from the stream.</returns>
-    public static ModInfo? ReadInfo(Stream stream) => new XmlSerializer(typeof(ModInfo)).Deserialize(stream) as ModInfo;
 
     /// <summary>
     /// Returns the full path of a mod from its' name.
@@ -57,49 +43,6 @@ public static class OcsIOHelper
     /// <param name="mod">The name of the mod e.g. example.mod</param>
     /// <returns>The path of thge named mod in the given folder.</returns>
     public static string GetModPath(string folder, string mod) => Path.Combine(folder, Path.GetFileNameWithoutExtension(mod), mod.AddModExtension());
-
-    /// <summary>
-    /// Read the specified data file and return a POCO of it.
-    /// </summary>
-    /// <param name="reader">The reader to use.</param>
-    /// <returns>A <c>DataFile</c> read from the specified file.</returns>
-    public static DataFile ReadFile(this OcsReader reader)
-    {
-        var type = (FileType)reader.ReadInt();
-
-        var header = type == FileType.Mod ? reader.ReadHeader() : null;
-
-        var lastId = reader.ReadInt();
-
-        var items = reader.ReadItems().ToList();
-
-        return new(type, header, lastId, items);
-    }
-
-    /// <summary>
-    /// Write the given data the specified file.
-    /// </summary>
-    /// <param name="writer">The writer to use.</param>
-    /// <param name="data">A <c>DataFile</c> POCO to write to file.</param>
-    public static void WriteFile(this OcsWriter writer, DataFile data)
-    {
-        writer.Write((int)data.Type);
-        
-        if (data.Type == FileType.Mod)
-        {
-            writer.Write(data.Header ?? new());
-        }
-
-        writer.Write(data.LastId);
-        writer.Write(data.Items);
-    }
-
-    /// <summary>
-    /// Attempts to read the header of the given mod file.
-    /// </summary>
-    /// <param name="reader"></param>
-    /// <returns></returns>
-    public static Header? ReadHeader(OcsReader reader) => (FileType)reader.ReadInt() == FileType.Mod ? reader.ReadHeader() : null;
 
     /// <summary>
     /// Determines if the mod is in a standard folder structure. 

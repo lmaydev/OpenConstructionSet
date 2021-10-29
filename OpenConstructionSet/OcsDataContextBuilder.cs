@@ -6,7 +6,7 @@ namespace OpenConstructionSet;
 /// <inheritdoc/>
 public class OcsDataContextBuilder : IOcsDataContextBuilder
 {
-    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsService.Default, ModNameResolver.Default));
+    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsService.Default, OcsIOService.Default, ModNameResolver.Default));
 
     /// <summary>
     /// Lazy initiated singleton for when DI is not being used
@@ -14,16 +14,19 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
     public static OcsDataContextBuilder Default => _default.Value;
 
     private readonly IOcsService ocsService;
+    private readonly IOcsIOService ioService;
     private readonly IModNameResolver resolver;
 
     /// <summary>
     /// Creates a new OcsDataContextBuilder instance.
     /// </summary>
     /// <param name="ocsService">Used to read enabled mod list.</param>
+    /// <param name="ioService">Used to read files.</param>
     /// <param name="resolver">Used to resolve mod names to full paths.</param>
-    public OcsDataContextBuilder(IOcsService ocsService, IModNameResolver resolver)
+    public OcsDataContextBuilder(IOcsService ocsService, IOcsIOService ioService, IModNameResolver resolver)
     {
         this.ocsService = ocsService;
+        this.ioService = ioService;
         this.resolver = resolver;
     }
 
@@ -95,15 +98,15 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
             }
         }
 
-        return new OcsDataContext(items, baseItems, name, lastId, header, info);
+        return new OcsDataContext(ioService, items, baseItems, name, lastId, header, info);
 
         void ReadFile(ModFile file, bool active)
         {
             using var reader = new OcsReader(File.OpenRead(file.FullName));
 
-            var type = (FileType)reader.ReadInt();
+            var type = (DataFileType)reader.ReadInt();
 
-            if (type == FileType.Mod)
+            if (type == DataFileType.Mod)
             {
                 reader.ReadHeader();
             }

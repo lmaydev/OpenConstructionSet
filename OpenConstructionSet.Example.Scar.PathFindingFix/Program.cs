@@ -11,6 +11,7 @@ var installations = OcsService.Default.FindAllInstallations();
 if (installations.Count == 0)
 {
     Console.WriteLine("Unable to find game folders");
+    Console.ReadKey();
     return;
 }
 
@@ -72,22 +73,30 @@ if (referenceMod is null)
 {
     // Not found
     Console.WriteLine($"Unable to find {ReferenceModName}");
+    Console.ReadKey();
     return;
 }
 
 Console.Write("Loading data... ");
 
 // Read SCAR's mod
-using var reader = new OcsReader(File.OpenRead(referenceMod.FullName));
-(var referenceHeader, _, var items) = reader.ReadMod();
+var referenceData = OcsIOService.Default.ReadDataFile(referenceMod.FullName);
+
+if (referenceData is null)
+{
+    // Not found
+    Console.WriteLine($"Unable to load {ReferenceModName}");
+    Console.ReadKey();
+    return;
+}
 
 // Extract core values from the Greenlander race item
-var greenlander = items.Find(i => i.StringId == "17-gamedata.quack")!;
+var greenlander = referenceData.Items.Find(i => i.StringId == "17-gamedata.quack")!;
 var pathfindAcceleration = greenlander.Values["pathfind acceleration"];
 var waterAvoidance = greenlander.Values["water avoidance"];
 
 // Build mod
-var header = new Header(referenceHeader.Version,
+var header = new Header(referenceData.Header?.Version ?? 1,
                         "LMayDev",
                         "OpenConstructionSet Compatibility patch to apply core values from SCAR's pathfinding fix to custom races");
 
@@ -107,7 +116,7 @@ var context = OcsDataContextBuilder.Default.Build(
 Console.WriteLine("done");
 Console.WriteLine();
 
-// Get all races where editor limits are not set i.e. it is not an animal race
+// Get all races where editor limits are set i.e. it is not an animal race
 var races = context.Items.OfType(ItemType.Race).Where(i => i.Values.TryGetValue("editor limits", out var value)
                                                            && value is FileValue file
                                                            && !string.IsNullOrEmpty(file.Path));

@@ -3,7 +3,7 @@
 /// <summary>
 /// Type identifier for data files.
 /// </summary>
-public enum FileType : int
+public enum DataFileType : int
 {
     /// <summary>
     /// A save file. Supports .save, .platoon and .zone

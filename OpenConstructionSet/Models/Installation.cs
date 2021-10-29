@@ -32,6 +32,6 @@ public sealed record Installation(string Game, string[] EnabledMods, ModFolder D
     /// <summary>
     /// Helper function to get the folders as an array.
     /// </summary>
-    /// <returns>The folders in an arrray.</returns>
+    /// <returns>The folders in an array.</returns>
     public ModFolder[] ToModFolderArray() => array ??= CreateArray();
 }

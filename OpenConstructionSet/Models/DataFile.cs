@@ -3,4 +3,4 @@
 /// <summary>
 /// Represents a game data file.
 /// </summary>
-public record DataFile(FileType Type, Header? Header, int LastId, List<Item> Items);
+public record DataFile(DataFileType Type, Header? Header, int LastId, List<Item> Items);
