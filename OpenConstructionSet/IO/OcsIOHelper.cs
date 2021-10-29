@@ -59,74 +59,47 @@ public static class OcsIOHelper
     public static string GetModPath(string folder, string mod) => Path.Combine(folder, Path.GetFileNameWithoutExtension(mod), mod.AddModExtension());
 
     /// <summary>
+    /// Read the specified data file and return a POCO of it.
+    /// </summary>
+    /// <param name="reader">The reader to use.</param>
+    /// <returns>A <c>DataFile</c> read from the specified file.</returns>
+    public static DataFile ReadFile(this OcsReader reader)
+    {
+        var type = (FileType)reader.ReadInt();
+
+        var header = type == FileType.Mod ? reader.ReadHeader() : null;
+
+        var lastId = reader.ReadInt();
+
+        var items = reader.ReadItems().ToList();
+
+        return new(type, header, lastId, items);
+    }
+
+    /// <summary>
+    /// Write the given data the specified file.
+    /// </summary>
+    /// <param name="writer">The writer to use.</param>
+    /// <param name="data">A <c>DataFile</c> POCO to write to file.</param>
+    public static void WriteFile(this OcsWriter writer, DataFile data)
+    {
+        writer.Write((int)data.Type);
+        
+        if (data.Type == FileType.Mod)
+        {
+            writer.Write(data.Header ?? new());
+        }
+
+        writer.Write(data.LastId);
+        writer.Write(data.Items);
+    }
+
+    /// <summary>
     /// Attempts to read the header of the given mod file.
     /// </summary>
     /// <param name="reader"></param>
     /// <returns></returns>
     public static Header? ReadHeader(OcsReader reader) => (FileType)reader.ReadInt() == FileType.Mod ? reader.ReadHeader() : null;
-
-    /// <summary>
-    /// Reads the full mod file referenced by the reader.
-    /// </summary>
-    /// <param name="reader">Used to read the mod file.</param>
-    /// <returns>The header, last id and items from the mod.</returns>
-    /// <exception cref="InvalidDataException">Not a mod file</exception>
-    public static (Header header, int lastId, List<Item> items) ReadMod(this OcsReader reader)
-    {
-        var type = (FileType)reader.ReadInt();
-
-        return type == FileType.Mod
-            ? (reader.ReadHeader(), reader.ReadInt(), reader.ReadItems().ToList())
-            : throw new InvalidDataException("Not a mod file");
-    }
-
-    /// <summary>
-    /// Write the mod to the given writer.
-    /// </summary>
-    /// <param name="writer">Used to write the mod.</param>
-    /// <param name="header">The header of the mod.</param>
-    /// <param name="lastId">The LastId used.</param>
-    /// <param name="items">Collection of items from the mod.</param>
-    public static void WriteMod(this OcsWriter writer, Header? header, int lastId, IEnumerable<Item> items)
-    {
-        writer.Write((int)FileType.Mod);
-
-        writer.Write(header ?? new());
-
-        writer.Write(lastId);
-
-        writer.Write(items);
-    }
-
-    /// <summary>
-    /// Reads the save file referenced by the reader.
-    /// </summary>
-    /// <param name="reader">Used to read the save file.</param>
-    /// <returns>The last id and items from the save file.</returns>
-    /// <exception cref="InvalidDataException">Not a save file</exception>
-    public static (int lastId, List<Item> items) ReadSave(this OcsReader reader)
-    {
-        var type = (FileType)reader.ReadInt();
-
-        return type == FileType.Save
-            ? (reader.ReadInt(), reader.ReadItems().ToList())
-            : throw new InvalidDataException("Not a save file");
-    }
-
-    /// <summary>
-    /// Write the save file to the given writer.
-    /// </summary>
-    /// <param name="writer">Used to write the save.</param>
-    /// <param name="lastId">The LastId used.</param>
-    /// <param name="items">Collection of items from the mod.</param>
-    public static void WriteSave(this OcsWriter writer, int lastId, IEnumerable<Item> items)
-    {
-        writer.Write((int)FileType.Save);
-
-        writer.Write(lastId);
-
-        writer.Write(items);
-    }
 
     /// <summary>
     /// Determines if the mod is in a standard folder structure. 

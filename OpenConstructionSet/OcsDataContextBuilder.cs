@@ -130,7 +130,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
 
             if (dictionary.TryGetValue(data.StringId, out var item))
             {
-                item.Update(data);
+                item.ApplyChanges(data);
             }
             else
             {

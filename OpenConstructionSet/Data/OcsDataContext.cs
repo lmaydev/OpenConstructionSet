@@ -122,7 +122,7 @@ public class OcsDataContext
 
         using var writer = new OcsWriter(File.Create(path));
 
-        writer.WriteMod(Header, LastId, changes);
+        writer.WriteFile(new(FileType.Mod, Header, LastId, changes));
 
         if (Info is not null)
         {
