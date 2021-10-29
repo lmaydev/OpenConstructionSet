@@ -6,7 +6,7 @@ Console.WriteLine("OpenConstructionSet Patcher");
 Console.WriteLine("SCAR's pathfinding fix https://www.nexusmods.com/kenshi/mods/602");
 Console.WriteLine();
 
-var installations = OcsService.Default.FindAllInstallations();
+var installations = OcsDiscoveryService.Default.FindAllInstallations();
 
 if (installations.Count == 0)
 {
@@ -145,7 +145,7 @@ var enabledMods = installation.EnabledMods.ToList();
 enabledMods.RemoveAll(s => s == ModFileName);
 enabledMods.Add(ModFileName);
 
-OcsService.Default.SaveLoadOrder(installation.Data.FullName, enabledMods);
+OcsDiscoveryService.Default.SaveLoadOrder(installation.Data.FullName, enabledMods);
 
 Console.WriteLine();
 Console.WriteLine("Added patch to end of load order");

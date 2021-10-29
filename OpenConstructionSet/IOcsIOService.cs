@@ -40,4 +40,19 @@ public interface IOcsIOService
     /// <param name="info">The info file data to write.</param>
     /// <param name="stream">The stream to write to.</param>
     void Write(ModInfo info, Stream stream);
+
+    /// <summary>
+    /// Attempts to read the load order file. This file is contained in the game's data folder.
+    /// </summary>
+    /// <param name="folder">Data folder to find the file in.</param>
+    /// <returns>The collection of mod names from the load order. If the file cannot be found <c>null</c> is returned.</returns>
+    string[]? ReadLoadOrder(string folder);
+
+    /// <summary>
+    /// Save a collection of mod names to the load order file. This file is contained in the game's data folder.
+    /// </summary>
+    /// <param name="folder">Data folder to find the file in.</param>
+    /// <param name="loadOrder">List of mod names.</param>
+    /// <returns></returns>
+    bool SaveLoadOrder(string folder, IEnumerable<string> loadOrder);
 }

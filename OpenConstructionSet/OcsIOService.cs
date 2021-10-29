@@ -54,6 +54,39 @@ public class OcsIOService : IOcsIOService
 
     /// <inheritdoc />
     public ModInfo? ReadInfo(Stream stream) => new XmlSerializer(typeof(ModInfo)).Deserialize(stream) as ModInfo;
+
+    /// <summary>
+    /// Attempts to read the load order file. This file is contained in the game's data folder.
+    /// </summary>
+    /// <param name="folder">Data folder to find the file in.</param>
+    /// <returns>The collection of mod names from the load order. If the file cannot be found an empty array is returned.</returns>
+    public string[]? ReadLoadOrder(string folder)
+    {
+        var path = Path.Combine(folder, "mods.cfg");
+
+        return File.Exists(path) ? File.ReadAllLines(path) : null;
+    }
+
+    /// <summary>
+    /// Save a collection of mod names to the load order file. This file is contained in the game's data folder.
+    /// </summary>
+    /// <param name="folder">Data folder to find the file in.</param>
+    /// <param name="loadOrder">List of mod names.</param>
+    /// <returns></returns>
+    public bool SaveLoadOrder(string folder, IEnumerable<string> loadOrder)
+    {
+        if (!Directory.Exists(folder))
+        {
+            return false;
+        }
+
+        var path = Path.Combine(folder, "mods.cfg");
+
+        File.Delete(path);
+        File.WriteAllLines(path, loadOrder);
+
+        return true;
+    }
 }
 
 /// <summary>

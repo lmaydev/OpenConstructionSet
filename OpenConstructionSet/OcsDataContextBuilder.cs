@@ -6,14 +6,14 @@ namespace OpenConstructionSet;
 /// <inheritdoc/>
 public class OcsDataContextBuilder : IOcsDataContextBuilder
 {
-    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsService.Default, OcsIOService.Default, ModNameResolver.Default));
+    private static readonly Lazy<OcsDataContextBuilder> _default = new(() => new(OcsDiscoveryService.Default, OcsIOService.Default, ModNameResolver.Default));
 
     /// <summary>
     /// Lazy initiated singleton for when DI is not being used
     /// </summary>
     public static OcsDataContextBuilder Default => _default.Value;
 
-    private readonly IOcsService ocsService;
+    private readonly IOcsDiscoveryService ocsService;
     private readonly IOcsIOService ioService;
     private readonly IModNameResolver resolver;
 
@@ -23,7 +23,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
     /// <param name="ocsService">Used to read enabled mod list.</param>
     /// <param name="ioService">Used to read files.</param>
     /// <param name="resolver">Used to resolve mod names to full paths.</param>
-    public OcsDataContextBuilder(IOcsService ocsService, IOcsIOService ioService, IModNameResolver resolver)
+    public OcsDataContextBuilder(IOcsDiscoveryService ocsService, IOcsIOService ioService, IModNameResolver resolver)
     {
         this.ocsService = ocsService;
         this.ioService = ioService;
@@ -148,7 +148,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
 
         void LoadEnabledMods(bool active)
         {
-            var loadOrder = folders.Select(f => ocsService.ReadLoadOrder(f.FullName)).FirstOrDefault(lo => lo is not null);
+            var loadOrder = folders.Select(f => ioService.ReadLoadOrder(f.FullName)).FirstOrDefault(lo => lo is not null);
 
             if (loadOrder is null)
             {

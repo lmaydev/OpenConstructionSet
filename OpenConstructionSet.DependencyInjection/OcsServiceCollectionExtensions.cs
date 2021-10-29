@@ -18,7 +18,7 @@ public static class OcsServiceCollectionExtensions
 
         services.TryAddEnumerable(ServiceDescriptor.Singleton<IModNameResolver, ModNameResolver>());
 
-        return services.AddSingleton<IOcsService, OcsService>()
+        return services.AddSingleton<IOcsDiscoveryService, OcsDiscoveryService>()
                        .AddSingleton<IOcsDataContextBuilder, OcsDataContextBuilder>();
     }
 }

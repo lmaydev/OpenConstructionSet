@@ -7,9 +7,9 @@ namespace OpenConstructionSet;
 /// The main service for the OpenConstructionSet.
 /// Provides discovery and some saving/loading functions.
 /// </summary>
-public class OcsService : IOcsService
+public class OcsDiscoveryService : IOcsDiscoveryService
 {
-    private static readonly Lazy<OcsService> _default = new(() => new(OcsIOService.Default, new IInstallationLocator[]
+    private static readonly Lazy<OcsDiscoveryService> _default = new(() => new(OcsIOService.Default, new IInstallationLocator[]
     {
         SteamFolderLocator.Default,
         GogFolderLocator.Default,
@@ -19,7 +19,7 @@ public class OcsService : IOcsService
     /// <summary>
     /// Lazy initiated singleton for when DI is not being used
     /// </summary>
-    public static OcsService Default => _default.Value;
+    public static OcsDiscoveryService Default => _default.Value;
 
     private readonly Dictionary<string, IInstallationLocator> locators;
     private readonly IOcsIOService ioService;
@@ -34,7 +34,7 @@ public class OcsService : IOcsService
     /// </summary>
     /// <param name="ioService">Used to read files.</param>
     /// <param name="locators">Collection of locators used to find installations.</param>
-    public OcsService(IOcsIOService ioService, IEnumerable<IInstallationLocator> locators)
+    public OcsDiscoveryService(IOcsIOService ioService, IEnumerable<IInstallationLocator> locators)
     {
         this.locators = locators.ToDictionary(l => l.Id);
         SupportedFolderLocators = locators.Select(l => l.Id).ToArray();
@@ -91,7 +91,7 @@ public class OcsService : IOcsService
 
         var save = Directory.Exists(discovered.Save) ? DiscoverSaveFolder(discovered.Save) : null;
 
-        return new(discovered.Installation, ReadLoadOrder(data.FullName) ?? Array.Empty<string>(), data, mod, content, save);
+        return new(discovered.Installation, ioService.ReadLoadOrder(data.FullName) ?? Array.Empty<string>(), data, mod, content, save);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class OcsService : IOcsService
             return null;
         }
 
-        if (!this.TryReadHeader(file, out var header))
+        if (!ioService.TryReadHeader(file, out var header))
         {
             return null;
         }
@@ -232,32 +232,6 @@ public class OcsService : IOcsService
         }
 
         return result;
-    }
-
-    /// <summary>
-    /// Attempts to read the load order file. This file is contained in the game's data folder.
-    /// </summary>
-    /// <param name="folder">Data folder to find the file in.</param>
-    /// <returns>The collection of mod names from the load order. If the file cannot be found an empty array is returned.</returns>
-    public string[]? ReadLoadOrder(string folder)
-    {
-        var path = Path.Combine(folder, "mods.cfg");
-
-        return File.Exists(path) ? File.ReadAllLines(path) : null;
-    }
-
-    /// <summary>
-    /// Save a collection of mod names to the load order file. This file is contained in the game's data folder.
-    /// </summary>
-    /// <param name="folder">Data folder to find the file in.</param>
-    /// <param name="loadOrder">List of mod names.</param>
-    /// <returns></returns>
-    public void SaveLoadOrder(string folder, IEnumerable<string> loadOrder)
-    {
-        var path = Path.Combine(folder, "mods.cfg");
-
-        File.Delete(path);
-        File.WriteAllLines(path, loadOrder);
     }
 
     /// <summary>

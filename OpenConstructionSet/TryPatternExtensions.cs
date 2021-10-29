@@ -14,7 +14,7 @@ public static class TryPatternExtensions
     /// <param name="folder">Data folder to find the file in.</param>
     /// <param name="enabledMods">If successful will contain the collection of mod names from the load order.</param>
     /// <returns><c>true</c> if the load order can be read.</returns>
-    public static bool TryReadLoadOrder(this IOcsService service, string folder, [MaybeNullWhen(false)] out string[] enabledMods)
+    public static bool TryReadLoadOrder(this IOcsIOService service, string folder, [MaybeNullWhen(false)] out string[] enabledMods)
     {
         try
         {
@@ -38,7 +38,7 @@ public static class TryPatternExtensions
     /// <param name="path">The path of the mod file.</param>
     /// <param name="header">Will contain the read header if successful.</param>
     /// <returns><c>true</c> if header can be read.</returns>
-    public static bool TryReadHeader(this IOcsService service, string path, [MaybeNullWhen(false)] out Header header)
+    public static bool TryReadHeader(this IOcsIOService service, string path, [MaybeNullWhen(false)] out Header header)
     {
         try
         {

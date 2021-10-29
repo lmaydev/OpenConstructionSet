@@ -2,10 +2,9 @@
 namespace OpenConstructionSet;
 
 /// <summary>
-/// The main service for the OpenConstructionSet.
-/// Provides discovery and some saving/loading functions.
+/// Provides discovery methods for the games various directory structures and files.
 /// </summary>
-public interface IOcsService
+public interface IOcsDiscoveryService
 {
     /// <summary>
     /// The supported locator IDs.
@@ -44,26 +43,4 @@ public interface IOcsService
     /// <param name="locatorId">The ID of the locator to use.</param>
     /// <returns>Details of the installation if found; otherwise, <c>null</c></returns>
     Installation? FindInstallation(string locatorId);
-
-    /// <summary>
-    /// Attempts to read the header of the provided file.
-    /// </summary>
-    /// <param name="path">The path of the mod file.</param>
-    /// <returns>The file's header if able to read; otherwise, null.</returns>
-    Header? ReadHeader(string path);
-
-    /// <summary>
-    /// Attempts to read the load order file. This file is contained in the game's data folder.
-    /// </summary>
-    /// <param name="folder">Data folder to find the file in.</param>
-    /// <returns>The collection of mod names from the load order. If the file cannot be found <c>null</c> is returned.</returns>
-    string[]? ReadLoadOrder(string folder);
-
-    /// <summary>
-    /// Save a collection of mod names to the load order file. This file is contained in the game's data folder.
-    /// </summary>
-    /// <param name="folder">Data folder to find the file in.</param>
-    /// <param name="loadOrder">List of mod names.</param>
-    /// <returns></returns>
-    void SaveLoadOrder(string folder, IEnumerable<string> loadOrder);
 }

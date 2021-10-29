@@ -3,20 +3,20 @@
 /// <inheritdoc/>
 public class ModNameResolver : IModNameResolver
 {
-    private static readonly Lazy<ModNameResolver> _default = new(() => new(OcsService.Default));
+    private static readonly Lazy<ModNameResolver> _default = new(() => new(OcsDiscoveryService.Default));
 
     /// <summary>
     /// Lazy initiated singleton for when DI is not being used
     /// </summary>
     public static ModNameResolver Default => _default.Value;
 
-    private readonly IOcsService discoveryService;
+    private readonly IOcsDiscoveryService discoveryService;
 
     /// <summary>
     /// Creates a new ModNameResolver instance.
     /// </summary>
     /// <param name="discoveryService">Service used when discovering files.</param>
-    public ModNameResolver(IOcsService discoveryService) => this.discoveryService = discoveryService;
+    public ModNameResolver(IOcsDiscoveryService discoveryService) => this.discoveryService = discoveryService;
 
     /// <inheritdoc/>
     public ModFile? Resolve(IEnumerable<ModFolder> modFolders, string mod)
