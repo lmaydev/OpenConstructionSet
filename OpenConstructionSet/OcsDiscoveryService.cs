@@ -45,13 +45,13 @@ public class OcsDiscoveryService : IOcsDiscoveryService
     /// Search using all installation locators and return any positive results.
     /// </summary>
     /// <returns>A dictionary of locatorID to Installation information.</returns>
-    public Dictionary<string, Installation> FindAllInstallations()
+    public Dictionary<string, Installation> DiscoverAllInstallations()
     {
         var result = new Dictionary<string, Installation>();
 
         foreach (var locator in SupportedFolderLocators)
         {
-            var folders = FindInstallation(locator);
+            var folders = DiscoverInstallation(locator);
 
             if (folders is not null)
             {
@@ -67,7 +67,7 @@ public class OcsDiscoveryService : IOcsDiscoveryService
     /// </summary>
     /// <param name="locatorId">The ID of the locator to use.</param>
     /// <returns>Details of the installation if found; otherwise, <c>null</c></returns>
-    public Installation? FindInstallation(string locatorId)
+    public Installation? DiscoverInstallation(string locatorId)
     {
         if (!locators.TryGetValue(locatorId, out var locator))
         {
@@ -100,7 +100,7 @@ public class OcsDiscoveryService : IOcsDiscoveryService
     /// Search using all installation locators and return the first positive results.
     /// </summary>
     /// <returns>Details of the installation if found; otherwise, <c>null</c></returns>
-    public Installation? FindInstallation() => SupportedFolderLocators.Select(FindInstallation).FirstOrDefault(f => f is not null);
+    public Installation? DiscoverInstallation() => SupportedFolderLocators.Select(DiscoverInstallation).FirstOrDefault(f => f is not null);
 
     /// <summary>
     /// Discover the provided folder and it's contained mods.

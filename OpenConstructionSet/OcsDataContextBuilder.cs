@@ -35,7 +35,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
         ModLoadType loadEnabledMods = ModLoadType.None)
     {
         // if installation is null try and discover one. If this returns null throw an exception
-        installation ??= discoveryService.FindInstallation() ?? throw new Exception("Could not locate game");
+        installation ??= discoveryService.DiscoverInstallation() ?? throw new Exception("Could not locate game");
 
         var baseModFiles = baseMods is not null ? Resolve(baseMods) : Enumerable.Empty<ModFile>();
         var activeModFiles = activeMods is not null ? Resolve(activeMods) : Enumerable.Empty<ModFile>();

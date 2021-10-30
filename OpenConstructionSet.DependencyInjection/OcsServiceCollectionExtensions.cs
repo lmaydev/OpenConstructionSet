@@ -16,9 +16,9 @@ public static class OcsServiceCollectionExtensions
                 ServiceDescriptor.Singleton<IInstallationLocator, LocalFolderLocator>(),
             });
 
-        services.TryAddEnumerable(ServiceDescriptor.Singleton<IModNameResolver, ModNameResolver>());
-
-        return services.AddSingleton<IOcsDiscoveryService, OcsDiscoveryService>()
+        return services.AddSingleton<IOcsIOService, OcsIOService>()
+                       .AddSingleton<IModNameResolver, ModNameResolver>()
+                       .AddSingleton<IOcsDiscoveryService, OcsDiscoveryService>()
                        .AddSingleton<IOcsDataContextBuilder, OcsDataContextBuilder>();
     }
 }

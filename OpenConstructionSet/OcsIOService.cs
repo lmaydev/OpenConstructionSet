@@ -36,7 +36,7 @@ public class OcsIOService : IOcsIOService
     }
 
     /// <inheritdoc />
-    public void Write(DataFile data, OcsWriter writer)
+    public void Write(OcsWriter writer, DataFile data)
     {
         writer.Write((int)data.Type);
 
@@ -50,16 +50,16 @@ public class OcsIOService : IOcsIOService
     }
 
     /// <inheritdoc />
-    public void Write(ModInfo info, Stream stream) => new XmlSerializer(typeof(ModInfo)).Serialize(stream, info);
+    public void Write(Stream stream, ModInfo info) => new XmlSerializer(typeof(ModInfo)).Serialize(stream, info);
+
+    /// <inheritdoc />
+    public void Write(string file, IEnumerable<string> enabledMods) => File.WriteAllLines(file, enabledMods);
 
     /// <inheritdoc />
     public ModInfo? ReadInfo(Stream stream) => new XmlSerializer(typeof(ModInfo)).Deserialize(stream) as ModInfo;
 
     /// <inheritdoc />
-    public string[]? ReadEnabledMods(string file) => File.Exists(file) ? File.ReadAllLines(file) : null;
-
-    /// <inheritdoc />
-    public void SaveEnabledMods(string file, IEnumerable<string> enabledMods) => File.WriteAllLines(file, enabledMods);
+    public List<string>? ReadEnabledMods(string file) => File.Exists(file) ? File.ReadAllLines(file).ToList() : null;
 
     /// <inheritdoc />
     public void SaveEnabledMods(Installation installation)
@@ -123,10 +123,10 @@ public static class OcsIOExtensions
     /// Write the <c>DataFile</c> to the specified file.
     /// </summary>
     /// <param name="service">Service to wrap.</param>
-    /// <param name="data">The data to write to file.</param>
     /// <param name="file">The file to write to.</param>
+    /// <param name="data">The data to write to file.</param>
     /// <returns><c>true</c> if successful; otherwise, <c>false</c></returns>
-    public static bool Write(this IOcsIOService service, DataFile data, string file)
+    public static bool Write(this IOcsIOService service, string file, DataFile data)
     {
         if (!TryCreateFile(file, out var stream))
         {
@@ -135,7 +135,7 @@ public static class OcsIOExtensions
 
         using var writer = new OcsWriter(stream);
 
-        service.Write(data, writer);
+        service.Write(writer, data);
 
         return true;
     }
@@ -144,17 +144,17 @@ public static class OcsIOExtensions
     /// Write the mod info file data to the specified file.
     /// </summary>
     /// <param name="service">Service to wrap.</param>
-    /// <param name="info">The mod inf file data to write.</param>
     /// <param name="file">The file to write to.</param>
+    /// <param name="info">The mod inf file data to write.</param>
     /// <returns><c>true</c> if successful; otherwise, <c>false</c></returns>
-    public static bool Write(this IOcsIOService service, ModInfo info, string file)
+    public static bool Write(this IOcsIOService service, string file, ModInfo info)
     {
         if (!TryCreateFile(file, out var stream))
         {
             return false;
         }
 
-        service.Write(info, stream);
+        service.Write(stream, info);
 
         stream.Dispose();
 

@@ -126,13 +126,13 @@ public class OcsDataContext
             Directory.CreateDirectory(directory);
         }
 
-        ioService.Write(new DataFile(DataFileType.Mod, Header, LastId, changes), path);
+        ioService.Write(path, new DataFile(DataFileType.Mod, Header, LastId, changes));
 
         if (Info is not null)
         {
             var infoPath = OcsPathHelper.GetInfoPath(path);
 
-            ioService.Write(Info, infoPath);
+            ioService.Write(infoPath, Info);
         }
     }
 

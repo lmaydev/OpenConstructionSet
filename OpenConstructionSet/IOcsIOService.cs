@@ -30,31 +30,31 @@ public interface IOcsIOService
     /// <summary>
     /// Write the <c>DataFile</c> to the given writer.
     /// </summary>
-    /// <param name="data"><c>DataFile</c> to write.</param>
     /// <param name="writer">Writer to use.</param>
-    void Write(DataFile data, OcsWriter writer);
+    /// <param name="data"><c>DataFile</c> to write.</param>
+    void Write(OcsWriter writer, DataFile data);
 
     /// <summary>
     /// Write the info data to the stream. 
     /// </summary>
-    /// <param name="info">The info file data to write.</param>
     /// <param name="stream">The stream to write to.</param>
-    void Write(ModInfo info, Stream stream);
+    /// <param name="info">The info file data to write.</param>
+    void Write(Stream stream, ModInfo info);
 
     /// <summary>
     /// Attempts to read the enabled mods and load order from the specified file.
     /// </summary>
     /// <param name="file">The file containing the enabled mods and load order.</param>
     /// <returns>A collection of enabled mod names in load order. If the file cannot be found <c>null</c> is returned.</returns>
-    string[]? ReadEnabledMods(string file);
+    List<string>? ReadEnabledMods(string file);
 
     /// <summary>
     /// Save a collection of mod names to the load order file. This file is contained in the game's data folder.
     /// </summary>
     /// <param name="file">The file to store the enabled mods and load order to.</param>
-    /// <param name="mods">List of enabled mod names in load order.</param>
+    /// <param name="enabledMods">List of enabled mod names in load order.</param>
     /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
-    void SaveEnabledMods(string file, IEnumerable<string> mods);
+    void Write(string file, IEnumerable<string> enabledMods);
 
     /// <summary>
     /// Save the enabled mods and load order for this installation to file.
