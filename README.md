@@ -8,14 +8,18 @@ As well as providing a managed context for loading multiple mods for editing (Si
 
 [Documentation](docs/index.md)
 
+A single cs file example patcher for [SCAR's pathfinding fix](https://www.nexusmods.com/kenshi/mods/602) can be found [here](https://github.com/lmaydev/OpenConstructionSet/blob/main/OpenConstructionSet.Example.Scar.PathFindingFix/Program.cs).
+
 ## Features
 
- - Load, edit and save the game's data files. Currently supports .mod, .info, .base, .save, .zone, .platoon, .level.
- - Read and save the current enabled mods and load order.
- - Locate Steam and Gog installations of the game and it's folders. Including Steam's Workshop content folder and save.
- - Discover the structure of mod and save folders as well as the files contained.
- - Load multiple base and/or active mods into an OcsDataContext for editing. 
- - Save the active mod from an OcsDataContext.
+ - Load, edit and save the game's various data files.
+ - Read and edit the enabled mods (Ticked in the launcher) and the load order.
+ - Locate Steam and Gog installations of the game and their folders. Including Steam's Workshop content folder and the old save folder.
+ - Discover the structure of mod and save folders as well as the files contained within.
+ - Load multiple base and/or active mods into an `OcsDataContext` for editing and saving.
+
+## Thanks
+Massive shout out to [SCARaw](https://www.nexusmods.com/kenshi/users/16691049) for his help throughout the project.
 
 ## Introduction
 ### Project Setup
