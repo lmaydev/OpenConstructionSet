@@ -1,3 +1,5 @@
+using OpenConstructionSet.Data;
+
 const string ModName = "OCSP SCAR's pathfinding fix";
 const string ModFileName = ModName + ".mod";
 const string ReferenceModName = "SCAR's pathfinding fix.mod";
@@ -6,11 +8,11 @@ Console.WriteLine("OpenConstructionSet Patcher");
 Console.WriteLine("SCAR's pathfinding fix https://www.nexusmods.com/kenshi/mods/602");
 Console.WriteLine();
 
-var installations = OcsDiscoveryService.Default.FindAllInstallations();
+var installations = OcsDiscoveryService.Default.DiscoverAllInstallations();
 
 if (installations.Count == 0)
 {
-    Console.WriteLine("Unable to find game folders");
+    Console.WriteLine("Unable to find game");
     Console.ReadKey();
     return;
 }
@@ -80,9 +82,7 @@ if (referenceMod is null)
 Console.Write("Loading data... ");
 
 // Read SCAR's mod
-var referenceData = OcsIOService.Default.ReadDataFile(referenceMod.FullName);
-
-if (referenceData is null)
+if (!OcsIOService.Default.TryReadDataFile(referenceMod.FullName, out var referenceData))
 {
     // Not found
     Console.WriteLine($"Unable to load {ReferenceModName}");
@@ -99,19 +99,16 @@ var waterAvoidance = greenlander.Values["water avoidance"];
 var header = new Header(referenceData.Header?.Version ?? 1,
                         "LMayDev",
                         "OpenConstructionSet Compatibility patch to apply core values from SCAR's pathfinding fix to custom races");
-
 header.References.Add(ReferenceModName);
 header.Dependencies.AddRange(baseMods);
 
-var info = new ModInfo(0, ModName, ModName, new[] { "Gameplay" }, 0, DateTime.UtcNow);
+var options = new OcsDataContexOptions(ModFileName,
+    Installation: installation,
+    BaseMods: baseMods,
+    Header: header,
+    LoadGameFiles: ModLoadType.Base);
 
-var context = OcsDataContextBuilder.Default.Build(
-    ModFileName,
-    installation: installation,
-    baseMods: baseMods,
-    header: header,
-    info: info,
-    loadGameFiles: ModLoadType.Base);
+var context = OcsDataContextBuilder.Default.Build(options);
 
 Console.WriteLine("done");
 Console.WriteLine();
