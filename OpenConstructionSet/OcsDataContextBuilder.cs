@@ -32,7 +32,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
     /// <inheritdoc />
     public OcsDataContext Build(OcsDataContexOptions options)
     {
-        // if installation is null try and discover one. If this returns null throw an exception
+        // if installation is null try and discover one. If this fails throw an exception
         var installation = options.Installation ?? discoveryService.DiscoverInstallation() ?? throw new Exception("Could not locate game");
 
         var baseMods = options.BaseMods is not null ? Resolve(options.BaseMods) : Enumerable.Empty<ModFile>();
@@ -47,6 +47,8 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
         var info = options.Info;
 
         ModFile ? last = null;
+
+        var activeMod = resolver.Resolve(installation.ToModFolderArray(), options.Name);
 
         if (options.LoadGameFiles == ModLoadType.Base)
         {
@@ -72,7 +74,12 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
             LoadEnabledMods(true);
         }
 
-        activeMods.DistinctBy(m => m.Name).ForEach(m => ReadFile(m, true));
+        activeMods.ForEach(m => ReadFile(m, true));
+
+        if (activeMod is not null)
+        {
+            ReadFile(activeMod, true);
+        }
 
         if (last is not null)
         {

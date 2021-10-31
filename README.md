@@ -100,7 +100,7 @@ It will contain up to 4 folders depending on which exist.
 
 The first 3 are represented as `ModFolder` objects. These contain information about the mods within the folder. Including header, info and full path.
 
-The `Save` property is a `SaveFolder` object and contains information about the contained saves and their folder structure.
+The `Save` property is a `SaveFolder` object and represents the old save folder. It contains information about the contained saves and their folder structure.
 
 ### Structure of a Data File.
  - Type - Integer indicating the type of the file. Currently 15 (save) and 16 (mod) are supported.
@@ -121,7 +121,7 @@ To get an `OcsDataContext` instance you must use the `IOcsDataContextBuilder` (o
 ##### OcsDataContexOptions
 
 This object contains all information required to build an `OcsDataContext`.
- - Name - (Required) The name of the new mod.
+ - Name - (Required) The name of the active mod. If it doesn't exist a new empty mod will be created..
  - ThrowIfMissing - If `true` missing mod files will generate exceptions. Otherwise they will be ignored.
  - Installation - An `Installation` object to use when searching for a mods full path and used later by the `OcsDataContext`. If `null` discovery will be attempted.
  - BaseMods - A collection of mod names, file names or paths to load as base data. The base data will be loaded before applying the active mods on top.

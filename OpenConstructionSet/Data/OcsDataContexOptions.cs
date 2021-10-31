@@ -9,7 +9,7 @@ namespace OpenConstructionSet.Data;
 /// <summary>
 /// 
 /// </summary>
-/// <param name="Name">(Required) The name of the new mod.</param>
+/// <param name="Name">(Required) The name of the active mod. If it doesn't exist a new empty mod will be created.</param>
 /// <param name="ThrowIfMissing">If <c>true</c> missing mod files will generate exceptions. Otherwise they will be ignored.</param>
 /// <param name="Installation">An <c>Installation</c> object to use when searching for a mods full path and later by the <c>OcsDataContext</c>. If an <c>null</c> discovery will be attempted.</param>
 /// <param name="BaseMods">A collection of mod names, file names or paths to load as base data. The base data will be loaded before applying the active mods on top.</param>
