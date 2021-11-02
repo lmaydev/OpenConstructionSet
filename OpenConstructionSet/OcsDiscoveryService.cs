@@ -1,5 +1,4 @@
-﻿using OpenConstructionSet.IO;
-using OpenConstructionSet.IO.Discovery;
+﻿using OpenConstructionSet.IO.Discovery;
 
 namespace OpenConstructionSet;
 

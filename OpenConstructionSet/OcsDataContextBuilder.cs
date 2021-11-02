@@ -46,7 +46,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder
         var header = options.Header;
         var info = options.Info;
 
-        ModFile ? last = null;
+        ModFile? last = null;
 
         var activeMod = resolver.Resolve(installation.ToModFolderArray(), options.Name);
 

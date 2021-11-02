@@ -1,6 +1,4 @@
-﻿using System.Xml.Serialization;
-
-namespace OpenConstructionSet.IO;
+﻿namespace OpenConstructionSet.IO;
 
 /// <summary>
 /// A collection of helper functions for dealing with the game's files.

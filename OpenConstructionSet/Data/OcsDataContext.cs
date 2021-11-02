@@ -1,6 +1,4 @@
-﻿using OpenConstructionSet.IO;
-
-namespace OpenConstructionSet.Data;
+﻿namespace OpenConstructionSet.Data;
 
 /// <summary>
 /// Multiple mod files can be loaded into a context as base or active items.
