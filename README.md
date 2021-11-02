@@ -121,7 +121,7 @@ To get an `OcsDataContext` instance you must use the `IOcsDataContextBuilder` (o
 ##### OcsDataContexOptions
 
 This object contains all information required to build an `OcsDataContext`.
- - Name - (Required) The name of the active mod. If it doesn't exist a new empty mod will be created..
+ - Name - (Required) The name of the active mod. If it doesn't exist a new empty mod will be created.
  - ThrowIfMissing - If `true` missing mod files will generate exceptions. Otherwise they will be ignored.
  - Installation - An `Installation` object to use when searching for a mods full path and used later by the `OcsDataContext`. If `null` discovery will be attempted.
  - BaseMods - A collection of mod names, file names or paths to load as base data. The base data will be loaded before applying the active mods on top.

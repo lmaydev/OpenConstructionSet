@@ -3,9 +3,8 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
-		<Platforms>AnyCPU</Platforms>
+		<Platforms>x64</Platforms>
 		<MinimumPlatformVersion>7.0</MinimumPlatformVersion>
-		<DebugType>embedded</DebugType>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Configurations>Debug;Release;Docs</Configurations>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -13,16 +12,21 @@
 		<DisableDefaultDocumentation>true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+	
 	<PropertyGroup Condition=" '$(Configuration)' == 'Docs' ">
 		<DisableDefaultDocumentation>false</DisableDefaultDocumentation>
 		<DefaultDocumentationFileNameMode>Md5</DefaultDocumentationFileNameMode>
 		<DefaultDocumentationRemoveFileExtensionFromLinks>false</DefaultDocumentationRemoveFileExtensionFromLinks>
 		<DefaultDocumentationGeneratedPages>Types, Members</DefaultDocumentationGeneratedPages>
 	</PropertyGroup>
-	
+
 	<!--Nuget package properties-->
-	<PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<Version>0</Version>
 		<Authors>lmaydev</Authors>
 		<Description>
@@ -34,7 +38,9 @@
 		<PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
 		<RepositoryType>github</RepositoryType>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 	</PropertyGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="DefaultDocumentation" Version="0.7.9">
 			<PrivateAssets>all</PrivateAssets>
@@ -44,6 +50,10 @@
 		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
 	</ItemGroup>
 
+	<ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
+	
 	<ItemGroup Condition=" '$(Configuration)' == 'Docs' ">
 		<PackageReference Include="DefaultDocumentation" Version="0.7.9">
 			<PrivateAssets>all</PrivateAssets>
