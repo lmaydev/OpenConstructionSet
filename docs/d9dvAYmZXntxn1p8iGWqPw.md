@@ -13,7 +13,7 @@ Implements [System.IEquatable&lt;](https://docs.microsoft.com/en-us/dotnet/api/S
 
 | Constructors | |
 | :--- | :--- |
-| [Installation(string, string[], ModFolder, ModFolder, ModFolder?, SaveFolder?)](D_2WDuvdAdei9fNkLIT+MA.md 'OpenConstructionSet.Models.Installation.Installation(string, string[], OpenConstructionSet.Models.ModFolder, OpenConstructionSet.Models.ModFolder, OpenConstructionSet.Models.ModFolder?, OpenConstructionSet.Models.SaveFolder?)') | POCO representing an installation of the game.<br/> |
+| [Installation(string, List&lt;string&gt;, ModFolder, ModFolder, ModFolder?, SaveFolder?)](A0dqnNpKFeEdIxqX8+6q8A.md 'OpenConstructionSet.Models.Installation.Installation(string, System.Collections.Generic.List&lt;string&gt;, OpenConstructionSet.Models.ModFolder, OpenConstructionSet.Models.ModFolder, OpenConstructionSet.Models.ModFolder?, OpenConstructionSet.Models.SaveFolder?)') | POCO representing an installation of the game.<br/> |
 
 | Methods | |
 | :--- | :--- |

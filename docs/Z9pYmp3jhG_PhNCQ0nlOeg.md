@@ -25,6 +25,6 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 
 | Methods | |
 | :--- | :--- |
+| [ApplyChanges(Item)](zDEySaLlE_yHiLc1+qE+eg.md 'OpenConstructionSet.Models.Item.ApplyChanges(OpenConstructionSet.Models.Item)') | Apply the changes from `item` to this `Item`.<br/> |
 | [Duplicate()](E33Y9z5tIwvO7N2v4FdmAw.md 'OpenConstructionSet.Models.Item.Duplicate()') | Duplicate's the current Item.<br/> |
 | [TryGetChanges(Item, Item)](TTPU_Id0IcDISN2xJx28CA.md 'OpenConstructionSet.Models.Item.TryGetChanges(OpenConstructionSet.Models.Item, OpenConstructionSet.Models.Item)') | Attempts to get an `Item` representing the changes between this and the provided `baseItem`.<br/> |
-| [Update(Item)](GgF7QYPOwMzKHlWJa4PoNw.md 'OpenConstructionSet.Models.Item.Update(OpenConstructionSet.Models.Item)') | Apply the changes from `item` to this item.<br/> |

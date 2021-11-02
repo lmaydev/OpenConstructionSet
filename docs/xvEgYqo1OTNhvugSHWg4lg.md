@@ -13,7 +13,7 @@ Implements [IModNameResolver](ocgulCoOZ5rxutpWQSp2oA.md 'OpenConstructionSet.IO.
 
 | Constructors | |
 | :--- | :--- |
-| [ModNameResolver(IOcsService)](uHy0UjVZedsYr2g9vk6yZA.md 'OpenConstructionSet.IO.Discovery.ModNameResolver.ModNameResolver(OpenConstructionSet.IOcsService)') | Creates a new ModNameResolver instance.<br/> |
+| [ModNameResolver(IOcsDiscoveryService)](7XVnmsMFLM2BNDB1ClZTxA.md 'OpenConstructionSet.IO.Discovery.ModNameResolver.ModNameResolver(OpenConstructionSet.IOcsDiscoveryService)') | Creates a new ModNameResolver instance.<br/> |
 
 | Properties | |
 | :--- | :--- |

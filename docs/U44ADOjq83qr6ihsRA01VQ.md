@@ -13,7 +13,7 @@ Implements [IOcsDataContextBuilder](r4RI8NnQPrFwlGRexUtVqQ.md 'OpenConstructionS
 
 | Constructors | |
 | :--- | :--- |
-| [OcsDataContextBuilder(IOcsService, IModNameResolver)](ptSnVmHh5omcxXH1DNF6Hw.md 'OpenConstructionSet.OcsDataContextBuilder.OcsDataContextBuilder(OpenConstructionSet.IOcsService, OpenConstructionSet.IO.Discovery.IModNameResolver)') | Creates a new OcsDataContextBuilder instance.<br/> |
+| [OcsDataContextBuilder(IOcsDiscoveryService, IOcsIOService, IModNameResolver)](3xe_PmdjFfa0PxAg9sz8jQ.md 'OpenConstructionSet.OcsDataContextBuilder.OcsDataContextBuilder(OpenConstructionSet.IOcsDiscoveryService, OpenConstructionSet.IOcsIOService, OpenConstructionSet.IO.Discovery.IModNameResolver)') | Creates a new OcsDataContextBuilder instance.<br/> |
 
 | Properties | |
 | :--- | :--- |
@@ -21,4 +21,4 @@ Implements [IOcsDataContextBuilder](r4RI8NnQPrFwlGRexUtVqQ.md 'OpenConstructionS
 
 | Methods | |
 | :--- | :--- |
-| [Build(string, bool, IEnumerable&lt;ModFolder&gt;?, IEnumerable&lt;string&gt;?, IEnumerable&lt;string&gt;?, Header?, ModInfo?, ModLoadType, ModLoadType)](5zXK0cMpuVjyEQ0WlrU3gQ.md 'OpenConstructionSet.OcsDataContextBuilder.Build(string, bool, System.Collections.Generic.IEnumerable&lt;OpenConstructionSet.Models.ModFolder&gt;?, System.Collections.Generic.IEnumerable&lt;string&gt;?, System.Collections.Generic.IEnumerable&lt;string&gt;?, OpenConstructionSet.Models.Header?, OpenConstructionSet.Models.ModInfo?, OpenConstructionSet.Models.ModLoadType, OpenConstructionSet.Models.ModLoadType)') | Builds a [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext') from the provided options<br/> |
+| [Build(OcsDataContexOptions)](LxyrMTFk2urLcVN4TgFfdA.md 'OpenConstructionSet.OcsDataContextBuilder.Build(OpenConstructionSet.Data.OcsDataContexOptions)') | Build a `OcsDataContext` from the provided options.<br/> |

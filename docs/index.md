@@ -9,13 +9,15 @@
 | [ModelExtensions](d4l5JwZnO8DdkML7qnh_1g.md 'OpenConstructionSet.ModelExtensions') | Collection of methods for working with models.<br/> |
 | [OcsConstants](O2L+5TDEXLJlnEZi6p3X+A.md 'OpenConstructionSet.OcsConstants') | Useful constants for working with the OCS.<br/> |
 | [OcsDataContextBuilder](U44ADOjq83qr6ihsRA01VQ.md 'OpenConstructionSet.OcsDataContextBuilder') | Used to build [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext') instances.<br/> |
-| [OcsService](vk7pKCZDraxUCiJOEKS3Rg.md 'OpenConstructionSet.OcsService') | The main service for the OpenConstructionSet.<br/>Provides discovery and some saving/loading functions.<br/> |
-| [TryPatternExtensions](8+MvwvK7uGNIiBHKRIh29A.md 'OpenConstructionSet.TryPatternExtensions') | Provides Try/Out patterns to existing interface methods.<br/> |
+| [OcsDiscoveryService](xLh4AKenI1O4SsbfQkmoNQ.md 'OpenConstructionSet.OcsDiscoveryService') | The main service for the OpenConstructionSet.<br/>Provides discovery and some saving/loading functions.<br/> |
+| [OcsIOService](UgUMQOJatpjEs0nJNw+3_w.md 'OpenConstructionSet.OcsIOService') | Service used to read and write game files.<br/> |
+| [OcsIOServiceExtensions](FY7778xXgzBiQPFsfpgjQA.md 'OpenConstructionSet.OcsIOServiceExtensions') | Collection of wrapper function for the IO service.<br/>Implemented as extension methods because they wrap a single method and this way they don't have to be added to the interface.<br/> |
 
 | Interfaces | |
 | :--- | :--- |
 | [IOcsDataContextBuilder](r4RI8NnQPrFwlGRexUtVqQ.md 'OpenConstructionSet.IOcsDataContextBuilder') | Used to build [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext') instances.<br/> |
-| [IOcsService](pMeR1KBG0zWkoR01rh3e5A.md 'OpenConstructionSet.IOcsService') | The main service for the OpenConstructionSet.<br/>Provides discovery and some saving/loading functions.<br/> |
+| [IOcsDiscoveryService](hskRmqlOmrzLMdtKHQBPTA.md 'OpenConstructionSet.IOcsDiscoveryService') | Provides discovery methods for the games various directory structures and files.<br/> |
+| [IOcsIOService](No0G5igUcUOm46RZK2qdqg.md 'OpenConstructionSet.IOcsIOService') | Service used to read and write game files.<br/> |
   
 <a name='OpenConstructionSet_Collections'></a>
 ## OpenConstructionSet.Collections Namespace
@@ -32,6 +34,7 @@
 
 | Classes | |
 | :--- | :--- |
+| [OcsDataContexOptions](olGSI6EYCJs8+kFR8qw+hw.md 'OpenConstructionSet.Data.OcsDataContexOptions') |  |
 | [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext') | Multiple mod files can be loaded into a context as base or active items.<br/>Allows the editing and saving of the active mod.<br/> |
   
 <a name='OpenConstructionSet_IO'></a>
@@ -40,7 +43,7 @@
 | Classes | |
 | :--- | :--- |
 | [LocatedFolders](jgv6_uiXfDVLa_l1InGCGA.md 'OpenConstructionSet.IO.LocatedFolders') | Represents the results of searching for a game folder.<br/> |
-| [OcsIOHelper](JZTSUWDp1bIPbzqkTvZY3Q.md 'OpenConstructionSet.IO.OcsIOHelper') | A collection of helper functions for dealing with the game's files.<br/> |
+| [OcsPathHelper](EL7fRrYo+340ITl9XyXeOQ.md 'OpenConstructionSet.IO.OcsPathHelper') | A collection of helper functions for dealing with the game's files.<br/> |
 | [OcsReader](T57tcFO5x0tbza6wZBV1Ww.md 'OpenConstructionSet.IO.OcsReader') | Reader for the game's data files.<br/>Can read from a `Stream` or a byte buffer.<br/> |
 | [OcsWriter](ZpKxsyHEFPikx37jMDDXsg.md 'OpenConstructionSet.IO.OcsWriter') | Writer for the game's data files.<br/> |
   
@@ -83,7 +86,7 @@
 
 | Enums | |
 | :--- | :--- |
-| [FileType](TujeFsxyMe5rTsbAWARcfA.md 'OpenConstructionSet.Models.FileType') | Type identifier for data files.<br/> |
+| [DataFileType](+cY_9FxBbmCwckj8l7pVog.md 'OpenConstructionSet.Models.DataFileType') | Type identifier for data files.<br/> |
 | [ItemChanges](_oC5WqPLP5mn+3ivU_9TVQ.md 'OpenConstructionSet.Models.ItemChanges') | Change types for items.<br/> |
 | [ItemType](QKunUA3okX9+HGcnTOur3g.md 'OpenConstructionSet.Models.ItemType') | Type identifier for Items.<br/> |
 | [ModLoadType](A5j7r8wm6GxqIgX_lVyVRQ.md 'OpenConstructionSet.Models.ModLoadType') | Used to specifiy how a mod should be loaded into a  |

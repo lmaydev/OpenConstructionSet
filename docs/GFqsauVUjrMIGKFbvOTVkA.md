@@ -7,4 +7,4 @@ public OpenConstructionSet.Models.ModFolder[] ToModFolderArray();
 ```
 #### Returns
 [ModFolder](0h0FW6YI9iSflrhSD7PySw.md 'OpenConstructionSet.Models.ModFolder')[[]](https://docs.microsoft.com/en-us/dotnet/api/System.Array 'System.Array')  
-The folders in an arrray.
+The folders in an array.

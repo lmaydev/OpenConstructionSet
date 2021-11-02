@@ -11,7 +11,7 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 
 | Constructors | |
 | :--- | :--- |
-| [OcsDataContext(Dictionary&lt;string,Item&gt;, Dictionary&lt;string,Item&gt;, string, int, Header?, ModInfo?)](alvlzdOdrEFYc5gmy3h73A.md 'OpenConstructionSet.Data.OcsDataContext.OcsDataContext(System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.Item&gt;, System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.Item&gt;, string, int, OpenConstructionSet.Models.Header?, OpenConstructionSet.Models.ModInfo?)') | Creates a new OcsDataContext instance.<br/> |
+| [OcsDataContext(IOcsIOService, Installation, Dictionary&lt;string,Item&gt;, Dictionary&lt;string,Item&gt;, string, int, Header?, ModInfo?)](AJdgI9OKnZe2P_T1Dzu3RA.md 'OpenConstructionSet.Data.OcsDataContext.OcsDataContext(OpenConstructionSet.IOcsIOService, OpenConstructionSet.Models.Installation, System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.Item&gt;, System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.Item&gt;, string, int, OpenConstructionSet.Models.Header?, OpenConstructionSet.Models.ModInfo?)') | Creates a new OcsDataContext instance.<br/> |
 
 | Properties | |
 | :--- | :--- |
@@ -24,5 +24,6 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 | Methods | |
 | :--- | :--- |
 | [NewItem(ItemType, string)](NpZCWvqg0jygU+a5Wh9rrw.md 'OpenConstructionSet.Data.OcsDataContext.NewItem(OpenConstructionSet.Models.ItemType, string)') | Generates a new ID and creates an item with it.<br/>LastId will be increased.<br/> |
+| [Save()](9ZBtIoDqJRSA4pdeNHfJig.md 'OpenConstructionSet.Data.OcsDataContext.Save()') | Saves the active mod into the installation's mod folder.<br/> |
 | [Save(ModFolder)](wqTfqQq3m7rqK4jAfdpK7Q.md 'OpenConstructionSet.Data.OcsDataContext.Save(OpenConstructionSet.Models.ModFolder)') | Saves the active mod into the given folder.<br/> |
 | [Save(string)](bkDY9n3GvNbVMIgSS99A9Q.md 'OpenConstructionSet.Data.OcsDataContext.Save(string)') | Saves the active mod to the given path.<br/> |
