@@ -29,6 +29,72 @@ public sealed class OcsWriter : IDisposable
     /// </summary>
     public void Dispose() => writer.Dispose();
 
+    private void Write(object value)
+    {
+        switch (value)
+        {
+            case bool v:
+                Write(v);
+                break;
+            case float v:
+                Write(v);
+                break;
+            case int v:
+                Write(v);
+                break;
+            case Vector3 v:
+                Write(v);
+                break;
+            case Vector4 v:
+                Write(v);
+                break;
+            case string v:
+                Write(v);
+                break;
+            case FileValue v:
+                Write(v);
+                break;
+            case Instance v:
+                Write(v);
+                break;
+            case Reference v:
+                Write(v);
+                break;
+            case ReferenceValues v:
+                Write(v);
+                break;
+            case Header v:
+                Write(v);
+                break;
+            case Item v:
+                Write(v);
+                break;
+
+            default:
+                throw new InvalidOperationException($"Unexpected type {value.GetType().FullName}");
+        }
+    }
+
+    /// <summary>
+    /// Write a collection of objects to the stream.
+    /// T will be runtime bound to one of the Write methods. Passing an unsupported type will result in errors.
+    /// </summary>
+    /// <param name="collection">The collection to write to stream.</param>
+    public void Write<T>(IEnumerable<T> collection)
+    {
+        Write(collection.Count());
+
+        foreach (object? item in collection)
+        {
+            if (item is null)
+            {
+                continue;
+            }
+
+            Write(item);
+        }
+    }
+
     /// <summary>
     /// Write an <c>Item</c> to the stream.
     /// </summary>
@@ -81,28 +147,8 @@ public sealed class OcsWriter : IDisposable
             {
                 Write(item.Key);
 
-                Write((dynamic)item.Value);
+                Write(item.Value);
             }
-        }
-    }
-
-    /// <summary>
-    /// Write a collection of objects to the stream.
-    /// T will be runtime bound to one of the Write methods. Passing an unsupported type will result in errors.
-    /// </summary>
-    /// <param name="collection">The collection to write to stream.</param>
-    public void Write<T>(IEnumerable<T> collection)
-    {
-        Write(collection.Count());
-
-        foreach (dynamic? item in collection)
-        {
-            if (item is null)
-            {
-                continue;
-            }
-
-            Write(item);
         }
     }
 
