@@ -11,5 +11,5 @@ public sealed record ReferenceValues(int Value0, int Value1, int Value2)
     /// <summary>
     /// A <see cref="Reference"/> with these values is marked as deleted.
     /// </summary>
-    public static ReferenceValues Deleted { get; } = new(int.MaxValue, int.MinValue, int.MaxValue);
+    public static ReferenceValues Deleted { get; } = new(int.MaxValue, int.MaxValue, int.MaxValue);
 }
