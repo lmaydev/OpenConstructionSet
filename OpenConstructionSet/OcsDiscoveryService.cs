@@ -35,7 +35,7 @@ public class OcsDiscoveryService : IOcsDiscoveryService
     /// <param name="locators">Collection of locators used to find installations.</param>
     public OcsDiscoveryService(IOcsIOService ioService, IEnumerable<IInstallationLocator> locators)
     {
-        this.locators = locators.ToDictionary(l => l.Id);
+        this.locators = locators.ToDictionary(l => l.Id, l => l, StringComparer.OrdinalIgnoreCase);
         SupportedFolderLocators = locators.Select(l => l.Id).ToArray();
         this.ioService = ioService;
     }
