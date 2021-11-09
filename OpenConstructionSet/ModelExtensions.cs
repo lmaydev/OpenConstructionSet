@@ -53,4 +53,27 @@ public static class ModelExtensions
     /// <param name="instance">The instance to check.</param>
     /// <returns><c>true</c> if <c>instance</c> is marked as deleted.</returns>
     public static bool IsDeleted(this Instance instance) => string.IsNullOrEmpty(instance.Target);
+
+    /// <summary>
+    /// If <c>item</c>'s <c>StringId</c> does not exists in <c>items</c> it is added. Otherwise the existing item is updated with the data from <c>item</c>
+    /// </summary>
+    /// <param name="items">The collection of items to work against.</param>
+    /// <param name="item">The item to add or use to update the existing item.</param>
+    public static void AddOrUpdate(this Dictionary<string, Item> items, Item item)
+    {
+        if (item.IsDeleted())
+        {
+            items.Remove(item.StringId);
+            return;
+        }
+
+        if (items.TryGetValue(item.StringId, out var existingItem))
+        {
+            existingItem.ApplyChanges(item);
+        }
+        else
+        {
+            items[item.StringId] = item;
+        }
+    }
 }

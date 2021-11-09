@@ -18,6 +18,7 @@ public static class OcsServiceCollectionExtensions
         return services.AddSingleton<IOcsIOService, OcsIOService>()
                        .AddSingleton<IModNameResolver, ModNameResolver>()
                        .AddSingleton<IOcsDiscoveryService, OcsDiscoveryService>()
-                       .AddSingleton<IOcsDataContextBuilder, OcsDataContextBuilder>();
+                       .AddSingleton<IOcsDataContextBuilder, OcsDataContextBuilder>()
+                       .AddSingleton<IOcsDataBuilder, OcsDataContextBuilder>();
     }
 }
