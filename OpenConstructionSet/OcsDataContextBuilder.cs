@@ -34,8 +34,12 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
     /// <inheritdoc />
     public OcsDataContext Build(OcsDataContexOptions options)
     {
-        // if installation is null try and discover one. If this fails throw an exception
-        var installation = options.Installation ?? discoveryService.DiscoverInstallation() ?? throw new Exception("Could not locate game");
+        Installation installation = options switch
+        {
+            OcsDataContexOptions { Installation: not null } o => o.Installation,
+            OcsDataContexOptions { InstallationName: not null } o => discoveryService.DiscoverInstallation(o.InstallationName) ?? throw new Exception($"Could not find installation ({o.InstallationName})"),
+            _ => discoveryService.DiscoverInstallation() ?? throw new Exception("Could not find any installations"),
+        };
 
         var baseItems = new Dictionary<string, Item>();
         var items = new Dictionary<string, Item>();
@@ -114,8 +118,12 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
     /// <inheritdoc />
     public DataFile Build(OcsDataOptions options)
     {
-        // if installation is null try and discover one. If this fails throw an exception
-        var installation = options.Installation ?? discoveryService.DiscoverInstallation() ?? throw new Exception("Could not locate game");
+        var installation = options switch
+        {
+            OcsDataOptions { Installation: not null } o => o.Installation,
+            OcsDataOptions { InstallationName: not null } o => discoveryService.DiscoverInstallation(o.InstallationName) ?? throw new Exception($"Could not find installation ({o.InstallationName})"),
+            _ => discoveryService.DiscoverInstallation() ?? throw new Exception("Could not find any installations"),
+        };
 
         var items = new Dictionary<string, Item>();
 
@@ -144,7 +152,6 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
 
         return new(DataFileType.Mod, last?.Header, lastId, items.Values.ToList());
     }
-
 
     private static void ReadMods(IEnumerable<ModFile> mods, Dictionary<string, Item> items, ref int lastId, out ModFile? last)
     {
