@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="Name">The name of the category.</param>
 /// <param name="References">The references contained within this category.</param>
-public sealed record ReferenceCategory(string Name, ReferenceCollection References)
+public sealed record ReferenceCategory(string Name, List<Reference> References)
 {
     /// <summary>
     /// Copy constructor.

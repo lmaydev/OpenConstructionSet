@@ -13,12 +13,12 @@ public sealed class Item
     /// <summary>
     /// The references associated with the Item.
     /// </summary>
-    public ReferenceCategoryCollection ReferenceCategories { get; private set; } = new();
+    public List<ReferenceCategory> ReferenceCategories { get; private set; } = new();
 
     /// <summary>
     /// The instances associated with the Item.
     /// </summary>
-    public InstanceCollection Instances { get; private set; } = new();
+    public List<Instance> Instances { get; private set; } = new();
 
     /// <summary>
     /// The type of the Item.
@@ -109,7 +109,7 @@ public sealed class Item
 
         foreach (var category in item.ReferenceCategories)
         {
-            var baseCategory = ReferenceCategories.FindById(category.Name);
+            var baseCategory = ReferenceCategories.Find(c => c.Name == category.Name);
 
             if (baseCategory is null)
             {
@@ -121,7 +121,12 @@ public sealed class Item
                 {
                     if (reference.IsDeleted())
                     {
-                        baseCategory.References.RemoveById(reference.TargetId);
+                        var index = baseCategory.References.FindIndex(r => r.TargetId == reference.TargetId);
+
+                        if (index > -1)
+                        {
+                            baseCategory.References.RemoveAt(index);
+                        }
                     }
                     else
                     {
@@ -159,7 +164,7 @@ public sealed class Item
         {
             usedKeys.Add(instance.Id);
 
-            var baseIndex = baseItem.Instances.FindIndexById(instance.Id);
+            var baseIndex = baseItem.Instances.FindIndex(i => i.Id == instance.Id);
 
             if (baseIndex == -1 || baseItem.Instances[baseIndex] != instance)
             {
@@ -189,7 +194,7 @@ public sealed class Item
         {
             usedCategories.Add(category.Name);
 
-            var baseCategory = baseItem.ReferenceCategories.FindById(category.Name);
+            var baseCategory = baseItem.ReferenceCategories.Find(c => c.Name == category.Name);
 
             if (baseCategory is null)
             {
@@ -205,7 +210,7 @@ public sealed class Item
                 {
                     usedKeys.Add(reference.TargetId);
 
-                    var baseReference = baseCategory.References.FindById(reference.TargetId);
+                    var baseReference = baseCategory.References.Find(r => r.TargetId == reference.TargetId);
 
                     if (baseReference is null || reference != baseReference)
                     {
