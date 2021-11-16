@@ -95,13 +95,9 @@ public class OcsDataContext
 
             if (!baseItems.TryGetValue(item.StringId, out var baseItem))
             {
-                var newItem = item.Duplicate();
-
-                newItem.Changes = ItemChanges.New;
-
-                changes.Add(newItem);
+                changes.Add(item with { Changes = ItemChanges.New });
             }
-            else if (item.TryGetChanges(baseItem, out var changeItem))
+            else if (Item.TryGetChanges(item, baseItem, out var changeItem))
             {
                 changes.Add(changeItem);
             }

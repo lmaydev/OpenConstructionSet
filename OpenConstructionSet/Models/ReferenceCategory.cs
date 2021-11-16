@@ -16,6 +16,6 @@ public sealed record ReferenceCategory(string Name, List<Reference> References)
     {
         Name = original.Name;
 
-        References = new(original.References.Select(r => r with { }));
+        References = original.References.ToList();
     }
 }

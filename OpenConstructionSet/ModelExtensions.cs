@@ -12,10 +12,14 @@ public static class ModelExtensions
     /// </summary>
     /// <param name="item">The item to mark as deleted.</param>
     /// <returns>A copy of the item marked as deleted.</returns>
-    public static Item Delete(this Item item) => new(item.Type, item.Id, item.Name, item.StringId, ItemChanges.Changed)
+    public static Item Delete(this Item item)
     {
-        Values = new Dictionary<string, object> { ["DELETED"] = true }
-    };
+        var deleted = new Item(item.Type, item.Id, item.Name, item.StringId, ItemChanges.Changed);
+
+        deleted.Values["DELETED"] = true;
+
+        return deleted;
+    }
 
     /// <summary>
     /// Return a copy of <c>reference</c> marked as deleted.
@@ -67,13 +71,6 @@ public static class ModelExtensions
             return;
         }
 
-        if (items.TryGetValue(item.StringId, out var existingItem))
-        {
-            existingItem.ApplyChanges(item);
-        }
-        else
-        {
-            items[item.StringId] = item;
-        }
+        items[item.StringId] = items.TryGetValue(item.StringId, out var existingItem) ? Item.ApplyChanges(existingItem, item) : item;
     }
 }

@@ -52,7 +52,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
 
         ReadBaseMods();
 
-        items = baseItems.Values.ToDictionary(i => i.StringId, i => i.Duplicate());
+        items = baseItems.Values.ToDictionary(i => i.StringId);
 
         ReadActiveMods();
 
