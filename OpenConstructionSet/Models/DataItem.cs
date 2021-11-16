@@ -1,26 +1,40 @@
 ﻿namespace OpenConstructionSet.Models;
 
-public sealed record Item(ItemType Type, int Id, string Name, string StringId, ItemChanges Changes, Dictionary<string, object> Values, List<ReferenceCategory> ReferenceCategories, List<Instance> Instances)
+public record DataItem
 {
-    public Item(ItemType Type, int Id, string Name, string StringId, ItemChanges Changes) : this(Type, Id, Name, StringId, Changes, new(), new(), new())
+    public ItemType Type { get; }
+
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+
+    public Dictionary<string, object> Values { get; set; }
+
+    public Dictionary<string, DataInstance> Instances { get; }
+
+    public Dictionary<string, DataReferenceCategory> ReferenceCategories { get; }
+
+    public DataItem(ItemType Type, int Id, string Name) : this(Type, Id, Name, new(), new(), new())
     {
     }
 
-    public Item(Item item)
+    public DataItem(Item item) : this(item.Type,
+                                      item.Id,
+                                      item.Name,
+                                      new(item.Values),
+                                      new(item.Instances.ToDictionary(i => i.Id, i => new DataInstance(i))),
+                                      new(item.ReferenceCategories.ToDictionary(c => c.Name, c => new DataReferenceCategory(c))))
     {
-        Type = item.Type;
-        Id = item.Id;
-        Name = item.Name;
-        StringId = item.StringId;
-        Changes = item.Changes;
-
-        Values = new(item.Values);
-        ReferenceCategories = new(item.ReferenceCategories);
-        Instances = new(item.Instances);
     }
 
-    public Item(string stringId, ItemChanges changes, DataItem data) : this(data.Type, data.Id, data.Name, stringId, changes)
+    public DataItem(ItemType type, int id, string name, Dictionary<string, object> values, Dictionary<string, DataInstance> instances, Dictionary<string, DataReferenceCategory> referenceCategories)
     {
+        Type = type;
+        Id = id;
+        Name = name;
+        Values = new(values);
+        Instances = new(instances);
+        ReferenceCategories = new(referenceCategories);
     }
 
     /// <summary>
@@ -28,63 +42,53 @@ public sealed record Item(ItemType Type, int Id, string Name, string StringId, I
     /// </summary>
     /// <param name="changes">A set of changes to be applied.</param>
     /// <exception cref="InvalidOperationException">Items' types must match</exception>
-    public Item ApplyChanges(Item changes)
+    public void ApplyChanges(Item changes)
     {
         if (changes.Type != Type)
         {
             throw new InvalidOperationException("Items' types must match");
         }
 
-        var item = this with { Id = changes.Id, Name = changes.Name, Changes = changes.Changes };
+        Id = changes.Id;
+
+        Name = changes.Name;
 
         foreach (var pair in changes.Values)
         {
-            item.Values[pair.Key] = pair.Value;
+            Values[pair.Key] = pair.Value;
         }
 
         foreach (var instance in changes.Instances)
         {
-            var index = item.Instances.FindIndex(i => i.Id == instance.Id);
-
-            if (index > -1)
-            {
-                item.Instances.RemoveAt(index);
-            }
+            Instances.Remove(instance.Id);
 
             if (!instance.IsDeleted())
             {
-                item.Instances.Add(instance);
+                Instances[instance.Id] = new(instance);
             }
         }
 
         foreach (var category in changes.ReferenceCategories)
         {
-            var existing = item.ReferenceCategories.Find(c => c.Name == category.Name);
-
-            if (existing is null)
+            if (!ReferenceCategories.TryGetValue(category.Name, out var existingCategory))
             {
-                item.ReferenceCategories.Add(new(category));
+                ReferenceCategories[category.Name] = new(category);
             }
             else
             {
                 foreach (var reference in category.References)
                 {
-                    var index = existing.References.FindIndex(r => r.TargetId == reference.TargetId);
-
-                    if (index > -1)
+                    if (reference.IsDeleted())
                     {
-                        existing.References.RemoveAt(index);
+                        existingCategory.Remove(reference.TargetId);
                     }
-
-                    if (!reference.IsDeleted())
+                    else
                     {
-                        existing.References.Add(reference);
+                        existingCategory[reference.TargetId] = new(reference);
                     }
                 }
             }
         }
-
-        return item;
     }
 
     /// <summary>
@@ -93,13 +97,13 @@ public sealed record Item(ItemType Type, int Id, string Name, string StringId, I
     /// <param name="baseItem">Base item to compare to.</param>
     /// <param name="changes">If successful will contain the changes.</param>
     /// <returns><c>true</c> if there are changes; otherwise, <c>false</c></returns>
-    public static bool TryGetChanges(Item item, Item baseItem, out Item changes)
+    public bool TryGetChanges(Item baseItem, out Item changes)
     {
-        var changed = item.Name != baseItem.Name;
+        var changed = Name != baseItem.Name || Id != baseItem.Id;
 
-        changes = new Item(item.Type, item.Id, item.Name, item.StringId, item.Name != baseItem.Name ? ItemChanges.Renamed : ItemChanges.Changed);
+        changes = new Item(Type, Id, Name, baseItem.StringId, Name != baseItem.Name ? ItemChanges.Renamed : ItemChanges.Changed);
 
-        foreach (var pair in item.Values)
+        foreach (var pair in Values)
         {
             if (!baseItem.Values.TryGetValue(pair.Key, out var value) || value != pair.Value)
             {
@@ -110,15 +114,15 @@ public sealed record Item(ItemType Type, int Id, string Name, string StringId, I
 
         var usedKeys = new HashSet<string>();
 
-        foreach (var instance in item.Instances)
+        foreach (var pair in Instances)
         {
-            usedKeys.Add(instance.Id);
+            usedKeys.Add(pair.Key);
 
-            var baseIndex = baseItem.Instances.FindIndex(i => i.Id == instance.Id);
+            var baseIndex = baseItem.Instances.FindIndex(i => i.Id == pair.Key);
 
-            if (baseIndex == -1 || baseItem.Instances[baseIndex] != instance)
+            if (baseIndex == -1 || !pair.Value.Equals(baseItem.Instances[baseIndex]))
             {
-                changes.Instances.Add(instance);
+                changes.Instances.Add(new(pair.Key, pair.Value));
 
                 changed = true;
             }
@@ -140,31 +144,31 @@ public sealed record Item(ItemType Type, int Id, string Name, string StringId, I
 
         var usedCategories = new HashSet<string>();
 
-        foreach (var category in item.ReferenceCategories)
+        foreach (var pair in ReferenceCategories)
         {
-            usedCategories.Add(category.Name);
+            usedCategories.Add(pair.Key);
 
-            var baseCategory = baseItem.ReferenceCategories.Find(c => c.Name == category.Name);
+            var baseCategory = baseItem.ReferenceCategories.Find(c => c.Name == pair.Key);
 
             if (baseCategory is null)
             {
-                changes.ReferenceCategories.Add(category with { });
+                changes.ReferenceCategories.Add(new(pair.Key, pair.Value));
 
                 changed = true;
             }
             else
             {
-                var changedCategory = new ReferenceCategory(category.Name, new List<Reference>());
+                var changedCategory = new ReferenceCategory(pair.Key, new List<Reference>());
 
-                foreach (var reference in category.References)
+                foreach (var reference in pair.Value)
                 {
-                    usedKeys.Add(reference.TargetId);
+                    usedKeys.Add(reference.Key);
 
-                    var baseIndex = baseCategory.References.FindIndex(r => r.TargetId == reference.TargetId);
+                    var baseIndex = baseCategory.References.FindIndex(r => r.TargetId == reference.Key);
 
-                    if (baseIndex == -1 || reference != baseCategory.References[baseIndex])
+                    if (baseIndex == -1 || !reference.Value.Equals(baseCategory.References[baseIndex]))
                     {
-                        changedCategory.References.Add(reference);
+                        changedCategory.References.Add(new(reference.Key, reference.Value));
                     }
                 }
 
@@ -196,8 +200,10 @@ public sealed record Item(ItemType Type, int Id, string Name, string StringId, I
             }
 
             changes.ReferenceCategories.Add(new(baseCategory.Name, new List<Reference>(baseCategory.References.Select(r => r.Delete()))));
+            changed = true;
         }
 
         return changed;
     }
 }
+

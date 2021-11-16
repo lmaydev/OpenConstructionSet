@@ -12,10 +12,14 @@ public sealed record ReferenceCategory(string Name, List<Reference> References)
     /// Creates a new instance from the original.
     /// </summary>
     /// <param name="original"></param>
-    public ReferenceCategory(ReferenceCategory original)
+    public ReferenceCategory(ReferenceCategory category)
     {
-        Name = original.Name;
+        Name = category.Name;
 
-        References = original.References.ToList();
+        References = category.References.ToList();
+    }
+
+    public ReferenceCategory(string name, DataReferenceCategory data) : this(name, data.Select(r => new Reference(r.Key, r.Value)).ToList())
+    {
     }
 }

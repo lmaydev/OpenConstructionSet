@@ -60,9 +60,6 @@ public sealed class OcsWriter : IDisposable
             case Reference v:
                 Write(v);
                 break;
-            case ReferenceValues v:
-                Write(v);
-                break;
             case Header v:
                 Write(v);
                 break;
@@ -163,7 +160,7 @@ public sealed class OcsWriter : IDisposable
         Write(value.Position);
         Write(value.Rotation, true);
 
-        Write(value.States.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+        Write(value.States);
     }
 
     /// <summary>
@@ -173,15 +170,6 @@ public sealed class OcsWriter : IDisposable
     public void Write(Reference value)
     {
         Write(value.TargetId);
-        Write(value.Values);
-    }
-
-    /// <summary>
-    /// Write a <c>ReferenceValues</c> object to the stream.
-    /// </summary>
-    /// <param name="value">The <c>ReferenceValues</c> object to write to stream.</param>
-    public void Write(ReferenceValues value)
-    {
         Write(value.Value0);
         Write(value.Value1);
         Write(value.Value2);

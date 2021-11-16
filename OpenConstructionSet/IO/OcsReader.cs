@@ -50,7 +50,7 @@ public sealed class OcsReader : IDisposable
         {
             var name = ReadString();
 
-            var category = new ReferenceCategory(name, new());
+            var category = new ReferenceCategory(name, new List<Reference>());
 
             var referenceCount = ReadInt();
             for (var j = 0; j < referenceCount; j++)
@@ -86,21 +86,21 @@ public sealed class OcsReader : IDisposable
     /// Read an <c>Instance</c> from the data.
     /// </summary>
     /// <returns>An <c>Instance</c> read from the data.</returns>
-    public Instance ReadInstance() => new(ReadString(), ReadString(), ReadVector3(), ReadVector4(true), string.Join(",", ReadStrings()));
+    public Instance ReadInstance() => new(ReadString(), ReadString(), ReadVector3(), ReadVector4(true), ReadStrings());
 
     /// <summary>
     /// Reads a collection of strings from the data.
     /// </summary>
     /// <returns>A collection of strings read from the data.</returns>
-    public List<string> ReadStrings()
+    public string[] ReadStrings()
     {
-        var strings = new List<string>();
-
         var count = ReadInt();
+
+        var strings = new string[count];
 
         for (var i = 0; i < count; i++)
         {
-            strings.Add(ReadString());
+            strings[i] = ReadString();
         }
 
         return strings;
@@ -124,13 +124,7 @@ public sealed class OcsReader : IDisposable
     /// Read a <c>Reference</c> from the data.
     /// </summary>
     /// <returns>A <c>Reference</c> read from the data.</returns>
-    public Reference ReadReference() => new(ReadString(), ReadReferenceValues());
-
-    /// <summary>
-    /// Read a <c>ReferenceValues</c> object from the data.
-    /// </summary>
-    /// <returns>A <c>ReferenceValues</c> object read from the data.</returns>
-    public ReferenceValues ReadReferenceValues() => new(ReadInt(), ReadInt(), ReadInt());
+    public Reference ReadReference() => new(ReadString(), ReadInt(), ReadInt(), ReadInt());
 
     /// <summary>
     /// Read a <c>Header</c> object from the data.

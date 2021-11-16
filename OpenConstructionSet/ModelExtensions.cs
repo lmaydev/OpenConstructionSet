@@ -26,7 +26,7 @@ public static class ModelExtensions
     /// </summary>
     /// <param name="reference">The reference to mark as deleted.</param>
     /// <returns>A copy of the reference marked as deleted.</returns>
-    public static Reference Delete(this Reference reference) => reference with { Values = ReferenceValues.Deleted };
+    public static Reference Delete(this Reference reference) => reference with { Value0 = int.MaxValue, Value1 = int.MaxValue, Value2 = int.MaxValue };
 
     /// <summary>
     /// Return a copy of <c>instance</c> marked as deleted.
@@ -49,7 +49,7 @@ public static class ModelExtensions
     /// </summary>
     /// <param name="reference">The reference to check.</param>
     /// <returns><c>true</c> if <c>reference</c> is marked as deleted.</returns>
-    public static bool IsDeleted(this Reference reference) => reference.Values.Equals(ReferenceValues.Deleted);
+    public static bool IsDeleted(this Reference reference) => reference is Reference { Value0: int.MaxValue, Value1: int.MaxValue, Value2: int.MaxValue };
 
     /// <summary>
     /// Determines if <c>instance</c> is marked as deleted.
@@ -71,6 +71,20 @@ public static class ModelExtensions
             return;
         }
 
-        items[item.StringId] = items.TryGetValue(item.StringId, out var existingItem) ? Item.ApplyChanges(existingItem, item) : item;
+        items[item.StringId] = items.TryGetValue(item.StringId, out var existingItem) ? existingItem.ApplyChanges(item) : item;
+    }
+
+    public static void AddOrUpdate(this Dictionary<string, DataItem> items, Item item)
+    {
+        if (item.IsDeleted())
+        {
+            items.Remove(item.StringId);
+            return;
+        }
+
+        if (items.TryGetValue(item.StringId, out var existingItem))
+            existingItem.ApplyChanges(item);
+        else
+            items.Add(item.StringId, new(item));
     }
 }

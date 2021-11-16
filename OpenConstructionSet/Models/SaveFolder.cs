@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the game's save folder.
 /// </summary>
-public record SaveFolder(string FolderPath)
+public sealed record SaveFolder(string FolderPath)
 {
     /// <summary>
     /// A collection of <see cref="Save"/>s.

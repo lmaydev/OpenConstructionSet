@@ -114,9 +114,9 @@ Console.WriteLine("done");
 Console.WriteLine();
 
 // Get all races where editor limits are set i.e. it is not an animal race
-var races = context.Items.OfType(ItemType.Race).Where(i => i.Values.TryGetValue("editor limits", out var value)
-                                                           && value is FileValue file
-                                                           && !string.IsNullOrEmpty(file.Path));
+var races = context.Items.Values.OfType(ItemType.Race).Where(race => race.Values.TryGetValue("editor limits", out var value)
+                                                                     && value is FileValue file
+                                                                     && !string.IsNullOrEmpty(file.Path));
 
 foreach (var race in races)
 {

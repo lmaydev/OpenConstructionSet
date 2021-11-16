@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a single save directory structure.
 /// </summary>
-public record Save(string FolderPath)
+public sealed record Save(string FolderPath)
 {
     private string? name, saveFile, portraitsTexture, zoneFolder, platoonFolder;
 

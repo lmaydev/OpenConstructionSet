@@ -42,7 +42,6 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
         };
 
         var baseItems = new Dictionary<string, Item>();
-        var items = new Dictionary<string, Item>();
 
         var lastId = 0;
 
@@ -52,7 +51,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
 
         ReadBaseMods();
 
-        items = baseItems.Values.ToDictionary(i => i.StringId);
+        var items = baseItems.Values.ToDictionary(i => i.StringId, i => new DataItem(i));
 
         ReadActiveMods();
 
@@ -82,7 +81,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
 
             var modFiles = Resolve(mods, installation, options.ThrowIfMissing);
 
-            ReadMods(modFiles, baseItems, ref lastId, out _);
+            ReadMods(modFiles, baseItems.AddOrUpdate, ref lastId, out _);
         }
 
         void ReadActiveMods()
@@ -106,11 +105,11 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
 
             var modFiles = Resolve(mods, installation, options.ThrowIfMissing);
 
-            ReadMods(modFiles, items, ref lastId, out last);
+            ReadMods(modFiles, items.AddOrUpdate, ref lastId, out last);
 
             if (activeMod is not null)
             {
-                lastId = Math.Max(lastId, ReadFile(activeMod, items));
+                lastId = Math.Max(lastId, ReadFile(activeMod, items.AddOrUpdate));
             }
         }
     }
@@ -148,24 +147,24 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
 
         var modFiles = Resolve(mods, installation, options.ThrowIfMissing);
 
-        ReadMods(modFiles, items, ref lastId, out var last);
+        ReadMods(modFiles, items.AddOrUpdate, ref lastId, out var last);
 
         return new(DataFileType.Mod, last?.Header, lastId, items.Values.ToList());
     }
 
-    private static void ReadMods(IEnumerable<ModFile> mods, Dictionary<string, Item> items, ref int lastId, out ModFile? last)
+    private static void ReadMods(IEnumerable<ModFile> mods, Action<Item> AddOrUpdate, ref int lastId, out ModFile? last)
     {
         last = null;
 
         foreach (var mod in mods)
         {
-            lastId = Math.Max(lastId, ReadFile(mod, items));
+            lastId = Math.Max(lastId, ReadFile(mod, AddOrUpdate));
 
             last = mod;
         }
     }
 
-    private static int ReadFile(ModFile file, Dictionary<string, Item> items)
+    private static int ReadFile(ModFile file, Action<Item> AddOrUpdate)
     {
         using var reader = new OcsReader(File.OpenRead(file.FullName));
 
@@ -178,7 +177,7 @@ public class OcsDataContextBuilder : IOcsDataContextBuilder, IOcsDataBuilder
 
         var lastId = reader.ReadInt();
 
-        reader.ReadItems().ForEach(items.AddOrUpdate);
+        reader.ReadItems().ForEach(AddOrUpdate);
 
         return lastId;
     }

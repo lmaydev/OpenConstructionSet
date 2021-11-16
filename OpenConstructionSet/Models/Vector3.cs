@@ -6,4 +6,4 @@
 /// <param name="X">X value.</param>
 /// <param name="Y">Y value.</param>
 /// <param name="Z">Z value.</param>
-public sealed record Vector3(float X, float Y, float Z);
+public record struct Vector3(float X, float Y, float Z);

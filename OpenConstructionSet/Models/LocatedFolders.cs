@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="Installation">Root folder of the game. Contains the main exexutables.</param>
 /// <param name="Content">Optional content folder. e.g. the steam workshop folder</param>
-public record LocatedFolders(string Installation, string? Content)
+public sealed record LocatedFolders(string Installation, string? Content)
 {
     private string? mod, data, save;
 
