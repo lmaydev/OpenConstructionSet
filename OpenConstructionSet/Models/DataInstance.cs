@@ -1,36 +1,34 @@
 ﻿namespace OpenConstructionSet.Models;
 
-public class DataInstance : IEquatable<Instance>
+public class DataInstance : IDataModel, IEquatable<Instance>
 {
-    public string Target { get; set; }
+    public string Key => Id;
 
-    public Vector3 Position { get; set; }
+    public string Id { get; }
+    public string TargetId { get; set; }
 
-    public Vector4 Rotation { get; set; }
+    public DataVector3 Position { get; set; }
+
+    public DataVector4 Rotation { get; set; }
 
     public List<string> States { get; }
 
-    public DataInstance(Instance instance) : this(instance.Target, instance.Position, instance.Rotation, instance.States)
+    public DataInstance(Instance instance) : this(instance.Id, instance.Target, new(instance.Position), new(instance.Rotation), instance.States)
     {
-
     }
 
-    public DataInstance(DataInstance values)
+    public DataInstance(DataInstance values) : this(values.Id, values.TargetId, values.Position, values.Rotation, values.States)
     {
-        Target = values.Target;
-        Position = values.Position;
-        Rotation = values.Rotation;
-        States = new(values.States);
     }
 
-    public DataInstance(string target) : this(target, default, default, Enumerable.Empty<string>())
+    public DataInstance(string id, string target) : this(id, target, new(0,0,0), new DataVector4(0,0,0,0), Enumerable.Empty<string>())
     {
-        Target = target;
     }
 
-    public DataInstance(string target, Vector3 position, Vector4 rotation, IEnumerable<string> states)
+    public DataInstance(string id, string target, DataVector3 position, DataVector4 rotation, IEnumerable<string> states)
     {
-        Target = target;
+        this.Id = id;
+        TargetId = target;
         Position = position;
         Rotation = rotation;
         States = new(states);
@@ -49,7 +47,8 @@ public class DataInstance : IEquatable<Instance>
     public override bool Equals(object? obj)
     {
         return obj is DataInstance instance &&
-               Target == instance.Target &&
+               Id == instance.Id &&
+               TargetId == instance.TargetId &&
                Position.Equals(instance.Position) &&
                Rotation.Equals(instance.Rotation) &&
                States.SequenceEqual(instance.States);
@@ -57,8 +56,12 @@ public class DataInstance : IEquatable<Instance>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Target, Position, Rotation, string.Join(',', States));
+        return HashCode.Combine(Id, TargetId, Position, Rotation, string.Join(',', States));
     }
 
-    public bool Equals(Instance other) => Target == other.Target && Position == other.Position && Rotation == other.Rotation && States.SequenceEqual(other.States);
+    public bool Equals(Instance other) => Id == other.Id &&
+                                          TargetId == other.Target &&
+                                          Position.Equals(other.Position) &&
+                                          Rotation.Equals(other.Rotation) &&
+                                          States.SequenceEqual(other.States);
 }

@@ -10,11 +10,11 @@
 /// <param name="States">The attached states.</param>
 public record struct Instance(string Id, string Target, Vector3 Position, Vector4 Rotation, string[] States)
 {
-    public Instance(Instance instance) : this(instance.Id,instance.Target, instance.Position, instance.Rotation, instance.States.ToArray())
+    public Instance(Instance instance) : this(instance.Id, instance.Target, instance.Position, instance.Rotation, instance.States.ToArray())
     {
     }
 
-    public Instance(string id, DataInstance data) : this(id, data.Target, data.Position, data.Rotation, data.States.ToArray())
+    public Instance(string id, DataInstance data) : this(id, data.TargetId, new(data.Position), new(data.Rotation), data.States.ToArray())
     {
     }
 }

@@ -77,7 +77,7 @@ public sealed class OcsReader : IDisposable
 
             for (var i = 0; i < count; i++)
             {
-                item.Values.Add(ReadString(), read()!);
+                item.Values[ReadString()] = read()!;
             }
         }
     }

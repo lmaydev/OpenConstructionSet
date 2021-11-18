@@ -1,7 +1,14 @@
-﻿namespace OpenConstructionSet.Models;
+﻿using OpenConstructionSet.Collections;
+using System.ComponentModel.DataAnnotations;
 
-public record DataItem
+namespace OpenConstructionSet.Models;
+
+public class DataItem : IDataModel
 {
+    public string Key => StringId;
+
+    public string StringId { get; }
+
     public ItemType Type { get; }
 
     public int Id { get; set; }
@@ -10,25 +17,27 @@ public record DataItem
 
     public Dictionary<string, object> Values { get; set; }
 
-    public Dictionary<string, DataInstance> Instances { get; }
+    public OcsList<DataInstance> Instances { get; }
 
-    public Dictionary<string, DataReferenceCategory> ReferenceCategories { get; }
+    public OcsList<DataReferenceCategory> ReferenceCategories { get; }
 
-    public DataItem(ItemType Type, int Id, string Name) : this(Type, Id, Name, new(), new(), new())
+    public DataItem(string stringId, ItemType type, int id, string name) : this(stringId, type, id, name, new(), Enumerable.Empty<DataInstance>(), Enumerable.Empty<DataReferenceCategory>())
     {
     }
 
-    public DataItem(Item item) : this(item.Type,
+    public DataItem(Item item) : this(item.StringId,
+                                      item.Type,
                                       item.Id,
                                       item.Name,
-                                      new(item.Values),
-                                      new(item.Instances.ToDictionary(i => i.Id, i => new DataInstance(i))),
-                                      new(item.ReferenceCategories.ToDictionary(c => c.Name, c => new DataReferenceCategory(c))))
+                                      item.Values,
+                                      item.Instances.Select(i => new DataInstance(i)),
+                                      item.ReferenceCategories.Select(c => new DataReferenceCategory(c)))
     {
     }
 
-    public DataItem(ItemType type, int id, string name, Dictionary<string, object> values, Dictionary<string, DataInstance> instances, Dictionary<string, DataReferenceCategory> referenceCategories)
+    public DataItem(string stringId, ItemType type, int id, string name, Dictionary<string, object> values, IEnumerable<DataInstance> instances, IEnumerable<DataReferenceCategory> referenceCategories)
     {
+        StringId = stringId;
         Type = type;
         Id = id;
         Name = name;
@@ -60,11 +69,13 @@ public record DataItem
 
         foreach (var instance in changes.Instances)
         {
-            Instances.Remove(instance.Id);
-
-            if (!instance.IsDeleted())
+            if (instance.IsDeleted())
             {
-                Instances[instance.Id] = new(instance);
+                Instances.Remove(instance.Id);
+            }
+            else
+            {
+                Instances.Update(new(instance));
             }
         }
 
@@ -72,7 +83,7 @@ public record DataItem
         {
             if (!ReferenceCategories.TryGetValue(category.Name, out var existingCategory))
             {
-                ReferenceCategories[category.Name] = new(category);
+                ReferenceCategories.Add(new(category));
             }
             else
             {
@@ -84,7 +95,7 @@ public record DataItem
                     }
                     else
                     {
-                        existingCategory[reference.TargetId] = new(reference);
+                        existingCategory.Update(new(reference));
                     }
                 }
             }

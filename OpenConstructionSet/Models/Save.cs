@@ -20,12 +20,12 @@ public sealed record Save(string FolderPath)
     /// <summary>
     /// Name of the save.
     /// </summary>
-    public string Name => name ??= Path.GetDirectoryName(FolderPath) ?? "";
+    public string Name => name ??= new DirectoryInfo(FolderPath).Name ?? "";
 
     /// <summary>
     /// Path of the save file.
     /// </summary>
-    public string SaveFile => saveFile ??= Path.Combine(FolderPath, "quick.save");
+    public string QuickFile => saveFile ??= Path.Combine(FolderPath, "quick.save");
 
     /// <summary>
     /// Path to the portraits text.

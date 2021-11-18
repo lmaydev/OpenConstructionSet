@@ -69,13 +69,14 @@ public class OcsDataContext
     {
         LastId++;
 
-        var item = new DataItem(type, 0, name);
+        string stringId = $"{LastId}-{ModName}";
 
-        Items[$"{LastId}-{ModName}"] = item;
+        var item = new DataItem(stringId, type, 0, name);
+
+        Items[stringId] = item;
 
         return item;
-    }
-
+    } 
     /// <summary>
     /// Saves the active mod to the given path.
     /// </summary>

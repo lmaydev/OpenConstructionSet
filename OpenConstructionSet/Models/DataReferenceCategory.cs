@@ -1,28 +1,25 @@
-﻿namespace OpenConstructionSet.Models;
+﻿using OpenConstructionSet.Collections;
+using System.ComponentModel.DataAnnotations;
 
-public class DataReferenceCategory : SortedDictionary<string, DataReference>
+namespace OpenConstructionSet.Models;
+
+public class DataReferenceCategory : OcsList<DataReference>, IDataModel
 {
-    public DataReferenceCategory()
+    public string Key => Name;
+
+    public string Name { get; }
+
+    public DataReferenceCategory(string name)
     {
+        Name = name;
     }
 
-    public DataReferenceCategory(IComparer<string>? comparer) : base(comparer)
+    public DataReferenceCategory(string name, IEnumerable<DataReference> collection) : base(collection)
     {
+        Name = name;
     }
 
-    public DataReferenceCategory(IDictionary<string, DataReference> dictionary) : base(dictionary)
+    public DataReferenceCategory(ReferenceCategory category) : this(category.Name, category.References.Select(r => new DataReference(r)))
     {
-    }
-
-    public DataReferenceCategory(IDictionary<string, DataReference> dictionary, IComparer<string>? comparer) : base(dictionary, comparer)
-    {
-    }
-
-    public DataReferenceCategory(ReferenceCategory category)
-    {
-        foreach (var reference in category.References)
-        {
-            this[reference.TargetId] = new DataReference(reference);
-        }
     }
 }
