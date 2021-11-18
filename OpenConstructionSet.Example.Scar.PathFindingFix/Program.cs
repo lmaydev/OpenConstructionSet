@@ -106,7 +106,8 @@ var options = new OcsDataContexOptions(ModFileName,
     Installation: installation,
     BaseMods: baseMods,
     Header: header,
-    LoadGameFiles: ModLoadType.Base);
+    LoadGameFiles: ModLoadType.Base,
+    ThrowIfMissing: false);
 
 var context = OcsDataContextBuilder.Default.Build(options);
 
