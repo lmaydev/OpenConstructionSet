@@ -1,7 +1,7 @@
 ﻿namespace OpenConstructionSet.Models;
 
 /// <summary>
-/// Used to specifiy how a mod should be loaded into a <seealso cref="OcsDataContext"/>
+/// Used to specify how a mod should be loaded into a <seealso cref="OcsDataContext"/>
 /// </summary>
 public enum ModLoadType
 {

@@ -19,7 +19,7 @@ public sealed class OcsWriter : IDisposable
     private readonly BinaryWriter writer;
 
     /// <summary>
-    /// Initialise a new writer working against the given stream.
+    /// Initialize a new writer working against the given stream.
     /// </summary>
     /// <param name="stream"></param>
     public OcsWriter(Stream stream) => writer = new(stream);

@@ -10,11 +10,19 @@
 /// <param name="States">The attached states.</param>
 public record struct Instance(string Id, string Target, Vector3 Position, Vector4 Rotation, string[] States)
 {
+    /// <summary>
+    /// Copy constructor
+    /// </summary>
+    /// <param name="instance">Item to copy values from.</param>
     public Instance(Instance instance) : this(instance.Id, instance.Target, instance.Position, instance.Rotation, instance.States.ToArray())
     {
     }
 
-    public Instance(string id, DataInstance data) : this(id, data.TargetId, new(data.Position), new(data.Rotation), data.States.ToArray())
+    /// <summary>
+    /// Creates a new <c>Instance</c> using the values of the provided item.
+    /// </summary>
+    /// <param name="data">Item to copy values from.</param>
+    public Instance(DataInstance data) : this(data.Id, data.TargetId, new(data.Position), new(data.Rotation), data.States.ToArray())
     {
     }
 }

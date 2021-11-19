@@ -11,7 +11,7 @@ public sealed class OcsReader : IDisposable
     private readonly BinaryReader reader;
 
     /// <summary>
-    /// Initialise a new <c>OcsReader</c> to work against the provided buffer.
+    /// Initialize a new <c>OcsReader</c> to work against the provided buffer.
     /// </summary>
     /// <param name="buffer"></param>
     public OcsReader(byte[] buffer) : this(new MemoryStream(buffer))
@@ -19,7 +19,7 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Initialise a new <c>OcsReader</c> to work against the provided <c>Stream</c>.
+    /// Initialize a new <c>OcsReader</c> to work against the provided <c>Stream</c>.
     /// </summary>
     /// <param name="stream"></param>
     public OcsReader(Stream stream) => reader = new(stream);

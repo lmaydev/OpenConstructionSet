@@ -31,7 +31,7 @@ public class Header
     public string Description { get; set; }
 
     /// <summary>
-    /// Initialise a new empty <c>Header</c>.
+    /// Initialize a new empty <c>Header</c>.
     /// </summary>
     public Header() : this(1, "", "")
     {

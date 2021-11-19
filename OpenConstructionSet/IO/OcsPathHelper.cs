@@ -39,7 +39,7 @@ public static class OcsPathHelper
     /// </summary>
     /// <param name="folder">The folder that will contain the mod.</param>
     /// <param name="mod">The name of the mod e.g. example.mod</param>
-    /// <returns>The path of thge named mod in the given folder.</returns>
+    /// <returns>The path of the named mod in the given folder.</returns>
     public static string GetModPath(string folder, string mod) => Path.Combine(folder, Path.GetFileNameWithoutExtension(mod), mod.AddModExtension());
 
     /// <summary>

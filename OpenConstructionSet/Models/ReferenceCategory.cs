@@ -11,7 +11,7 @@ public sealed record ReferenceCategory(string Name, List<Reference> References)
     /// Copy constructor.
     /// Creates a new instance from the original.
     /// </summary>
-    /// <param name="original"></param>
+    /// <param name="category">Item to copy values from.</param>
     public ReferenceCategory(ReferenceCategory category)
     {
         Name = category.Name;
@@ -19,7 +19,12 @@ public sealed record ReferenceCategory(string Name, List<Reference> References)
         References = category.References.ToList();
     }
 
-    public ReferenceCategory(string name, DataReferenceCategory data) : this(name, data.Select(r => new Reference(r.Key, r.Value)).ToList())
+    /// <summary>
+    /// Creates a new <c>ReferenceCategory</c> from the provided item's values.
+    /// </summary>
+    /// <param name="category">Item to get values from.</param>
+    /// 
+    public ReferenceCategory(DataReferenceCategory category) : this(category.Name, category.Select(r => new Reference(r.Value)).ToList())
     {
     }
 }

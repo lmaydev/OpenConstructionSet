@@ -71,7 +71,7 @@ public class OcsDataContext
 
         string stringId = $"{LastId}-{ModName}";
 
-        var item = new DataItem(stringId, type, 0, name);
+        var item = new DataItem(type, 0, name, stringId);
 
         Items[stringId] = item;
 
@@ -96,7 +96,7 @@ public class OcsDataContext
 
             if (!baseItems.TryGetValue(pair.Key, out var baseItem))
             {
-                changes.Add(new Item(pair.Key, ItemChanges.New, item));
+                changes.Add(new Item(item, ItemChanges.New));
             }
             else if (item.TryGetChanges(baseItem, out var changeItem))
             {

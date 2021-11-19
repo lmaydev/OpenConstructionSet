@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the results of searching for a game folder.
 /// </summary>
-/// <param name="Installation">Root folder of the game. Contains the main exexutables.</param>
+/// <param name="Installation">Root folder of the game. Contains the main executables.</param>
 /// <param name="Content">Optional content folder. e.g. the steam workshop folder</param>
 public sealed record LocatedFolders(string Installation, string? Content)
 {

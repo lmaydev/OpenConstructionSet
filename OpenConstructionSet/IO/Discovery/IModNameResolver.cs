@@ -10,7 +10,7 @@ public interface IModNameResolver
     /// </summary>
     /// <param name="folders">A collection of folders to search.</param>
     /// <param name="mod">Name of the mod to search for. e.g. example.mod</param>
-    /// <returns>A <c>ModFile</c> if the name cvould be resolved; otherwise, <c>null</c></returns>
+    /// <returns>A <c>ModFile</c> if the name could be resolved; otherwise, <c>null</c></returns>
     ModFile? Resolve(IEnumerable<ModFolder> folders, string mod);
 
     /// <summary>
