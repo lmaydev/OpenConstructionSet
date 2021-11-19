@@ -16,4 +16,4 @@ Name of the mod to search for. e.g. example.mod
   
 #### Returns
 [ModFile](yIT20v2GHuAcdx4EIfntcw.md 'OpenConstructionSet.Models.ModFile')  
-A `ModFile` if the name cvould be resolved; otherwise, `null`
+A `ModFile` if the name could be resolved; otherwise, `null`

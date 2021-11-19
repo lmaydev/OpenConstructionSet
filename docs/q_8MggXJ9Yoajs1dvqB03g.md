@@ -3,7 +3,7 @@
 ## DataFile Class
 Represents a game data file.  
 ```csharp
-public class DataFile :
+public sealed class DataFile :
 System.IEquatable<OpenConstructionSet.Models.DataFile>
 ```
 

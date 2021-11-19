@@ -4,7 +4,7 @@
 Generates a new ID and creates an item with it.  
 LastId will be increased.  
 ```csharp
-public OpenConstructionSet.Models.Item NewItem(OpenConstructionSet.Models.ItemType type, string name);
+public OpenConstructionSet.Models.DataItem NewItem(OpenConstructionSet.Models.ItemType type, string name);
 ```
 #### Parameters
 <a name='OpenConstructionSet_Data_OcsDataContext_NewItem(OpenConstructionSet_Models_ItemType_string)_type'></a>
@@ -16,4 +16,4 @@ The type of item to create.
 The name of the new item.
   
 #### Returns
-[Item](Z9pYmp3jhG_PhNCQ0nlOeg.md 'OpenConstructionSet.Models.Item')  
+[DataItem](NedciBI8UIBYqbpYqrEXSw.md 'OpenConstructionSet.Models.DataItem')  

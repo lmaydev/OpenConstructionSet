@@ -3,7 +3,7 @@
 ## Save Class
 Represents a single save directory structure.  
 ```csharp
-public class Save :
+public sealed class Save :
 System.IEquatable<OpenConstructionSet.Models.Save>
 ```
 
@@ -21,6 +21,6 @@ Implements [System.IEquatable&lt;](https://docs.microsoft.com/en-us/dotnet/api/S
 | [PlatoonFiles](KnJmv3ZzvwySKE5g_1Cg5A.md 'OpenConstructionSet.Models.Save.PlatoonFiles') | A collection containing the paths of all platoon files.<br/> |
 | [PlatoonFolder](lnZYGTs3zCK0v6t1Cml8OA.md 'OpenConstructionSet.Models.Save.PlatoonFolder') | Path of the Platoon folder<br/> |
 | [PortraitsTexture](5hF8jUBtzOxfxN8CDFTDOw.md 'OpenConstructionSet.Models.Save.PortraitsTexture') | Path to the portraits text.<br/> |
-| [SaveFile](r7veEQWCgliUwBVk4p9SfQ.md 'OpenConstructionSet.Models.Save.SaveFile') | Path of the save file.<br/> |
+| [QuickFile](f+2B5dlVBVeZuAFsj9zS+A.md 'OpenConstructionSet.Models.Save.QuickFile') | Path of the save file.<br/> |
 | [ZoneFiles](LbiC4DqBbfKZa_EXfdgHuA.md 'OpenConstructionSet.Models.Save.ZoneFiles') | A collection containing the paths of all zone files.<br/> |
 | [ZoneFolder](zEwe9noBH++I_mx+dWPZUQ.md 'OpenConstructionSet.Models.Save.ZoneFolder') | Path of the Zone folder.<br/> |

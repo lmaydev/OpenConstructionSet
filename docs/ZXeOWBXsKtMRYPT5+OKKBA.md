@@ -4,9 +4,10 @@
 Copy constructor.  
 Creates a new instance from the original.  
 ```csharp
-public ReferenceCategory(OpenConstructionSet.Models.ReferenceCategory original);
+public ReferenceCategory(OpenConstructionSet.Models.ReferenceCategory category);
 ```
 #### Parameters
-<a name='OpenConstructionSet_Models_ReferenceCategory_ReferenceCategory(OpenConstructionSet_Models_ReferenceCategory)_original'></a>
-`original` [ReferenceCategory](FGzdlKUriLoI15zgK9th4g.md 'OpenConstructionSet.Models.ReferenceCategory')  
+<a name='OpenConstructionSet_Models_ReferenceCategory_ReferenceCategory(OpenConstructionSet_Models_ReferenceCategory)_category'></a>
+`category` [ReferenceCategory](FGzdlKUriLoI15zgK9th4g.md 'OpenConstructionSet.Models.ReferenceCategory')  
+Item to copy values from.
   

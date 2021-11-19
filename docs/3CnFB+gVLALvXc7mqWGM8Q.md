@@ -11,7 +11,7 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 
 | Constructors | |
 | :--- | :--- |
-| [OcsDataContext(IOcsIOService, Installation, Dictionary&lt;string,Item&gt;, Dictionary&lt;string,Item&gt;, string, int, Header?, ModInfo?)](AJdgI9OKnZe2P_T1Dzu3RA.md 'OpenConstructionSet.Data.OcsDataContext.OcsDataContext(OpenConstructionSet.IOcsIOService, OpenConstructionSet.Models.Installation, System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.Item&gt;, System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.Item&gt;, string, int, OpenConstructionSet.Models.Header?, OpenConstructionSet.Models.ModInfo?)') | Creates a new OcsDataContext instance.<br/> |
+| [OcsDataContext(IOcsIOService, Installation, Dictionary&lt;string,DataItem&gt;, Dictionary&lt;string,Item&gt;, string, int, Header?, ModInfo?)](RiPR4wfDHhaBEEEr1nXEdA.md 'OpenConstructionSet.Data.OcsDataContext.OcsDataContext(OpenConstructionSet.IOcsIOService, OpenConstructionSet.Models.Installation, System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.DataItem&gt;, System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.Item&gt;, string, int, OpenConstructionSet.Models.Header?, OpenConstructionSet.Models.ModInfo?)') | Creates a new OcsDataContext instance.<br/> |
 
 | Properties | |
 | :--- | :--- |

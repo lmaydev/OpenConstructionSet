@@ -1,7 +1,7 @@
 #### [OpenConstructionSet](index.md 'index')
 ### [OpenConstructionSet.Models](index.md#OpenConstructionSet_Models 'OpenConstructionSet.Models')
 ## ModLoadType Enum
-Used to specifiy how a mod should be loaded into a 
+Used to specify how a mod should be loaded into a 
 ```csharp
 public enum ModLoadType
 

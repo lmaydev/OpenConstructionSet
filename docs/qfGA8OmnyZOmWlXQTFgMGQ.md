@@ -1,7 +1,7 @@
 #### [OpenConstructionSet](index.md 'index')
 ### [OpenConstructionSet.IO](index.md#OpenConstructionSet_IO 'OpenConstructionSet.IO').[OcsReader](T57tcFO5x0tbza6wZBV1Ww.md 'OpenConstructionSet.IO.OcsReader')
 ## OcsReader.OcsReader(Stream) Constructor
-Initialise a new `OcsReader` to work against the provided `Stream`.  
+Initialize a new `OcsReader` to work against the provided `Stream`.  
 ```csharp
 public OcsReader(System.IO.Stream stream);
 ```

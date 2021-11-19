@@ -10,7 +10,7 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 
 | Constructors | |
 | :--- | :--- |
-| [Header()](NSo8H6_et0owu8daWdCKOg.md 'OpenConstructionSet.Models.Header.Header()') | Initialise a new empty `Header`.<br/> |
+| [Header()](NSo8H6_et0owu8daWdCKOg.md 'OpenConstructionSet.Models.Header.Header()') | Initialize a new empty `Header`.<br/> |
 | [Header(int, string, string)](KZHdT3A15FY8nC9pefcV9A.md 'OpenConstructionSet.Models.Header.Header(int, string, string)') | Initialize a new `Header` |
 
 | Properties | |

@@ -16,4 +16,4 @@ The name of the mod e.g. example.mod
   
 #### Returns
 [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')  
-The path of thge named mod in the given folder.
+The path of the named mod in the given folder.

@@ -10,6 +10,8 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 
 | Methods | |
 | :--- | :--- |
+| [AddOrUpdate(Dictionary&lt;string,DataItem&gt;, Item)](emWcy2ksLBiP0s8rBz74Fw.md 'OpenConstructionSet.ModelExtensions.AddOrUpdate(System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.DataItem&gt;, OpenConstructionSet.Models.Item)') | If `item`'s `StringId` does not exists in `items` it is added. Otherwise the existing item is updated with the data from `item` |
+| [AddOrUpdate(Dictionary&lt;string,Item&gt;, Item)](bVeYgmm_lkwny0nnrmxe5A.md 'OpenConstructionSet.ModelExtensions.AddOrUpdate(System.Collections.Generic.Dictionary&lt;string,OpenConstructionSet.Models.Item&gt;, OpenConstructionSet.Models.Item)') | If `item`'s `StringId` does not exists in `items` it is added. Otherwise the existing item is updated with the data from `item` |
 | [Delete(Instance)](WHWVLLxyIGawOKXrZ0Qmvg.md 'OpenConstructionSet.ModelExtensions.Delete(OpenConstructionSet.Models.Instance)') | Return a copy of `instance` marked as deleted.<br/> |
 | [Delete(Item)](yiOZJ2g4cSa19BDVx51iJg.md 'OpenConstructionSet.ModelExtensions.Delete(OpenConstructionSet.Models.Item)') | Returns a copy of `item` marked as deleted.<br/> |
 | [Delete(Reference)](tdmcTpebeBmV1r3iQlE_7Q.md 'OpenConstructionSet.ModelExtensions.Delete(OpenConstructionSet.Models.Reference)') | Return a copy of `reference` marked as deleted.<br/> |

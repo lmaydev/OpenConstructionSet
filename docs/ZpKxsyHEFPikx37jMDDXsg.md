@@ -13,7 +13,7 @@ Implements [System.IDisposable](https://docs.microsoft.com/en-us/dotnet/api/Syst
 
 | Constructors | |
 | :--- | :--- |
-| [OcsWriter(Stream)](jIyrpvX8W6_zOJ7SP4+oqQ.md 'OpenConstructionSet.IO.OcsWriter.OcsWriter(System.IO.Stream)') | Initialise a new writer working against the given stream.<br/> |
+| [OcsWriter(Stream)](jIyrpvX8W6_zOJ7SP4+oqQ.md 'OpenConstructionSet.IO.OcsWriter.OcsWriter(System.IO.Stream)') | Initialize a new writer working against the given stream.<br/> |
 
 | Methods | |
 | :--- | :--- |
@@ -27,7 +27,6 @@ Implements [System.IDisposable](https://docs.microsoft.com/en-us/dotnet/api/Syst
 | [Write(Instance)](WzrSabmFyilTVf93UxkSnQ.md 'OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Instance)') | Write an `Instance` to the stream.<br/> |
 | [Write(Item)](AnyG6bVS9dkCxEm9aDX1Jw.md 'OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Item)') | Write an `Item` to the stream.<br/> |
 | [Write(Reference)](3vpC1wn+nL9NLmDaCX3l4w.md 'OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Reference)') | Write a `Reference` to the stream.<br/> |
-| [Write(ReferenceValues)](oKUTs629EFrJSlh3qgBnFQ.md 'OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.ReferenceValues)') | Write a `ReferenceValues` object to the stream.<br/> |
 | [Write(Vector3)](tX+Gu7wqujXue_ie5NdbhQ.md 'OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Vector3)') | Write a `Vector3` object to the stream.<br/> |
 | [Write(Vector4, bool)](iWVeA0qxKbdxVRzn+wrBNg.md 'OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Models.Vector4, bool)') | Write a `Vector4` object to the stream.<br/> |
 | [Write(string)](tFtj8d0KegTpG2chXL7o6Q.md 'OpenConstructionSet.IO.OcsWriter.Write(string)') | Write a string to the stream.<br/> |

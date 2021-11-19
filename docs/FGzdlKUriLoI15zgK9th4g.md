@@ -13,5 +13,6 @@ Implements [System.IEquatable&lt;](https://docs.microsoft.com/en-us/dotnet/api/S
 
 | Constructors | |
 | :--- | :--- |
+| [ReferenceCategory(DataReferenceCategory)](dn+Tj7iI4IGPvfCySfAlvg.md 'OpenConstructionSet.Models.ReferenceCategory.ReferenceCategory(OpenConstructionSet.Models.DataReferenceCategory)') | Creates a new `ReferenceCategory` from the provided item's values.<br/> |
 | [ReferenceCategory(ReferenceCategory)](ZXeOWBXsKtMRYPT5+OKKBA.md 'OpenConstructionSet.Models.ReferenceCategory.ReferenceCategory(OpenConstructionSet.Models.ReferenceCategory)') | Copy constructor.<br/>Creates a new instance from the original.<br/> |
-| [ReferenceCategory(string, ReferenceCollection)](ZnGNPJNCKLR8T+NDmv7bXg.md 'OpenConstructionSet.Models.ReferenceCategory.ReferenceCategory(string, OpenConstructionSet.Collections.ReferenceCollection)') | A collection of references grouped by a category name.<br/> |
+| [ReferenceCategory(string, List&lt;Reference&gt;)](DSyYuGllkPkSgH8zFhtptA.md 'OpenConstructionSet.Models.ReferenceCategory.ReferenceCategory(string, System.Collections.Generic.List&lt;OpenConstructionSet.Models.Reference&gt;)') | A collection of references grouped by a category name.<br/> |

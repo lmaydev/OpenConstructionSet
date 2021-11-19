@@ -1,7 +1,7 @@
 #### [OpenConstructionSet](index.md 'index')
 ### [OpenConstructionSet.IO](index.md#OpenConstructionSet_IO 'OpenConstructionSet.IO').[OcsWriter](ZpKxsyHEFPikx37jMDDXsg.md 'OpenConstructionSet.IO.OcsWriter')
 ## OcsWriter.OcsWriter(Stream) Constructor
-Initialise a new writer working against the given stream.  
+Initialize a new writer working against the given stream.  
 ```csharp
 public OcsWriter(System.IO.Stream stream);
 ```

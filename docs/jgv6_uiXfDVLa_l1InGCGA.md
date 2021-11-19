@@ -3,7 +3,7 @@
 ## LocatedFolders Class
 Represents the results of searching for a game folder.  
 ```csharp
-public class LocatedFolders :
+public sealed class LocatedFolders :
 System.IEquatable<OpenConstructionSet.IO.LocatedFolders>
 ```
 

@@ -3,7 +3,7 @@
 ## SaveFolder Class
 Represents the game's save folder.  
 ```csharp
-public class SaveFolder :
+public sealed class SaveFolder :
 System.IEquatable<OpenConstructionSet.Models.SaveFolder>
 ```
 

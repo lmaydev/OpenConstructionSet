@@ -8,17 +8,17 @@ public Vector4(float W, float X, float Y, float Z);
 #### Parameters
 <a name='OpenConstructionSet_Models_Vector4_Vector4(float_float_float_float)_W'></a>
 `W` [System.Single](https://docs.microsoft.com/en-us/dotnet/api/System.Single 'System.Single')  
-W value.
+The W value.
   
 <a name='OpenConstructionSet_Models_Vector4_Vector4(float_float_float_float)_X'></a>
 `X` [System.Single](https://docs.microsoft.com/en-us/dotnet/api/System.Single 'System.Single')  
-X value.
+The X value.
   
 <a name='OpenConstructionSet_Models_Vector4_Vector4(float_float_float_float)_Y'></a>
 `Y` [System.Single](https://docs.microsoft.com/en-us/dotnet/api/System.Single 'System.Single')  
-Y value.
+The Y value.
   
 <a name='OpenConstructionSet_Models_Vector4_Vector4(float_float_float_float)_Z'></a>
 `Z` [System.Single](https://docs.microsoft.com/en-us/dotnet/api/System.Single 'System.Single')  
-Z value.
+The Z value.
   

@@ -1,7 +1,7 @@
 #### [OpenConstructionSet](index.md 'index')
 ### [OpenConstructionSet.IO](index.md#OpenConstructionSet_IO 'OpenConstructionSet.IO').[OcsReader](T57tcFO5x0tbza6wZBV1Ww.md 'OpenConstructionSet.IO.OcsReader')
 ## OcsReader.OcsReader(byte[]) Constructor
-Initialise a new `OcsReader` to work against the provided buffer.  
+Initialize a new `OcsReader` to work against the provided buffer.  
 ```csharp
 public OcsReader(byte[] buffer);
 ```

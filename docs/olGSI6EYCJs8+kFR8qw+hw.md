@@ -1,6 +1,7 @@
 #### [OpenConstructionSet](index.md 'index')
 ### [OpenConstructionSet.Data](index.md#OpenConstructionSet_Data 'OpenConstructionSet.Data')
 ## OcsDataContexOptions Class
+Contains the required options to build an [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext').  
 ```csharp
 public class OcsDataContexOptions :
 System.IEquatable<OpenConstructionSet.Data.OcsDataContexOptions>
@@ -12,4 +13,4 @@ Implements [System.IEquatable&lt;](https://docs.microsoft.com/en-us/dotnet/api/S
 
 | Constructors | |
 | :--- | :--- |
-| [OcsDataContexOptions(string, bool, Installation?, IEnumerable&lt;string&gt;?, IEnumerable&lt;string&gt;?, Header?, ModInfo?, ModLoadType, ModLoadType)](RolgipAbMak2vxctJCP6_w.md 'OpenConstructionSet.Data.OcsDataContexOptions.OcsDataContexOptions(string, bool, OpenConstructionSet.Models.Installation?, System.Collections.Generic.IEnumerable&lt;string&gt;?, System.Collections.Generic.IEnumerable&lt;string&gt;?, OpenConstructionSet.Models.Header?, OpenConstructionSet.Models.ModInfo?, OpenConstructionSet.Models.ModLoadType, OpenConstructionSet.Models.ModLoadType)') |  |
+| [OcsDataContexOptions(string, bool, Installation?, string?, IEnumerable&lt;string&gt;?, IEnumerable&lt;string&gt;?, Header?, ModInfo?, ModLoadType, ModLoadType)](qp760gsWKtzFVrFjwsGIiA.md 'OpenConstructionSet.Data.OcsDataContexOptions.OcsDataContexOptions(string, bool, OpenConstructionSet.Models.Installation?, string?, System.Collections.Generic.IEnumerable&lt;string&gt;?, System.Collections.Generic.IEnumerable&lt;string&gt;?, OpenConstructionSet.Models.Header?, OpenConstructionSet.Models.ModInfo?, OpenConstructionSet.Models.ModLoadType, OpenConstructionSet.Models.ModLoadType)') | Contains the required options to build an [OcsDataContext](3CnFB+gVLALvXc7mqWGM8Q.md 'OpenConstructionSet.Data.OcsDataContext').<br/> |
