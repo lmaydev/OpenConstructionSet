@@ -1,46 +1,13 @@
-﻿
-namespace OpenConstructionSet;
+﻿using OpenConstructionSet.Installations;
 
-/// <summary>
-/// Provides discovery methods for the games various directory structures and files.
-/// </summary>
-public interface IOcsDiscoveryService
+namespace OpenConstructionSet
 {
-    /// <summary>
-    /// The supported locator IDs.
-    /// </summary>
-    string[] SupportedFolderLocators { get; }
+    public interface IOcsDiscoveryService
+    {
+        string[] SupportedLocators { get; }
 
-    /// <summary>
-    /// Discover the provided file reading it's header and info.
-    /// </summary>
-    /// <param name="file">The mod file to discover.</param>
-    /// <returns>A <c>ModFile</c> representing the file.</returns>
-    ModFile? DiscoverMod(string file);
-
-    /// <summary>
-    /// Discover the provided folder and it's contained mods.
-    /// </summary>
-    /// <param name="folder">The mod folder to discover.</param>
-    /// <returns>A <c>ModFolder</c> representing the folder.</returns>
-    ModFolder? DiscoverModFolder(string folder);
-
-    /// <summary>
-    /// Search using all installation locators and return any positive results.
-    /// </summary>
-    /// <returns>A dictionary of locatorID to Installation information.</returns>
-    Dictionary<string, Installation> DiscoverAllInstallations();
-
-    /// <summary>
-    /// Search using all installation locators and return the first positive results.
-    /// </summary>
-    /// <returns>Details of the installation if found; otherwise, <c>null</c></returns>
-    Installation? DiscoverInstallation();
-
-    /// <summary>
-    /// Use the provided locator to find the installation details.
-    /// </summary>
-    /// <param name="locatorId">The ID of the locator to use.</param>
-    /// <returns>Details of the installation if found; otherwise, <c>null</c></returns>
-    Installation? DiscoverInstallation(string locatorId);
+        IAsyncEnumerable<IInstallation> DiscoverAllInstallationsAsync();
+        Task<IInstallation?> DiscoverInstallationAsync();
+        Task<IInstallation?> DiscoverInstallationAsync(string locatorId);
+    }
 }

@@ -29,49 +29,6 @@ public sealed class OcsWriter : IDisposable
     /// </summary>
     public void Dispose() => writer.Dispose();
 
-    private void Write(object value)
-    {
-        switch (value)
-        {
-            case bool v:
-                Write(v);
-                break;
-            case float v:
-                Write(v);
-                break;
-            case int v:
-                Write(v);
-                break;
-            case Vector3 v:
-                Write(v);
-                break;
-            case Vector4 v:
-                Write(v);
-                break;
-            case string v:
-                Write(v);
-                break;
-            case FileValue v:
-                Write(v);
-                break;
-            case Instance v:
-                Write(v);
-                break;
-            case Reference v:
-                Write(v);
-                break;
-            case Header v:
-                Write(v);
-                break;
-            case Item v:
-                Write(v);
-                break;
-
-            default:
-                throw new InvalidOperationException($"Unexpected type {value.GetType().FullName}");
-        }
-    }
-
     /// <summary>
     /// Write a collection of objects to the stream.
     /// T will be runtime bound to one of the Write methods. Passing an unsupported type will result in errors.
@@ -105,7 +62,7 @@ public sealed class OcsWriter : IDisposable
         Write(value.Id);
         Write(value.Name);
         Write(value.StringId);
-        Write((int)value.Changes);
+        Write((int)value.ChangeType);
 
         var groupedValues = value.Values.OrderBy(p => p.Key)
                                         .GroupBy(v => v.Value.GetType())
@@ -119,14 +76,14 @@ public sealed class OcsWriter : IDisposable
         Write(value.ReferenceCategories.Count);
         foreach (var category in value.ReferenceCategories)
         {
-            if (!category.References.Any())
+            if (!category.Any())
             {
                 continue;
             }
 
             Write(category.Name);
 
-            Write(category.References);
+            Write(category);
         }
 
         Write(value.Instances);
@@ -156,7 +113,7 @@ public sealed class OcsWriter : IDisposable
     public void Write(Instance value)
     {
         Write(value.Id);
-        Write(value.Target);
+        Write(value.TargetId);
         Write(value.Position);
         Write(value.Rotation, true);
 
@@ -256,4 +213,57 @@ public sealed class OcsWriter : IDisposable
     /// </summary>
     /// <param name="value">The int to write to stream.</param>
     public void Write(int value) => writer.Write(value);
+
+    private void Write(object value)
+    {
+        switch (value)
+        {
+            case bool v:
+                Write(v);
+                break;
+
+            case float v:
+                Write(v);
+                break;
+
+            case int v:
+                Write(v);
+                break;
+
+            case Vector3 v:
+                Write(v);
+                break;
+
+            case Vector4 v:
+                Write(v);
+                break;
+
+            case string v:
+                Write(v);
+                break;
+
+            case FileValue v:
+                Write(v);
+                break;
+
+            case Instance v:
+                Write(v);
+                break;
+
+            case Reference v:
+                Write(v);
+                break;
+
+            case Header v:
+                Write(v);
+                break;
+
+            case Item v:
+                Write(v);
+                break;
+
+            default:
+                throw new InvalidOperationException($"Unexpected type {value.GetType().FullName}");
+        }
+    }
 }

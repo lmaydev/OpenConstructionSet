@@ -3,13 +3,13 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
-		<Platforms>x64</Platforms>
 		<MinimumPlatformVersion>7.0</MinimumPlatformVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Configurations>Debug;Release;Docs</Configurations>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
 		<DisableDefaultDocumentation>true</DisableDefaultDocumentation>
+		<Platforms>AnyCPU;AnyCPU</Platforms>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -40,12 +40,14 @@
 		<RepositoryType>github</RepositoryType>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 	</PropertyGroup>
-	
+
+
 	<ItemGroup>
 		<PackageReference Include="DefaultDocumentation" Version="0.7.9">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="LMay.Collections" Version="1.0.1" />
 		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
 	</ItemGroup>
 
@@ -58,5 +60,13 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Users\lukem\Documents\GitHub\OpenConstructionSet\OpenConstructionSet\.editorconfig" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Include="C:\Users\lukem\Documents\GitHub\OpenConstructionSet\OpenConstructionSet\.editorconfig" />
 	</ItemGroup>
 </Project>
