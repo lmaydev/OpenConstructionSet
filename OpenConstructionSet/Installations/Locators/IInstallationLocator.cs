@@ -13,6 +13,6 @@ public interface IInstallationLocator
     /// <summary>
     /// Attempt to find an installation.
     /// </summary>
-    /// <returns>An <seealso cref="Installation"/> if located; otherwise, <c>null</c></returns>
+    /// <returns>An <see cref="Installation"/> if located; otherwise, <c>null</c></returns>
     Task<IInstallation?> LocateAsync();
 }

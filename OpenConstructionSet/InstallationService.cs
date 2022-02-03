@@ -1,35 +1,36 @@
-﻿using OpenConstructionSet.Installations;
+﻿using System.Runtime.Versioning;
+using OpenConstructionSet.Installations;
 using OpenConstructionSet.Installations.Locators;
 
 namespace OpenConstructionSet;
 
-/// <summary>
-/// The main service for the OpenConstructionSet.
-/// Provides discovery and some saving/loading functions.
-/// </summary>
-public class OcsDiscoveryService : IOcsDiscoveryService
+/// <inheritdoc/>
+[SupportedOSPlatform("windows")]
+public class InstallationService : IInstallationService
 {
     private readonly Dictionary<string, IInstallationLocator> locators;
 
     /// <summary>
-    /// Creates a new <c>OcsService</c> instance.
+    /// Creates a new <see cref="InstallationService"/> using the default <see cref="IInstallationLocator"/>s.
     /// </summary>
-    /// <param name="locators">Collection of locators used to find installations.</param>
-    public OcsDiscoveryService(IEnumerable<IInstallationLocator> locators)
+    public InstallationService() : this(new IInstallationLocator[] { new SteamLocator(), new GogLocator(), new LocalLocator() })
+    {
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="InstallationService"/> using the provided <see cref="IInstallationLocator"/>s.
+    /// </summary>
+    /// <param name="locators">Collection of <see cref="IInstallationLocator"/> used to find <see cref="IInstallation"/>s.</param>
+    public InstallationService(IEnumerable<IInstallationLocator> locators)
     {
         this.locators = locators.ToDictionary(l => l.Id, l => l, StringComparer.OrdinalIgnoreCase);
         SupportedLocators = locators.Select(l => l.Id).ToArray();
     }
 
-    /// <summary>
-    /// The supported locator IDs.
-    /// </summary>
+    /// <inheritdoc/>
     public string[] SupportedLocators { get; }
 
-    /// <summary>
-    /// Search using all installation locators and return any positive results.
-    /// </summary>
-    /// <returns>A dictionary of locatorID to Installation information.</returns>
+    /// <inheritdoc/>
     public async IAsyncEnumerable<IInstallation> DiscoverAllInstallationsAsync()
     {
         foreach (var locator in SupportedLocators)
@@ -43,11 +44,7 @@ public class OcsDiscoveryService : IOcsDiscoveryService
         }
     }
 
-    /// <summary>
-    /// Use the provided locator to find the installation details.
-    /// </summary>
-    /// <param name="locatorId">The ID of the locator to use.</param>
-    /// <returns>Details of the installation if found; otherwise, <c>null</c></returns>
+    /// <inheritdoc/>
     public async Task<IInstallation?> DiscoverInstallationAsync(string locatorId)
     {
         if (!locators.TryGetValue(locatorId, out var locator))
@@ -58,10 +55,7 @@ public class OcsDiscoveryService : IOcsDiscoveryService
         return await locator.LocateAsync().ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// Search using all installation locators and return the first positive results.
-    /// </summary>
-    /// <returns>Details of the installation if found; otherwise, <c>null</c></returns>
+    /// <inheritdoc/>
     public async Task<IInstallation?> DiscoverInstallationAsync()
     {
         foreach (var locatorId in SupportedLocators)

@@ -2,15 +2,13 @@
 
 namespace OpenConstructionSet.Mods
 {
-    /// <summary>
-    /// Represents a mod file.
-    /// </summary>
+    /// <inheritdoc/>
     public class ModFile : IModFile
     {
         /// <summary>
-        /// Creates a new <c>ModFileInfo</c> instance.
+        /// Creates a new <see cref="ModFile"/> instance from the provided path.
         /// </summary>
-        /// <param name="path">The full path of the mod file.</param>
+        /// <param name="path">The full path of the <see cref="ModFile"/>.</param>
         public ModFile(string path)
         {
             Path = path;
@@ -18,21 +16,16 @@ namespace OpenConstructionSet.Mods
             Name = System.IO.Path.GetFileNameWithoutExtension(path);
         }
 
-        /// <summary>
-        /// The mod's filename. e.g. example.mod
-        /// </summary>
+        /// <inheritdoc/>
         public string Filename { get; }
 
-        /// <summary>
-        /// The mod's name e.g. example
-        /// </summary>
+        /// <inheritdoc/>
         public string Name { get; }
 
-        /// <summary>
-        /// The full path of the mod file.
-        /// </summary>
+        /// <inheritdoc/>
         public string Path { get; }
 
+        /// <inheritdoc/>
         public virtual async Task<ModFileData> ReadDataAsync(CancellationToken cancellationToken = default)
         {
             var buffer = await File.ReadAllBytesAsync(Path, cancellationToken).ConfigureAwait(false);
@@ -44,6 +37,7 @@ namespace OpenConstructionSet.Mods
             return new(reader.ReadHeader(), reader.ReadInt(), reader.ReadItems().ToList(), await ReadInfoAsync(cancellationToken).ConfigureAwait(false));
         }
 
+        /// <inheritdoc/>
         public virtual Task<Header> ReadHeaderAsync(CancellationToken cancellationToken = default)
         {
             using var reader = new OcsReader(File.OpenRead(Path));
@@ -51,24 +45,27 @@ namespace OpenConstructionSet.Mods
             return Task.FromResult((DataFileType)reader.ReadInt() == DataFileType.Mod ? reader.ReadHeader() : throw new InvalidDataException("Target file is not a valid mod"));
         }
 
-        public virtual Task<ModFileInfo?> ReadInfoAsync(CancellationToken cancellationToken = default)
+        /// <inheritdoc/>
+        public virtual Task<ModInfoData?> ReadInfoAsync(CancellationToken cancellationToken = default)
         {
             var infoPath = OcsPathHelper.GetInfoPath(Path);
 
             if (!File.Exists(infoPath))
             {
-                return Task.FromResult<ModFileInfo?>(null);
+                return Task.FromResult<ModInfoData?>(null);
             }
 
             using var stream = File.OpenRead(infoPath);
 
-            var serialiser = new XmlSerializer(typeof(ModFileInfo));
+            var serialiser = new XmlSerializer(typeof(ModInfoData));
 
-            return Task.FromResult((ModFileInfo?)serialiser.Deserialize(stream));
+            return Task.FromResult((ModInfoData?)serialiser.Deserialize(stream));
         }
 
+        /// <inheritdoc/>
         public override string ToString() => $"{Filename} ({Path})";
 
+        /// <inheritdoc/>
         public virtual async Task WriteDataAsync(ModFileData data, CancellationToken cancellationToken = default)
         {
             using var writer = new OcsWriter(File.OpenWrite(Path));
@@ -84,6 +81,7 @@ namespace OpenConstructionSet.Mods
             }
         }
 
+        /// <inheritdoc/>
         public virtual async Task WriteHeaderAsync(Header header, CancellationToken cancellationToken = default)
         {
             var data = await ReadDataAsync(cancellationToken).ConfigureAwait(false) with { Header = header };
@@ -91,11 +89,12 @@ namespace OpenConstructionSet.Mods
             await WriteDataAsync(data, cancellationToken).ConfigureAwait(false);
         }
 
-        public virtual Task WriteInfoAsync(ModFileInfo info, CancellationToken cancellationToken = default)
+        /// <inheritdoc/>
+        public virtual Task WriteInfoAsync(ModInfoData info, CancellationToken cancellationToken = default)
         {
             using var stream = File.OpenWrite(OcsPathHelper.GetInfoPath(Path));
 
-            var serialiser = new XmlSerializer(typeof(ModFileInfo));
+            var serialiser = new XmlSerializer(typeof(ModInfoData));
 
             serialiser.Serialize(stream, info);
 

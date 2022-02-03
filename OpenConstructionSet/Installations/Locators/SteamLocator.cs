@@ -1,11 +1,11 @@
-﻿using Microsoft.Win32;
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
+using Microsoft.Win32;
 
 namespace OpenConstructionSet.Installations.Locators;
 
 /// <summary>
-/// Gog implementation of a <see cref="IInstallationLocator"/>
+/// Steam implementation of a <see cref="IInstallationLocator"/>
 /// </summary>
 [SupportedOSPlatform("windows")]
 public class SteamLocator : IInstallationLocator
@@ -48,7 +48,7 @@ public class SteamLocator : IInstallationLocator
             return Task.FromResult<IInstallation?>(null);
         }
 
-        return Task.FromResult<IInstallation?>(new Installation(Id, gameFolder, contentFolder is not null ? new ModFolder(contentFolder, ModFolderType.Content) : null));
+        return Task.FromResult<IInstallation?>(new Installation(Id, gameFolder, contentFolder));
 
         string SteamFolder()
         {

@@ -11,7 +11,7 @@ public sealed class OcsReader : IDisposable
     private readonly BinaryReader reader;
 
     /// <summary>
-    /// Initialize a new <c>OcsReader</c> to work against the provided buffer.
+    /// Initialize a new <see cref="OcsReader"/> to work against the provided buffer.
     /// </summary>
     /// <param name="buffer"></param>
     public OcsReader(byte[] buffer) : this(new MemoryStream(buffer))
@@ -19,32 +19,32 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Initialize a new <c>OcsReader</c> to work against the provided <c>Stream</c>.
+    /// Initialize a new <see cref="OcsReader"/> to work against the provided <c>Stream</c>.
     /// </summary>
     /// <param name="stream"></param>
     public OcsReader(Stream stream) => reader = new(stream);
 
     /// <summary>
-    /// Dispose the underlying stream if provided.
+    /// Dispose the underlying Stream if provided.
     /// </summary>
     public void Dispose() => reader.Dispose();
 
     /// <summary>
-    /// Read a bool from the data.
+    /// Read a <c>bool</c> from the data.
     /// </summary>
-    /// <returns>A bool read from the data.</returns>
+    /// <returns>A <c>bool</c> read from the data.</returns>
     public bool ReadBool() => reader.ReadBoolean();
 
     /// <summary>
-    /// Read a float from the data.
+    /// Read a <c>float</c> from the data.
     /// </summary>
-    /// <returns>A float object read from the data.</returns>
+    /// <returns>A <c>float</c> read from the data.</returns>
     public float ReadFloat() => reader.ReadSingle();
 
     /// <summary>
-    /// Read a <c>Header</c> object from the data.
+    /// Read a <see cref="Header"/> object from the data.
     /// </summary>
-    /// <returns>A <c>Hader</c> object read from the data.</returns>
+    /// <returns>A <see cref="Header"/> object read from the data.</returns>
     public Header ReadHeader() => new(ReadInt(), ReadString(), ReadString())
     {
         Dependencies = ReadStringList().ToList(),
@@ -52,20 +52,20 @@ public sealed class OcsReader : IDisposable
     };
 
     /// <summary>
-    /// Read an <c>Instance</c> from the data.
+    /// Read an <see cref="Instance"/> from the data.
     /// </summary>
-    /// <returns>An <c>Instance</c> read from the data.</returns>
+    /// <returns>An <see cref="Instance"></see> read from the data.</returns>
     public Instance ReadInstance() => new(ReadString(), ReadString(), ReadVector3(), ReadVector4(true), ReadStrings());
 
     /// <summary>
-    /// Read an int from the data.
+    /// Read an <c>int</c> from the data.
     /// </summary>
-    /// <returns>An int read from the data.</returns>
+    /// <returns>An <c>int</c> read from the data.</returns>
     public int ReadInt() => reader.ReadInt32();
 
     /// <summary>
-    /// Read an <c>Item</c> from the data.
-    /// This includes the <c>Item</c>'s values, instances and references.
+    /// Read an <see cref="Item"/> from the data.
+    /// This includes the <see cref="Item"/>'s values, instances and references.
     /// </summary>
     /// <returns>An <c>Item</c> read from the data.</returns>
     public Item ReadItem()
@@ -122,9 +122,9 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Read a collection of <c>Item</c>s from the data.
+    /// Read a collection of <see cref="Item"/>s from the data.
     /// </summary>
-    /// <returns>A collection of <c>Items</c>s read from the data.</returns>
+    /// <returns>A collection of <see cref="Item"/>s read from the data.</returns>
     public IEnumerable<Item> ReadItems()
     {
         var count = ReadInt();
@@ -136,15 +136,15 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Read a <c>Reference</c> from the data.
+    /// Read a <see cref="Reference"/> from the data.
     /// </summary>
-    /// <returns>A <c>Reference</c> read from the data.</returns>
+    /// <returns>A <see cref="Reference"/> read from the data.</returns>
     public Reference ReadReference() => new(ReadString(), ReadInt(), ReadInt(), ReadInt());
 
     /// <summary>
-    /// Read a string from the data.
+    /// Read a <c>string</c> from the data.
     /// </summary>
-    /// <returns>A string read from the data.</returns>
+    /// <returns>A <c>string</c> read from the data.</returns>
     public string ReadString()
     {
         var length = ReadInt();
@@ -153,15 +153,15 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Read a comma separated list from the data.
+    /// Read a comma separated list of <c>string</c>s from the data.
     /// </summary>
-    /// <returns>An array of strings read from a comma separated list in the data.</returns>
+    /// <returns>An array of <c>string</c>s read from a comma separated list in the data.</returns>
     public string[] ReadStringList() => ReadString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
     /// <summary>
-    /// Reads a collection of strings from the data.
+    /// Reads a collection of <c>string</c>s from the data.
     /// </summary>
-    /// <returns>A collection of strings read from the data.</returns>
+    /// <returns>A collection of <c>string</c>s read from the data.</returns>
     public string[] ReadStrings()
     {
         var count = ReadInt();
@@ -177,15 +177,15 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Read a <c>Vector3</c> object from the data.
+    /// Read a <see cref="Vector3"/> object from the data.
     /// </summary>
-    /// <returns>A <c>Vector3</c> object read from the data.</returns>
+    /// <returns>A <see cref="Vector3"/> object read from the data.</returns>
     public Vector3 ReadVector3() => new(ReadFloat(), ReadFloat(), ReadFloat());
 
     /// <summary>
-    /// Read a <c>Vector4</c> object from the data.
+    /// Read a <see cref="Vector4"/> object from the data.
     /// </summary>
-    /// <returns>A <c>Vector4</c> object read from the data.</returns>
+    /// <returns>A <see cref="Vector4"/> object read from the data.</returns>
     public Vector4 ReadVector4(bool wFirst = false)
     {
         float w, x, y, z;

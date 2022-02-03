@@ -1,12 +1,12 @@
 ﻿namespace OpenConstructionSet.Data;
 
 /// <summary>
-/// Represents an editable Vector4.
+/// Represents of a Vector4.
 /// </summary>
 public record struct Vector4
 {
     /// <summary>
-    /// Creates a new <c>DataVector4</c> from the given values.
+    /// Creates a new <see cref="Vector4"/> from the given values.
     /// </summary>
     /// <param name="w"></param>
     /// <param name="x"></param>
@@ -40,5 +40,6 @@ public record struct Vector4
     /// </summary>
     public float Z { get; set; }
 
+    /// <inheritdoc/>
     public override string ToString() => $"({W}, {X}, {Y}, {Z})";
 }

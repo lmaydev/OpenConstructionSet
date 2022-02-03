@@ -1,11 +1,32 @@
 ﻿namespace OpenConstructionSet.Mods
 {
     /// <summary>
-    /// Represents a game data file.
+    /// Represents the data stored within a <see cref="IModFile"/>.
     /// </summary>
-    /// <param name="Header">If the file is a mod (Type 16) this contains the meta data for it. This will be <c>null</c> for other data files.</param>
-    /// <param name="LastId">The last id number used when creating new items.</param>
-    /// <param name="Items">Collection of data items contained with in the file. These represent all entities in kenshi.</param>
-    /// <param name="Info">The information contained in the mod's .info file.</param>
-    public sealed record ModFileData(Header Header, int LastId, List<Item> Items, ModFileInfo? Info);
+    /// <param name="Header">The <see cref="Header"/> of the <see cref="IModFile"/>.</param>
+    /// <param name="LastId">The last Id used to generate a new <see cref="Item"/>.</param>
+    /// <param name="Items">The collection of <see cref="Item"/>s of the <see cref="IModFile"/>.</param>
+    /// <param name="Info">Optional data contained within the <see cref="IModFile"/>'s .info file.</param>
+    public sealed record ModFileData(Header Header, int LastId, List<Item> Items, ModInfoData? Info)
+    {
+        /// <summary>
+        /// The <see cref="Header"/> of the <see cref="IModFile"/>.
+        /// </summary>
+        public Header Header { get; init; } = Header;
+
+        /// <summary>
+        /// The last Id used to generate a new <see cref="Item"/>.
+        /// </summary>
+        public int LastId { get; init; } = LastId;
+
+        /// <summary>
+        /// The collection of <see cref="Item"/>s of the <see cref="IModFile"/>.
+        /// </summary>
+        public List<Item> Items { get; init; } = Items;
+
+        /// <summary>
+        /// Optional data contained within the <see cref="IModFile"/>'s .info file.
+        /// </summary>
+        public ModInfoData? Info { get; init; } = Info;
+    }
 }

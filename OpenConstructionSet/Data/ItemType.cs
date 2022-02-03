@@ -1,7 +1,7 @@
 ﻿namespace OpenConstructionSet.Data;
 
 /// <summary>
-/// Type identifier for Items.
+/// Type identifier for <see cref="Item"/>s.
 /// </summary>
 public enum ItemType
 {

@@ -6,7 +6,7 @@
     public enum DataFileType : int
     {
         /// <summary>
-        /// A save file. Supports .save, .platoon and .zone
+        /// A save file. Supports .save, .platoon, .zone etc.
         /// </summary>
         Save = 15,
 

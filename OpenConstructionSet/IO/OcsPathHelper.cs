@@ -19,5 +19,14 @@ public static class OcsPathHelper
         return Path.Combine(folder, $"_{name}.info");
     }
 
+    /// <summary>
+    /// Adds .mod to a mod name if no extension is present.
+    /// e.g. example becomes example.mod while example.data will be unchanged
+    /// </summary>
+    /// <param name="modName">The name, filename or path of a mod.</param>
+    /// <returns>
+    /// The given mod name with a .mod extension if there was no extension originally.
+    /// Otherwise simply returns the given mod name.
+    /// </returns>
     internal static string AddModExtension(this string modName) => string.IsNullOrEmpty(Path.GetExtension(modName)) ? $"{modName}.mod" : modName;
 }

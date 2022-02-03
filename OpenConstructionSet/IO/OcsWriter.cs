@@ -19,21 +19,21 @@ public sealed class OcsWriter : IDisposable
     private readonly BinaryWriter writer;
 
     /// <summary>
-    /// Initialize a new writer working against the given stream.
+    /// Initialize a new writer working against the given <c>Stream</c>.
     /// </summary>
-    /// <param name="stream"></param>
+    /// <param name="stream">The <c>Stream</c> to write to.</param>
     public OcsWriter(Stream stream) => writer = new(stream);
 
     /// <summary>
-    /// Dispose the underlying stream.
+    /// Dispose the underlying <c>Stream</c>.
     /// </summary>
     public void Dispose() => writer.Dispose();
 
     /// <summary>
-    /// Write a collection of objects to the stream.
+    /// Write a collection of objects to the <c>Stream</c>.
     /// T will be runtime bound to one of the Write methods. Passing an unsupported type will result in errors.
     /// </summary>
-    /// <param name="collection">The collection to write to stream.</param>
+    /// <param name="collection">The collection to write to <c>Stream</c>.</param>
     public void Write<T>(IEnumerable<T> collection)
     {
         Write(collection.Count());
@@ -50,9 +50,9 @@ public sealed class OcsWriter : IDisposable
     }
 
     /// <summary>
-    /// Write an <c>Item</c> to the stream.
+    /// Write an <see cref="Item"/> to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The <c>Item</c> to write to stream.</param>
+    /// <param name="value">The <see cref="Item"/> to write to <c>Stream</c>.</param>
     public void Write(Item value)
     {
         // Instance count?
@@ -107,9 +107,9 @@ public sealed class OcsWriter : IDisposable
     }
 
     /// <summary>
-    /// Write an <c>Instance</c> to the stream.
+    /// Write an <see cref="Instance"/> to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The <c>Instance</c> to write to stream.</param>
+    /// <param name="value">The <see cref="Instance"/> to write to <c>Stream</c>.</param>
     public void Write(Instance value)
     {
         Write(value.Id);
@@ -121,9 +121,9 @@ public sealed class OcsWriter : IDisposable
     }
 
     /// <summary>
-    /// Write a <c>Reference</c> to the stream.
+    /// Write a <see cref="Reference"/> to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The <c>Reference</c> to write to stream.</param>
+    /// <param name="value">The <see cref="Reference"/> to write to <c>Stream</c>.</param>
     public void Write(Reference value)
     {
         Write(value.TargetId);
@@ -133,9 +133,9 @@ public sealed class OcsWriter : IDisposable
     }
 
     /// <summary>
-    /// Write a <c>Header</c> object to the stream.
+    /// Write a <see cref="Header"/> object to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The <c>Header</c> object to write to stream.</param>
+    /// <param name="value">The <see cref="Header"/> object to write to <c>Stream</c>.</param>
     public void Write(Header value)
     {
         Write(value.Version);
@@ -146,9 +146,9 @@ public sealed class OcsWriter : IDisposable
     }
 
     /// <summary>
-    /// Write a string to the stream.
+    /// Write a <c>string</c> to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The string to write to stream.</param>
+    /// <param name="value">The <c>string</c> to write to <c>Stream</c>.</param>
     public void Write(string value)
     {
         var data = System.Text.Encoding.UTF8.GetBytes(value);
@@ -158,15 +158,15 @@ public sealed class OcsWriter : IDisposable
     }
 
     /// <summary>
-    /// Write a <c>FileValue</c> object to the stream.
+    /// Write a <see cref="FileValue"/> object to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The <c>fileValue</c> object to write to stream.</param>
+    /// <param name="value">The <see cref="FileValue"/> object to write to <c>Stream</c>.</param>
     public void Write(FileValue value) => Write(value.Path);
 
     /// <summary>
-    /// Write a <c>Vector3</c> object to the stream.
+    /// Write a <see cref="Vector3"/> object to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The <c>Vector</c> object to write to stream.</param>
+    /// <param name="value">The <see cref="Vector3"/> object to write to <c>Stream</c>.</param>
     public void Write(Vector3 value)
     {
         Write(value.X);
@@ -175,9 +175,9 @@ public sealed class OcsWriter : IDisposable
     }
 
     /// <summary>
-    /// Write a <c>Vector4</c> object to the stream.
+    /// Write a <see cref="Vector4"/> object to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The <c>Vector4</c> object to write to stream.</param>
+    /// <param name="value">The <see cref="Vector4"/> object to write to <c>Stream</c>.</param>
     /// <param name="wFirst">If <c>true</c> the W value will be written first. Otherwise it will be written last.</param>
     public void Write(Vector4 value, bool wFirst = false)
     {
@@ -197,21 +197,21 @@ public sealed class OcsWriter : IDisposable
     }
 
     /// <summary>
-    /// Write a bool to the stream.
+    /// Write a <c>bool</c> to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The bool to write to stream.</param>
+    /// <param name="value">The <c>bool</c> to write to <c>Stream</c>.</param>
     public void Write(bool value) => writer.Write(value ? (byte)1 : (byte)0);
 
     /// <summary>
-    /// Write a float to the stream.
+    /// Write a <c>float</c> to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The flaot to write to stream.</param>
+    /// <param name="value">The <c>float</c> to write to <c>Stream</c>.</param>
     public void Write(float value) => writer.Write(value);
 
     /// <summary>
-    /// Write an int to the stream.
+    /// Write an <c>int</c> to the <c>Stream</c>.
     /// </summary>
-    /// <param name="value">The int to write to stream.</param>
+    /// <param name="value">The <c>int</c> to write to <c>Stream</c>.</param>
     public void Write(int value) => writer.Write(value);
 
     private void Write(object value)

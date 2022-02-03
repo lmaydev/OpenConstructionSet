@@ -1,68 +1,54 @@
 ﻿using OpenConstructionSet.Mods;
+using OpenConstructionSet.Saves;
 
 namespace OpenConstructionSet.Installations;
 
-/// <summary>
-/// POCO representing an installation of the game.
-/// </summary>
+/// <inheritdoc/>
 public class Installation : IInstallation
 {
     /// <summary>
-    /// Creates a new <c>Installation</c> instance.
+    /// Creates a new <see cref="Installation"/> from the provided values.
     /// </summary>
     /// <param name="identifier">Name used to identify this installation e.g. Steam</param>
     /// <param name="path">The full path of the installation.</param>
     /// <param name="content">Optional content folder e.g. Steam Workshop folder.</param>
-    public Installation(string identifier, string path, ModFolder? content)
+    public Installation(string identifier, string path, string? content)
     {
         Identifier = identifier;
         Path = path;
 
-        Data = new(System.IO.Path.Combine(path, "data"), ModFolderType.Data);
-        Mods = new(System.IO.Path.Combine(path, "mods"), ModFolderType.Mod);
+        Data = new ModFolder(System.IO.Path.Combine(path, "data"), ModFolderType.Data);
+        Mods = new ModFolder(System.IO.Path.Combine(path, "mods"), ModFolderType.Mod);
 
-        Content = content;
+        Content = content is not null ? new ModFolder(content, ModFolderType.Content) : null;
 
-        //Saves = new(System.IO.Path.Combine(Path, "save"));
+        Saves = new SaveFolder(System.IO.Path.Combine(Path, "save"));
 
         EnabledModsFile = System.IO.Path.Combine(Data.Path, OcsConstants.EnabledModFile);
     }
 
-    /// <summary>
-    /// The installation's content folder.
-    /// </summary>
-    public ModFolder? Content { get; }
+    /// <inheritdoc/>
+    public IModFolder? Content { get; }
 
-    /// <summary>
-    /// The installations's data file.
-    /// </summary>
-    public ModFolder Data { get; }
+    /// <inheritdoc/>
+    public IModFolder Data { get; }
 
-    /// <summary>
-    /// The path of the file that contain's the enabled mods for this installation.
-    /// </summary>
+    /// <inheritdoc/>
     public string EnabledModsFile { get; }
 
-    /// <summary>
-    /// Name used to identify this installation e.g. Steam
-    /// </summary>
+    /// <inheritdoc/>
     public string Identifier { get; }
 
-    /// <summary>
-    /// The installation's mod file.
-    /// </summary>
-    public ModFolder Mods { get; }
+    /// <inheritdoc/>
+    public IModFolder Mods { get; }
 
-    /// <summary>
-    /// The full path of the game's installation folder.
-    /// </summary>
+    /// <inheritdoc/>
     public string Path { get; }
 
-    /// <summary>
-    /// The save folder located inside the installation.
-    /// </summary>
-    //public SaveFolder Saves { get; }
+    /// <inheritdoc/>
+    public ISaveFolder Saves { get; }
 
+    /// <inheritdoc/>
     public virtual IEnumerable<IModFile> GetMods()
     {
         var usedNames = new HashSet<string>();
@@ -80,11 +66,14 @@ public class Installation : IInstallation
         }
     }
 
+    /// <inheritdoc/>
     public virtual async Task<string[]> ReadEnabledModsAsync(CancellationToken cancellationToken = default)
         => await File.ReadAllLinesAsync(EnabledModsFile, cancellationToken).ConfigureAwait(false);
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Identifier} ({Path})";
 
+    /// <inheritdoc/>
     public virtual async Task WriteEnabledModsAsync(IEnumerable<string> enabledMods, CancellationToken cancellationToken = default)
             => await File.WriteAllLinesAsync(EnabledModsFile, enabledMods, cancellationToken).ConfigureAwait(false);
 }

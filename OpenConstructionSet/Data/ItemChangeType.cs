@@ -1,12 +1,12 @@
 ﻿namespace OpenConstructionSet.Data;
 
 /// <summary>
-/// Change types for items.
+/// Change types for <see cref="Item"/>s.
 /// </summary>
 public enum ItemChangeType : int
 {
     /// <summary>
-    /// The item was changed by the active mod.
+    /// Changed by the active mod.
     /// </summary>
     Changed = -2147483647,
 
@@ -16,7 +16,7 @@ public enum ItemChangeType : int
     New = -2147483646,
 
     /// <summary>
-    /// The item's name was changed by the active mod.
+    /// Name was changed by the active mod.
     /// </summary>
     Renamed = -2147483645,
 }
