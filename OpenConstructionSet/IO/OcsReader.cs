@@ -94,7 +94,7 @@ public sealed class OcsReader : IDisposable
             var referenceCount = ReadInt();
             for (var j = 0; j < referenceCount; j++)
             {
-                category.Add(ReadReference());
+                category.References.Add(ReadReference());
             }
 
             item.ReferenceCategories.Add(category);

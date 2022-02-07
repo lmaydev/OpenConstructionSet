@@ -3,13 +3,13 @@
 /// <summary>
 /// Represents an <see cref="Instance"/> from the game's data.
 /// </summary>
-public class Instance
+public class Instance : IInstance
 {
     /// <summary>
     /// Creates a new <see cref="Instance"/> from another.
     /// </summary>
     /// <param name="instance">The <see cref="Instance"/> to copy.</param>
-    public Instance(Instance instance)
+    public Instance(IInstance instance)
     {
         Id = instance.Id;
         TargetId = instance.TargetId;
@@ -59,39 +59,4 @@ public class Instance
     /// The <see cref="Item.StringId"/> of the targeted <see cref="Item"/>.
     /// </summary>
     public string TargetId { get; set; }
-
-    /// <summary>
-    /// Marks this <see cref="Instance"/> as deleted.
-    /// </summary>
-    public void Delete() => TargetId = string.Empty;
-
-    /// <inheritdoc/>
-    public override bool Equals(object? obj)
-    {
-        return obj is Instance instance &&
-               Id == instance.Id &&
-               Position.Equals(instance.Position) &&
-               Rotation.Equals(instance.Rotation) &&
-               TargetId == instance.TargetId &&
-               States.SequenceEqual(instance.States);
-    }
-
-    /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        var statesValue = new HashCode();
-
-        States.ForEach(s => statesValue.Add(s));
-
-        return HashCode.Combine(Id, Position, Rotation, TargetId, statesValue.ToHashCode());
-    }
-
-    /// <summary>
-    /// Determines if this <see cref="Instance"/> is marked as deleted.
-    /// </summary>
-    /// <returns><c>true</c> if marked as deleted; otherwise, <c>false</c>.</returns>
-    public bool IsDeleted() => TargetId.Length == 0;
-
-    /// <inheritdoc/>
-    public override string ToString() => $"{Id} Target={TargetId} Postion={Position} Rotation={Rotation} States={string.Join(", ", States)}";
 }

@@ -3,13 +3,13 @@
     /// <summary>
     /// Represents a <see cref="Reference"/> from the game's data.
     /// </summary>
-    public record Reference
+    public record Reference : IReference
     {
         /// <summary>
         /// Creates a <see cref="Reference"/> from another.
         /// </summary>
         /// <param name="reference">The <see cref="Reference"/> to copy.</param>
-        public Reference(Reference reference)
+        public Reference(IReference reference)
         {
             TargetId = reference.TargetId;
             Value0 = reference.Value0;

@@ -76,14 +76,14 @@ public sealed class OcsWriter : IDisposable
         Write(value.ReferenceCategories.Count);
         foreach (var category in value.ReferenceCategories)
         {
-            if (!category.Any())
+            if (category.References.Count == 0)
             {
                 continue;
             }
 
             Write(category.Name);
 
-            Write(category);
+            Write(category.References);
         }
 
         Write(value.Instances);
