@@ -1,72 +1,73 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<WarningsAsErrors>nullable</WarningsAsErrors>
-		<MinimumPlatformVersion>7.0</MinimumPlatformVersion>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Configurations>Debug;Release;Docs</Configurations>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
-		<DisableDefaultDocumentation>true</DisableDefaultDocumentation>
-		<Platforms>AnyCPU;AnyCPU</Platforms>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Configurations>Debug;Release;Docs</Configurations>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
+    <Platforms>AnyCPU;AnyCPU</Platforms>
+  </PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition=" '$(Configuration)' == 'Docs' ">
-		<DisableDefaultDocumentation>false</DisableDefaultDocumentation>
-		<DefaultDocumentationFileNameMode>Md5</DefaultDocumentationFileNameMode>
-		<DefaultDocumentationRemoveFileExtensionFromLinks>false</DefaultDocumentationRemoveFileExtensionFromLinks>
-		<DefaultDocumentationGeneratedPages>Types, Members</DefaultDocumentationGeneratedPages>
-	</PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
 
-	<!--Nuget package properties-->
-	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<Version>0</Version>
-		<Authors>lmaydev</Authors>
-		<Description>
-			The OCS is a modding SDK for Kenshi (https://lofigames.com/) written in C#
+  <PropertyGroup Condition=" '$(Configuration)' == 'Docs' ">
+    <DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
+    <DisableDefaultDocumentation>false</DisableDefaultDocumentation>
+    <DefaultDocumentationFileNameMode>Md5</DefaultDocumentationFileNameMode>
+    <DefaultDocumentationRemoveFileExtensionFromLinks>false</DefaultDocumentationRemoveFileExtensionFromLinks>
+    <DefaultDocumentationGeneratedPages>Types, Members</DefaultDocumentationGeneratedPages>
+  </PropertyGroup>
 
-			It provides services for dealing with the various folders and data files used by the game.
-			As well as providing a managed context for loading multiple mods for editing (Similar to FCS)
-		</Description>
-		<PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
-		<RepositoryType>github</RepositoryType>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-	</PropertyGroup>
+  <!--Nuget package properties-->
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Version>0</Version>
+    <Authors>lmaydev</Authors>
+    <Description>
+      The OCS is a modding SDK for Kenshi (https://lofigames.com/) written in C#
+
+      It provides services for dealing with the various folders and data files used by the game.
+      As well as providing a managed context for loading multiple mods for editing (Similar to FCS)
+    </Description>
+    <PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
 
 
-	<ItemGroup>
-		<PackageReference Include="DefaultDocumentation" Version="0.7.9">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="LMay.Collections" Version="2.0.1" />
-		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DefaultDocumentation" Version="0.7.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="LMay.Collections" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  </ItemGroup>
 
-	<ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-	</ItemGroup>
-	
-	<ItemGroup Condition=" '$(Configuration)' == 'Docs' ">
-		<PackageReference Include="DefaultDocumentation" Version="0.7.9">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <EditorConfigFiles Remove="C:\Users\lukem\Documents\GitHub\OpenConstructionSet\OpenConstructionSet\.editorconfig" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <None Include="C:\Users\lukem\Documents\GitHub\OpenConstructionSet\OpenConstructionSet\.editorconfig" />
-	</ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(Configuration)' == 'Docs' ">
+    <PackageReference Include="DefaultDocumentation" Version="0.7.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\lukem\Documents\GitHub\OpenConstructionSet\OpenConstructionSet\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\lukem\Documents\GitHub\OpenConstructionSet\OpenConstructionSet\.editorconfig" />
+  </ItemGroup>
 </Project>
