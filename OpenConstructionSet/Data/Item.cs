@@ -84,7 +84,7 @@ public class Item : IItem
     /// <summary>
     /// Collection of <see cref="Instance"/>s stored by this <see cref="Item"/>.
     /// </summary>
-    public List<Instance> Instances { get; } = new List<Instance>();
+    public List<IInstance> Instances { get; } = new();
 
     /// <summary>
     /// The name of this <see cref="Item"/>.
@@ -94,7 +94,7 @@ public class Item : IItem
     /// <summary>
     /// Collection of <see cref="ReferenceCategory"/> instances stored by this <see cref="Item"/>.
     /// </summary>
-    public List<ReferenceCategory> ReferenceCategories { get; } = new List<ReferenceCategory>();
+    public List<IReferenceCategory> ReferenceCategories { get; } = new();
 
     /// <summary>
     /// The unique string identifier of this <see cref="Item"/>.
@@ -111,9 +111,9 @@ public class Item : IItem
     /// </summary>
     public OrderedDictionary<string, object> Values { get; } = new OrderedDictionary<string, object>();
 
-    IEnumerable<IInstance> IItem.Instances => Instances;
+    ICollection<IInstance> IItem.Instances => Instances;
 
-    IEnumerable<IReferenceCategory> IItem.ReferenceCategories => ReferenceCategories;
+    ICollection<IReferenceCategory> IItem.ReferenceCategories => ReferenceCategories;
 
     IDictionary<string, object> IItem.Values => Values;
 }

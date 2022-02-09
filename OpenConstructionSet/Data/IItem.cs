@@ -3,9 +3,9 @@
     public interface IItem
     {
         int Id { get; set; }
-        IEnumerable<IInstance> Instances { get; }
+        ICollection<IInstance> Instances { get; }
         string Name { get; set; }
-        IEnumerable<IReferenceCategory> ReferenceCategories { get; }
+        ICollection<IReferenceCategory> ReferenceCategories { get; }
         string StringId { get; }
         ItemType Type { get; set; }
         IDictionary<string, object> Values { get; }
