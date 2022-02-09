@@ -6,7 +6,6 @@
     <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Configurations>Debug;Release;Docs</Configurations>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
     <Platforms>AnyCPU;AnyCPU</Platforms>
   </PropertyGroup>
@@ -17,6 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Docs' ">
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
     <DisableDefaultDocumentation>false</DisableDefaultDocumentation>
     <DefaultDocumentationFileNameMode>Md5</DefaultDocumentationFileNameMode>

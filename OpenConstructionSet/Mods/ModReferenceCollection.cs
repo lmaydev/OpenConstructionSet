@@ -1,102 +1,121 @@
 ﻿using LMay.Collections;
 
-namespace OpenConstructionSet.Mods
+namespace OpenConstructionSet.Mods;
+
+public class ModInstanceCollection : KeyedItemList<string, ModInstance>
 {
-    public class ModInstanceCollection : KeyedItemList<string, ModInstance>
+    private readonly ModItem parent;
+
+    internal ModInstanceCollection(ModItem parent, IEnumerable<IInstance> collection) : this(parent)
     {
-        private readonly IModContext owner;
-
-        public ModInstanceCollection(IModContext owner)
+        foreach (var item in collection)
         {
-            this.owner = owner;
+            AddFrom(item);
         }
-
-        public ModInstanceCollection(IModContext owner, IEqualityComparer<string> comparer) : base(comparer)
-        {
-            this.owner = owner;
-        }
-
-        public ModInstanceCollection(IModContext owner, IEnumerable<ModInstance> collection) : this(owner, collection, EqualityComparer<string>.Default)
-        {
-            this.owner = owner;
-        }
-
-        public ModInstanceCollection(IModContext owner, IEnumerable<ModInstance> collection, IEqualityComparer<string> comparer)
-            : base(collection.Select(i => new ModInstance(owner, i)), comparer)
-        {
-            this.owner = owner;
-        }
-
-        public void Add(IInstance instance) => Add(new ModInstance(owner, instance));
-
-        public override void Add(ModInstance item) => Add(new ModInstance(owner, item));
-
-        private void Add(ModInstance instance) => base.Add(instance);
     }
 
-    public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, ModReferenceCategory>
+    internal ModInstanceCollection(ModItem parent)
     {
-        private readonly IModContext owner;
-
-        public ModReferenceCategoryCollection(IModContext owner)
-        {
-            this.owner = owner;
-        }
-
-        public ModReferenceCategoryCollection(IModContext owner, IComparer<string>? comparer) : base(comparer)
-        {
-            this.owner = owner;
-        }
-
-        public ModReferenceCategoryCollection(IModContext owner, IEnumerable<IReferenceCategory> collection) : this(owner, collection, null)
-        {
-        }
-
-        public ModReferenceCategoryCollection(IModContext owner, IEnumerable<IReferenceCategory> collection, IComparer<string>? comparer) :
-            base(collection.Select(r => new ModReferenceCategory(owner, r)), comparer)
-        {
-            this.owner = owner;
-        }
-
-        public void Add(IReferenceCategory reference) => base.Add(new ModReferenceCategory(owner, reference));
-
-        public override void Add(ModReferenceCategory item) => Add(item);
-
-        public void Add(string name) => base.Add(new ModReferenceCategory(owner, name));
+        this.parent = parent;
     }
 
-    public class ModReferenceCollection : SortedKeyedItemCollection<string, ModReference>
+    internal ModContext? Owner => parent.Owner;
+
+    public override void Add(ModInstance item)
     {
-        private readonly IModContext owner;
-
-        public ModReferenceCollection(IModContext owner)
-        {
-            this.owner = owner;
-        }
-
-        public ModReferenceCollection(IModContext owner, IComparer<string>? comparer) : base(comparer)
-        {
-            this.owner = owner;
-        }
-
-        public ModReferenceCollection(IModContext owner, IEnumerable<ModReference> collection) : this(owner, collection, null)
-        {
-        }
-
-        public ModReferenceCollection(IModContext owner, IEnumerable<ModReference> collection, IComparer<string>? comparer) :
-            base(collection.Select(r => new ModReference(owner, r)), comparer)
-        {
-            this.owner = owner;
-        }
-
-        public void Add(IReference reference) => Add(new ModReference(owner, reference));
-
-        public override void Add(ModReference item) => Add(new ModReference(owner, item));
-
-        public void Add(string targetId, int value0 = 0, int value1 = 0, int value2 = 0) => Add(new ModReference(owner, targetId, value0, value1, value2));
-
-        public void Add(IItem target, int value0 = 0, int value1 = 0, int value2 = 0) => Add(target.StringId, value0, value1, value2);
-
-        private void Add(ModReference reference) => base.Add(reference);
+        item.SetParent(this);
+        base.Add(item);
     }
+
+    public void AddFrom(IInstance instance) => Add(instance is ModInstance mi ? mi : new ModInstance(instance));
+}
+
+public class ModItemCollection : SortedKeyedItemCollection<string, ModItem>
+{
+    private readonly ModContext parent;
+
+    internal ModItemCollection(ModContext parent, IEnumerable<IItem> collection) : this(parent)
+    {
+        foreach (var item in collection)
+        {
+            AddFrom(item);
+        }
+    }
+
+    internal ModItemCollection(ModContext parent)
+    {
+        this.parent = parent;
+    }
+
+    internal ModContext Owner => parent;
+
+    public override void Add(ModItem item)
+    {
+        item.SetParent(this);
+        base.Add(item);
+    }
+
+    public void AddFrom(IItem reference) => Add(reference is ModItem mr ? mr : new ModItem(reference));
+}
+
+public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, ModReferenceCategory>
+{
+    private readonly ModItem parent;
+
+    public ModReferenceCategoryCollection(ModItem parent, IEnumerable<IReferenceCategory> collection) : this(parent)
+    {
+        foreach (var item in collection)
+        {
+            AddFrom(item);
+        }
+    }
+
+    internal ModReferenceCategoryCollection(ModItem parent)
+    {
+        this.parent = parent;
+    }
+
+    internal ModContext? Owner => parent.Owner;
+
+    public override void Add(ModReferenceCategory item)
+    {
+        item.SetParent(this);
+        base.Add(item);
+    }
+
+    public void Add(string name) => Add(new ModReferenceCategory(name));
+
+    public void AddFrom(IReferenceCategory category) => Add(category is ModReferenceCategory mrc ? mrc : new ModReferenceCategory(category));
+}
+
+public class ModReferenceCollection : SortedKeyedItemCollection<string, ModReference>
+{
+    private readonly ModReferenceCategory parent;
+
+    internal ModReferenceCollection(ModReferenceCategory parent, IEnumerable<IReference> collection) : this(parent)
+    {
+        foreach (var item in collection)
+        {
+            AddFrom(item);
+        }
+    }
+
+    internal ModReferenceCollection(ModReferenceCategory parent)
+    {
+        this.parent = parent;
+    }
+
+    internal ModContext? Owner => parent.Owner;
+
+    public override void Add(ModReference item)
+    {
+        item.SetParent(this);
+        base.Add(item);
+    }
+
+    public void Add(string targetId, int value0 = 0, int value1 = 0, int value2 = 0) => Add(new ModReference(targetId, value0, value1, value2));
+
+    public void Add(IItem target, int value0 = 0, int value1 = 0, int value2 = 0) => Add(target.StringId, value0, value1, value2);
+
+    public void AddFrom(IReference reference) => Add(reference is ModReference mr ? mr : new ModReference(reference));
 }

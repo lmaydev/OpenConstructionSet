@@ -1,18 +1,18 @@
 ﻿namespace OpenConstructionSet.Mods;
 
 /// <summary>
-/// Represents a <see cref="ModReferenceCategory"/> from the game's data.
-/// Stores a collection of related references.
+/// Represents a <see cref="ModReferenceCategory"/> from the game's data. Stores a collection of
+/// related references.
 /// </summary>
-public class ModReferenceCategory : IModReferenceCategory
+public class ModReferenceCategory : IReferenceCategory, IKeyedItem<string>
 {
-    private readonly IModContext owner;
+    private ModReferenceCategoryCollection? parent;
 
     /// <summary>
     /// Creates a new <see cref="ModReferenceCategory"/> from another.
     /// </summary>
     /// <param name="category">The <see cref="IModReferenceCategory"/> to copy.</param>
-    internal ModReferenceCategory(IModContext owner, IReferenceCategory category) : this(owner, category.Name, (IEnumerable<IReference>)category)
+    internal ModReferenceCategory(IReferenceCategory category) : this(category.Name, (IEnumerable<IReference>)category)
     {
     }
 
@@ -20,25 +20,23 @@ public class ModReferenceCategory : IModReferenceCategory
     /// Creates a new <see cref="ModReferenceCategory"/> with the given name.
     /// </summary>
     /// <param name="name">The name of the <see cref="ModReferenceCategory"/>.</param>
-    internal ModReferenceCategory(IModContext owner, string name)
+    internal ModReferenceCategory(string name)
     {
-        this.owner = owner;
         Name = name;
-        References = new();
+        References = new(this);
     }
 
     /// <summary>
-    /// Creates a new <see cref="ModReferenceCategory"/> with the given name and contained <see cref="Reference"/>s.
-    /// The <see cref="Reference"/>s will be recreated using the copy constructor.
+    /// Creates a new <see cref="ModReferenceCategory"/> with the given name and contained <see
+    /// cref="Reference"/> s. The <see cref="Reference"/> s will be recreated using the copy constructor.
     /// </summary>
     /// <param name="name">The name of the <see cref="ModReferenceCategory"/>.</param>
-    /// <param name="collection">A collection of <see cref="Reference"/>s to add to the <see cref="ModReferenceCategory"/>.</param>
-    internal ModReferenceCategory(IModContext owner, string name, IEnumerable<IReference> collection)
+    /// <param name="collection">A collection of <see cref="Reference"/> s to add to the <see cref="ModReferenceCategory"/>.</param>
+    internal ModReferenceCategory(string name, IEnumerable<IReference> collection)
     {
-        this.owner = owner;
         Name = name;
 
-        References = new(collection.Select(r => new ModReference(owner, r)));
+        References = new(this, collection);
     }
 
     /// <inheritdoc/>
@@ -49,11 +47,9 @@ public class ModReferenceCategory : IModReferenceCategory
     /// </summary>
     public string Name { get; }
 
-    public KeyedItemList<string, ModReference> References { get; }
-
-    IKeyedCollection<string, ModReference> IModReferenceCategory.References => References;
-
+    public ModReferenceCollection References { get; }
     IEnumerable<IReference> IReferenceCategory.References => References.Cast<IReference>();
+    internal ModContext? Owner => parent?.Owner;
 
     /// <inheritdoc/>
     public override bool Equals(object? obj)
@@ -70,4 +66,10 @@ public class ModReferenceCategory : IModReferenceCategory
 
     /// <inheritdoc/>
     public override string ToString() => $"{Name} (Count: {References.Count})";
+
+    internal void SetParent(ModReferenceCategoryCollection? newParent)
+    {
+        parent?.Remove(this);
+        parent = newParent;
+    }
 }

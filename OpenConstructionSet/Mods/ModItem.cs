@@ -1,19 +1,17 @@
 ﻿namespace OpenConstructionSet.Mods;
 
 /// <summary>
-/// Represents an item in the games data.
-/// All entites in the game are represented using these.
+/// Represents an item in the games data. All entites in the game are represented using these.
 /// </summary>
-public class ModItem : IItem
+public class ModItem : IItem, IKeyedItem<string>
 {
-    private readonly IModContext owner;
+    internal ModItemCollection? parent;
 
     /// <summary>
     /// Creates a new <see cref="ModItem"/> from another.
     /// </summary>
     /// <param name="item">The <see cref="ModItem"/> to copy.</param>
-    public ModItem(IModContext owner, IItem item) : this(
-        owner,
+    public ModItem(IItem item) : this(
         item.Type,
         item.Id,
         item.Name,
@@ -31,18 +29,16 @@ public class ModItem : IItem
     /// <param name="id">The Id of this <see cref="ModItem"/>.</param>
     /// <param name="name">The name of this <see cref="ModItem"/>.</param>
     /// <param name="stringId">The unique string identifier of this <see cref="ModItem"/>.</param>
-    ///
-    public ModItem(IModContext owner, ItemType type, int id, string name, string stringId)
+    public ModItem(ItemType type, int id, string name, string stringId)
     {
-        this.owner = owner;
         Type = type;
         Id = id;
         Name = name;
         StringId = stringId;
 
         Values = new();
-        ReferenceCategories = new();
-        Instances = new(owner);
+        ReferenceCategories = new(this);
+        Instances = new(this);
     }
 
     /// <summary>
@@ -53,20 +49,20 @@ public class ModItem : IItem
     /// <param name="name">The name of this <see cref="ModItem"/>.</param>
     /// <param name="stringId">The unique string identifier of this <see cref="ModItem"/>.</param>
     /// <param name="values">Dictionary of values stored by this <see cref="ModItem"/>.</param>
-    /// <param name="referenceCategories">Collection of <see cref="ReferenceCategory"/> instances stored by this <see cref="ModItem"/>.</param>
-    /// <param name="instances">Collection of <see cref="Instance"/>s stored by this <see cref="ModItem"/>.</param>
-    ///
-    public ModItem(IModContext owner, ItemType type, int id, string name, string stringId, IDictionary<string, object> values, IEnumerable<IReferenceCategory> referenceCategories, IEnumerable<IInstance> instances)
+    /// <param name="referenceCategories">
+    /// Collection of <see cref="ReferenceCategory"/> instances stored by this <see cref="ModItem"/>.
+    /// </param>
+    /// <param name="instances">Collection of <see cref="Instance"/> s stored by this <see cref="ModItem"/>.</param>
+    public ModItem(ItemType type, int id, string name, string stringId, IDictionary<string, object> values, IEnumerable<IReferenceCategory> referenceCategories, IEnumerable<IInstance> instances)
     {
-        this.owner = owner;
         Type = type;
         Id = id;
         Name = name;
         StringId = stringId;
 
         this.Values = new(values);
-        this.ReferenceCategories = new(referenceCategories.Select(c => (IModReferenceCategory)new ModReferenceCategory(owner, c)));
-        this.Instances = new(owner, instances.Select(i => new ModInstance(owner, i)));
+        this.ReferenceCategories = new(this, referenceCategories);
+        this.Instances = new(this, instances);
     }
 
     /// <summary>
@@ -75,9 +71,11 @@ public class ModItem : IItem
     public int Id { get; set; }
 
     /// <summary>
-    /// Collection of <see cref="Instance"/>s stored by this <see cref="ModItem"/>.
+    /// Collection of <see cref="Instance"/> s stored by this <see cref="ModItem"/>.
     /// </summary>
     public ModInstanceCollection Instances { get; }
+
+    public string Key => StringId;
 
     /// <summary>
     /// The name of this <see cref="ModItem"/>.
@@ -105,8 +103,13 @@ public class ModItem : IItem
     public SortedDictionary<string, object> Values { get; }
 
     ICollection<IInstance> IItem.Instances => (ICollection<IInstance>)Instances;
-
     ICollection<IReferenceCategory> IItem.ReferenceCategories => (ICollection<IReferenceCategory>)ReferenceCategories;
-
     IDictionary<string, object> IItem.Values => Values;
+    internal ModContext? Owner => parent?.Owner;
+
+    internal void SetParent(ModItemCollection? newOwner)
+    {
+        parent?.Remove(this);
+        parent = newOwner;
+    }
 }

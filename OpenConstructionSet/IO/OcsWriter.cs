@@ -30,8 +30,8 @@ public sealed class OcsWriter : IDisposable
     public void Dispose() => writer.Dispose();
 
     /// <summary>
-    /// Write a collection of objects to the <c>Stream</c>.
-    /// T will be runtime bound to one of the Write methods. Passing an unsupported type will result in errors.
+    /// Write a collection of objects to the <c>Stream</c>. T will be runtime bound to one of the
+    /// Write methods. Passing an unsupported type will result in errors.
     /// </summary>
     /// <param name="collection">The collection to write to <c>Stream</c>.</param>
     public void Write<T>(IEnumerable<T> collection)
@@ -76,7 +76,7 @@ public sealed class OcsWriter : IDisposable
         Write(value.ReferenceCategories.Count);
         foreach (var category in value.ReferenceCategories)
         {
-            if (category.References.Count == 0)
+            if (!category.References.Any())
             {
                 continue;
             }
@@ -178,7 +178,9 @@ public sealed class OcsWriter : IDisposable
     /// Write a <see cref="Vector4"/> object to the <c>Stream</c>.
     /// </summary>
     /// <param name="value">The <see cref="Vector4"/> object to write to <c>Stream</c>.</param>
-    /// <param name="wFirst">If <c>true</c> the W value will be written first. Otherwise it will be written last.</param>
+    /// <param name="wFirst">
+    /// If <c>true</c> the W value will be written first. Otherwise it will be written last.
+    /// </param>
     public void Write(Vector4 value, bool wFirst = false)
     {
         if (wFirst)
