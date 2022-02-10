@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using OpenConstructionSet;
 using OpenConstructionSet.Installations.Locators;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -14,10 +15,7 @@ public static class OcsServiceCollectionExtensions
                 ServiceDescriptor.Singleton<IInstallationLocator, LocalLocator>(),
             });
 
-        return services.AddSingleton<IOcsIOService, OcsIOService>()
-                       .AddSingleton<IModNameResolver, ModNameResolver>()
-                       .AddSingleton<IOcsDiscoveryService, OcsDiscoveryService>()
-                       .AddSingleton<IOcsDataContextBuilder, OcsDataContextBuilder>()
-                       .AddSingleton<IOcsDataBuilder, OcsDataContextBuilder>();
+        return services.AddSingleton<IInstallationService, InstallationService>()
+                       .AddSingleton<IContextBuilder, ContextBuilder>();
     }
 }
