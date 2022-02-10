@@ -53,6 +53,11 @@ public class ModReferenceCategory : IReferenceCategory, IKeyedItem<string>
     IEnumerable<IReference> IReferenceCategory.References => References.Cast<IReference>();
     internal ModContext? Owner => parent?.Owner;
 
+    public ModReferenceCategory DeepClone()
+    {
+        return new ModReferenceCategory(Name, References.Select(r => new ModReference(r)));
+    }
+
     /// <inheritdoc/>
     public override bool Equals(object? obj)
     {

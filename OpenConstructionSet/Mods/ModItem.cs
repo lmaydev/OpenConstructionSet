@@ -113,6 +113,12 @@ public class ModItem : IItem, IKeyedItem<string>
         return deleted;
     }
 
+    public ModItem DeepClone()
+    {
+        return new ModItem(Type, Name, StringId, Values, ReferenceCategories.Select(c => c.DeepClone()),
+            Instances.Select(i => i.DeepClone()));
+    }
+
     public bool IsDeleted() => Values.TryGetValue("DELETED", out var value) && value is bool deleted && deleted;
 
     /// <summary>

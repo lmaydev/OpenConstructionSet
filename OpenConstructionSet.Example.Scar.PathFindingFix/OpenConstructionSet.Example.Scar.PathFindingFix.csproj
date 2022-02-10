@@ -19,6 +19,10 @@
 		<TrimMode>link</TrimMode>
 		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+	</ItemGroup>
 	
 	<ItemGroup>
 	  <ProjectReference Include="..\OpenConstructionSet\OpenConstructionSet.csproj" />

@@ -1,4 +1,7 @@
 using OpenConstructionSet.Data;
+using OpenConstructionSet.Installations;
+using OpenConstructionSet.Mods;
+using OpenConstructionSet.Mods.Context;
 
 const string ModName = "OCSP SCAR's pathfinding fix";
 const string ModFileName = ModName + ".mod";
@@ -8,7 +11,7 @@ Console.WriteLine("OpenConstructionSet Patcher");
 Console.WriteLine("SCAR's pathfinding fix https://www.nexusmods.com/kenshi/mods/602");
 Console.WriteLine();
 
-var installations = OcsDiscoveryService.Default.DiscoverAllInstallations();
+var installations = await new InstallationService().DiscoverAllInstallationsAsync().ToDictionaryAsync(i => i.Identifier);
 
 if (installations.Count == 0)
 {
@@ -17,7 +20,7 @@ if (installations.Count == 0)
     return;
 }
 
-Installation installation;
+IInstallation installation;
 
 if (installations.Count == 1)
 {
@@ -50,13 +53,13 @@ Console.WriteLine();
 
 Console.Write("Reading load order... ");
 
-var baseMods = new List<string>(installation.EnabledMods);
+var baseMods = new List<string>(await installation.ReadEnabledModsAsync());
 
 // Don't patch ourselves or SCAR's mod
 baseMods.Remove(ModFileName);
 baseMods.Remove(ReferenceModName);
 
-if (!baseMods.Any())
+if (baseMods.Count == 0)
 {
     // No mods found to patch
     Console.WriteLine("failed!");
@@ -69,7 +72,7 @@ Console.WriteLine("done");
 Console.WriteLine();
 
 // Find SCAR's mod
-var referenceMod = ModNameResolver.Default.Resolve(installation.ToModFolderArray(), ReferenceModName);
+var referenceMod = installation.Mods.GetMods().FirstOrDefault(m => m.Filename == ReferenceModName);
 
 if (referenceMod is null)
 {
@@ -81,17 +84,30 @@ if (referenceMod is null)
 
 Console.Write("Loading data... ");
 
-// Read SCAR's mod
-if (!OcsIOService.Default.TryReadDataFile(referenceMod.FullName, out var referenceData))
+ModFileData referenceData;
+
+try
 {
-    // Not found
+    referenceData = await referenceMod.ReadDataAsync();
+}
+catch (Exception ex)
+{
     Console.WriteLine($"Unable to load {ReferenceModName}");
+    Console.WriteLine($"Error: {ex}");
     Console.ReadKey();
     return;
 }
 
 // Extract core values from the Greenlander race item
-var greenlander = referenceData.Items.Find(i => i.StringId == "17-gamedata.quack")!;
+var greenlander = referenceData.Items.Find(i => i.Name == "Greenlander");
+
+if (greenlander is null)
+{
+    Console.WriteLine("Could not find Greenlander");
+    Console.ReadKey();
+    return;
+}
+
 var pathfindAcceleration = greenlander.Values["pathfind acceleration"];
 var waterAvoidance = greenlander.Values["water avoidance"];
 
@@ -102,22 +118,22 @@ var header = new Header(referenceData.Header?.Version ?? 1,
 header.References.Add(ReferenceModName);
 header.Dependencies.AddRange(baseMods);
 
-var options = new OcsDataContexOptions(ModFileName,
-    Installation: installation,
-    BaseMods: baseMods,
-    Header: header,
-    LoadGameFiles: ModLoadType.Base,
-    ThrowIfMissing: false);
+var options = new ModContextOptions(ModFileName,
+    installation: installation,
+    baseMods: baseMods,
+    header: header,
+    loadGameFiles: ModLoadType.Base,
+    throwIfMissing: false);
 
-var context = OcsDataContextBuilder.Default.Build(options);
+var context = await new ModContextBuilder().Build(options);
 
 Console.WriteLine("done");
 Console.WriteLine();
 
 // Get all races where editor limits are set i.e. it is not an animal race
-var races = context.Items.Values.OfType(ItemType.Race).Where(race => race.Values.TryGetValue("editor limits", out var value)
-                                                                     && value is FileValue file
-                                                                     && !string.IsNullOrEmpty(file.Path));
+var races = context.Items.OfType(ItemType.Race).Where(race => race.Values.TryGetValue("editor limits", out var value)
+                                                              && value is FileValue file
+                                                              && !string.IsNullOrEmpty(file.Path));
 
 foreach (var race in races)
 {
@@ -134,16 +150,18 @@ foreach (var race in races)
 Console.WriteLine();
 Console.Write("Saving... ");
 
-context.Save();
+await context.SaveAsync();
 
 Console.WriteLine("done");
 Console.WriteLine();
 
-// Remove this mod and then add to the end of the load order.
-installation.EnabledMods.RemoveAll(s => s == ModFileName);
-installation.EnabledMods.Add(ModFileName);
+var enabledMods = (await installation.ReadEnabledModsAsync().ConfigureAwait(false)).ToList();
 
-OcsIOService.Default.SaveEnabledMods(installation);
+// Remove this mod and then add to the end of the load order
+enabledMods.RemoveAll(s => s == ModFileName);
+enabledMods.Add(ModFileName);
+
+await installation.WriteEnabledModsAsync(enabledMods).ConfigureAwait(false);
 
 Console.WriteLine("Added patch to end of load order");
 

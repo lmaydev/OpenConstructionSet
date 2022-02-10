@@ -12,6 +12,7 @@ namespace OpenConstructionSet.Mods.Context
         /// </summary>
         /// <param name="name">The name of the active mod.</param>
         /// <param name="installation">The installation to work against.</param>
+        /// <param name="throwIfMissing">If <c>true</c> the process will error when files are missing.</param>
         /// <param name="activeMods">Optional collection of mod names, filenames or paths to load into the active mod.</param>
         /// <param name="baseMods">Optional collection of mod names, filenames or paths to load as base data.</param>
         /// <param name="header">Optional header to use for the active mod.</param>
@@ -20,6 +21,7 @@ namespace OpenConstructionSet.Mods.Context
         /// <param name="loadGameFiles">Determines if/how the game's base data files will be loaded.</param>
         public ModContextOptions(string name,
                                  IInstallation installation,
+                                 bool throwIfMissing = false,
                                  IEnumerable<string>? activeMods = null,
                                  IEnumerable<string>? baseMods = null,
                                  Header? header = null,
@@ -29,6 +31,7 @@ namespace OpenConstructionSet.Mods.Context
         {
             Name = name;
             Installation = installation;
+            ThrowIfMissing = throwIfMissing;
             ActiveMods = activeMods;
             BaseMods = baseMods;
             Header = header;
@@ -76,5 +79,7 @@ namespace OpenConstructionSet.Mods.Context
         /// The name of the active mod.
         /// </summary>
         public string Name { get; set; }
+
+        public bool ThrowIfMissing { get; set; }
     }
 }

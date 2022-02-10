@@ -72,6 +72,8 @@ public class ModInstance : IInstance, IKeyedItem<string>
 
     public Instance AsDeleted() => new(Id, "", Position, Rotation, States);
 
+    public ModInstance DeepClone() => new(Id, TargetId, Position, Rotation, States);
+
     public override bool Equals(object? obj)
     {
         return obj is ModInstance instance &&

@@ -13,7 +13,7 @@ public class ModContext
         Items = new(this, activeItems);
 
         this.installation = installation;
-        ModName = modName;
+        ModName = modName.AddModExtension();
 
         LastId = lastId;
         Header = header ?? new Header();
@@ -52,6 +52,13 @@ public class ModContext
 
     public async Task SaveAsync(string path)
     {
+        var directory = Path.GetDirectoryName(path);
+
+        if (directory is not null && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
         var mod = new ModFile(path);
 
         // TODO Determine if needed.
