@@ -33,7 +33,7 @@ public class ModContext
     /// <param name="type">The type of item to create.</param>
     /// <param name="name">The name of the new item.</param>
     /// <returns></returns>
-    public ModItem NewItem(ItemType type, string name)
+    public virtual ModItem NewItem(ItemType type, string name)
     {
         LastId++;
 
@@ -46,11 +46,11 @@ public class ModContext
         return item;
     }
 
-    public Task SaveAsync() => SaveAsync(installation.Mods.GetModPath(ModName));
+    public virtual Task SaveAsync() => SaveAsync(installation.Mods.GetModPath(ModName));
 
-    public Task SaveAsync(IModFolder folder, string modName) => SaveAsync(folder.GetModPath(modName, Info?.Id ?? 0));
+    public virtual Task SaveAsync(IModFolder folder, string modName) => SaveAsync(folder.GetModPath(modName, Info?.Id ?? 0));
 
-    public async Task SaveAsync(string path)
+    public virtual async Task SaveAsync(string path)
     {
         var directory = Path.GetDirectoryName(path);
 
