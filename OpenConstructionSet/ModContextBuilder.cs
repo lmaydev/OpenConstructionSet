@@ -5,13 +5,11 @@ namespace OpenConstructionSet;
 
 public class ModContextBuilder
 {
-    public async Task<IModContext> Build(ModContextOptions options)
+    public async Task<IModContext> BuildAsync(ModContextOptions options)
     {
         var lastId = 0;
 
         var modFileName = options.Name.AddModExtension();
-
-        var mods = options.Installation.GetMods().ToDictionary(m => m.Filename);
 
         var baseMods = new HashSet<string>();
 
@@ -67,7 +65,7 @@ public class ModContextBuilder
         var header = options.Header;
         var info = options.Info;
 
-        if (mods.TryGetValue(modFileName, out var activeMod))
+        if (options.Installation.TryFind(modFileName, out var activeMod))
         {
             await ReadItemsAsync(activeMod, activeItems).ConfigureAwait(false);
 
@@ -88,7 +86,7 @@ public class ModContextBuilder
         {
             foreach (var mod in toLoad)
             {
-                if (!mods.TryGetValue(mod, out var file))
+                if (!options.Installation.TryFind(mod, out var file))
                 {
                     if (options.ThrowIfMissing)
                     {

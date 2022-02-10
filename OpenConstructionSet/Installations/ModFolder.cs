@@ -1,4 +1,5 @@
-﻿using OpenConstructionSet.Mods;
+﻿using System.Diagnostics.CodeAnalysis;
+using OpenConstructionSet.Mods;
 
 namespace OpenConstructionSet.Installations;
 
@@ -61,4 +62,20 @@ public class ModFolder : IModFolder
 
     /// <inheritdoc/>
     public override string ToString() => $"{Path} ({Type})";
+
+    public bool TryFind(string modName, uint id, [MaybeNullWhen(false)] out IModFile file)
+    {
+        var path = GetModPath(modName, id);
+
+        if (File.Exists(path))
+        {
+            file = new ModFile(path);
+            return true;
+        }
+
+        file = null;
+        return false;
+    }
+
+    public bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file) => TryFind(modName, 0, out file);
 }

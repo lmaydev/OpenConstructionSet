@@ -1,4 +1,5 @@
-﻿using OpenConstructionSet.Mods;
+﻿using System.Diagnostics.CodeAnalysis;
+using OpenConstructionSet.Mods;
 
 namespace OpenConstructionSet.Installations
 {
@@ -31,5 +32,9 @@ namespace OpenConstructionSet.Installations
         /// </summary>
         /// <returns>A collection of <see cref="IModFile"/>s for the <see cref="IModFolder"/>.</returns>
         IEnumerable<IModFile> GetMods();
+
+        bool TryFind(string modName, uint id, [MaybeNullWhen(false)] out IModFile file);
+
+        bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file);
     }
 }

@@ -1,4 +1,5 @@
-﻿using OpenConstructionSet.Mods;
+﻿using System.Diagnostics.CodeAnalysis;
+using OpenConstructionSet.Mods;
 
 namespace OpenConstructionSet.Installations
 {
@@ -52,6 +53,10 @@ namespace OpenConstructionSet.Installations
         /// <param name="cancellationToken">Token used to cancel the operation.</param>
         /// <returns>A collection of mod filenames for the currently enabled mods in load order.</returns>
         Task<string[]> ReadEnabledModsAsync(CancellationToken cancellationToken = default);
+
+        bool TryFind(string modName, uint id, [MaybeNullWhen(false)] out IModFile file);
+
+        bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file);
 
         /// <summary>
         /// Writes the provided list of mod filename's to the <see cref="EnabledModsFile"/>.
