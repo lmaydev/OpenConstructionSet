@@ -1,8 +1,6 @@
-﻿using LMay.Collections;
+﻿namespace OpenConstructionSet.Mods.Context;
 
-namespace OpenConstructionSet.Mods.Context;
-
-public class ModItemCollection : SortedKeyedItemCollection<string, ModItem>
+public class ModItemCollection : KeyedItemDictionary<string, ModItem>
 {
     internal ModItemCollection(ModContext owner, IEnumerable<IItem> collection) : this(owner)
     {
