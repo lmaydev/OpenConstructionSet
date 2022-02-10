@@ -3,7 +3,7 @@ using OpenConstructionSet.Mods.Context;
 
 namespace OpenConstructionSet;
 
-public class ModContextBuilder
+public class ContextBuilder : IContextBuilder
 {
     public async Task<IModContext> BuildAsync(ModContextOptions options)
     {

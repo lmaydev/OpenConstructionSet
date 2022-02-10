@@ -161,7 +161,7 @@ async Task<IModContext> BuildModContext()
         header: header,
         throwIfMissing: false);
 
-    return await new ModContextBuilder().BuildAsync(options);
+    return await new ContextBuilder().BuildAsync(options);
 }
 
 async Task<List<string>> ModsToPatch()
