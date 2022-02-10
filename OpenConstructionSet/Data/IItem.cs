@@ -2,10 +2,11 @@
 {
     public interface IItem
     {
+        ItemChangeType ChangeType { get; set; }
         int Id { get; set; }
-        ICollection<IInstance> Instances { get; }
+        IEnumerable<IInstance> Instances { get; }
         string Name { get; set; }
-        ICollection<IReferenceCategory> ReferenceCategories { get; }
+        IEnumerable<IReferenceCategory> ReferenceCategories { get; }
         string StringId { get; }
         ItemType Type { get; set; }
         IDictionary<string, object> Values { get; }

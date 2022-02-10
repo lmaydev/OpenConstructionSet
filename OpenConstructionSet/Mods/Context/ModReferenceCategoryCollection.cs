@@ -1,6 +1,6 @@
 ﻿using LMay.Collections;
 
-namespace OpenConstructionSet.Mods;
+namespace OpenConstructionSet.Mods.Context;
 
 public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, ModReferenceCategory>
 {
@@ -30,4 +30,25 @@ public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, 
     public void Add(string name) => Add(new ModReferenceCategory(name));
 
     public void AddFrom(IReferenceCategory category) => Add(category is ModReferenceCategory mrc ? mrc : new ModReferenceCategory(category));
+
+    public IEnumerable<ReferenceCategory> GetChanges(ModReferenceCategoryCollection baseCategories)
+    {
+        foreach (var category in this)
+        {
+            if (!baseCategories.TryGetValue(category.Key, out var baseCategory))
+            {
+                yield return new ReferenceCategory(category);
+            }
+            else if (category.References.TryGetChanges(baseCategory.References, out var referencChanges))
+            {
+                yield return new ReferenceCategory(category.Name, referencChanges);
+            }
+        }
+
+        foreach (var category in baseCategories.Where(c => !ContainsKey(c.Key))
+                                               .Select(c => new ReferenceCategory(c.Name, c.References.Select(c => c.AsDeleted()))))
+        {
+            yield return category;
+        }
+    }
 }

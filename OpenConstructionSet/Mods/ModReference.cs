@@ -1,4 +1,6 @@
-﻿namespace OpenConstructionSet.Mods;
+﻿using OpenConstructionSet.Mods.Context;
+
+namespace OpenConstructionSet.Mods;
 
 public class ModReference : IReference, IKeyedItem<string>
 {
@@ -54,6 +56,34 @@ public class ModReference : IReference, IKeyedItem<string>
     /// The third value.
     /// </summary>
     public int Value2 { get; set; }
+
+    public static bool operator !=(ModReference? left, ModReference? right)
+    {
+        return !(left == right);
+    }
+
+    public static bool operator ==(ModReference? left, ModReference? right)
+    {
+        return EqualityComparer<ModReference>.Default.Equals(left, right);
+    }
+
+    public Reference AsDeleted() => new(TargetId, int.MaxValue, int.MaxValue, int.MaxValue);
+
+    public override bool Equals(object? obj)
+    {
+        return obj is ModReference reference &&
+               TargetId == reference.TargetId &&
+               Value0 == reference.Value0 &&
+               Value1 == reference.Value1 &&
+               Value2 == reference.Value2;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(TargetId, Value0, Value1, Value2);
+    }
+
+    public bool IsDeleted() => Value0 == int.MaxValue && Value1 == int.MaxValue && Value2 == int.MaxValue;
 
     internal void SetParent(ModReferenceCollection? newParent)
     {

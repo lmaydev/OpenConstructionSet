@@ -58,7 +58,17 @@ public class Item : IItem
     /// <param name="values">Dictionary of values stored by this <see cref="Item"/>.</param>
     /// <param name="referenceCategories">Collection of <see cref="ReferenceCategory"/> instances stored by this <see cref="Item"/>.</param>
     /// <param name="instances">Collection of <see cref="Instance"/>s stored by this <see cref="Item"/>.</param>
-    public Item(ItemType type, int id, string name, string stringId, ItemChangeType changeType, IDictionary<string, object> values, IEnumerable<IReferenceCategory> referenceCategories, IEnumerable<IInstance> instances)
+    public Item(
+        ItemType type,
+        int id,
+        string name,
+        string stringId,
+        ItemChangeType changeType,
+        IDictionary<string, object> values,
+        IEnumerable<IReferenceCategory> referenceCategories,
+        IEnumerable<IInstance> instances)
+        : this(type, id, name, stringId, changeType, values, referenceCategories.Select(c => new ReferenceCategory(c)),
+              instances.Select(i => new Instance(i)))
     {
         Type = type;
         Id = id;
@@ -69,6 +79,37 @@ public class Item : IItem
         Values = new(values);
         ReferenceCategories = new(referenceCategories.Select(c => new ReferenceCategory(c)));
         Instances = new(instances.Select(i => new Instance(i)));
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="Item"/> from the provided data.
+    /// </summary>
+    /// <param name="type">The <see cref="ItemType"/> for this <see cref="Item"/>.</param>
+    /// <param name="id">The Id of this <see cref="Item"/>.</param>
+    /// <param name="name">The name of this <see cref="Item"/>.</param>
+    /// <param name="stringId">The unique string identifier of this <see cref="Item"/>.</param>
+    /// <param name="changeType">The types of changes that have been applied to this <see cref="Item"/>.</param>
+    /// <param name="values">Dictionary of values stored by this <see cref="Item"/>.</param>
+    /// <param name="referenceCategories">Collection of <see cref="ReferenceCategory"/> instances stored by this <see cref="Item"/>.</param>
+    /// <param name="instances">Collection of <see cref="Instance"/>s stored by this <see cref="Item"/>.</param>
+    public Item(ItemType type,
+                int id,
+                string name,
+                string stringId,
+                ItemChangeType changeType,
+                IDictionary<string, object> values,
+                IEnumerable<ReferenceCategory> referenceCategories,
+                IEnumerable<Instance> instances)
+    {
+        Type = type;
+        Id = id;
+        Name = name;
+        StringId = stringId;
+        ChangeType = changeType;
+
+        Values = new(values);
+        ReferenceCategories = new(referenceCategories);
+        Instances = new(instances);
     }
 
     /// <summary>
@@ -84,7 +125,7 @@ public class Item : IItem
     /// <summary>
     /// Collection of <see cref="Instance"/>s stored by this <see cref="Item"/>.
     /// </summary>
-    public List<IInstance> Instances { get; } = new();
+    public List<Instance> Instances { get; } = new();
 
     /// <summary>
     /// The name of this <see cref="Item"/>.
@@ -94,7 +135,7 @@ public class Item : IItem
     /// <summary>
     /// Collection of <see cref="ReferenceCategory"/> instances stored by this <see cref="Item"/>.
     /// </summary>
-    public List<IReferenceCategory> ReferenceCategories { get; } = new();
+    public List<ReferenceCategory> ReferenceCategories { get; } = new();
 
     /// <summary>
     /// The unique string identifier of this <see cref="Item"/>.
@@ -111,9 +152,9 @@ public class Item : IItem
     /// </summary>
     public OrderedDictionary<string, object> Values { get; } = new OrderedDictionary<string, object>();
 
-    ICollection<IInstance> IItem.Instances => Instances;
+    IEnumerable<IInstance> IItem.Instances => Instances;
 
-    ICollection<IReferenceCategory> IItem.ReferenceCategories => ReferenceCategories;
+    IEnumerable<IReferenceCategory> IItem.ReferenceCategories => ReferenceCategories;
 
     IDictionary<string, object> IItem.Values => Values;
 }

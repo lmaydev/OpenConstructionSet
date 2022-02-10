@@ -21,6 +21,14 @@ public static class CollectionExtensions
     /// <returns>All <see cref="Item"/>s from the collection with the given type.</returns>
     public static IEnumerable<KeyValuePair<string, Item>> OfType(this IDictionary<string, Item> dictionary, ItemType type) => dictionary.Where(p => p.Value.Type == type);
 
+    internal static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
+    {
+        foreach (var item in items)
+        {
+            collection.Add(item);
+        }
+    }
+
     internal static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
     {
         foreach (var item in collection)

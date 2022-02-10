@@ -9,6 +9,10 @@
     /// <param name="Info">Optional data contained within the <see cref="IModFile"/>'s .info file.</param>
     public sealed record ModFileData(Header Header, int LastId, List<Item> Items, ModInfoData? Info)
     {
+        public ModFileData(Header header, int lastId, IEnumerable<Item> items, ModInfoData? info) : this(header, lastId, items.ToList(), info)
+        {
+        }
+
         /// <summary>
         /// The <see cref="Header"/> of the <see cref="IModFile"/>.
         /// </summary>

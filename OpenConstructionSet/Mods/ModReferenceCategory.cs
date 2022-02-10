@@ -1,4 +1,6 @@
-﻿namespace OpenConstructionSet.Mods;
+﻿using OpenConstructionSet.Mods.Context;
+
+namespace OpenConstructionSet.Mods;
 
 /// <summary>
 /// Represents a <see cref="ModReferenceCategory"/> from the game's data. Stores a collection of

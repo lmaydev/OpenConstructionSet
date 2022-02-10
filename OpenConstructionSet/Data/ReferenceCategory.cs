@@ -30,10 +30,20 @@
         /// </summary>
         /// <param name="name">The name of the <see cref="ReferenceCategory"/>.</param>
         /// <param name="collection">A collection of <see cref="Reference"/>s to add to the <see cref="ReferenceCategory"/>.</param>
-        public ReferenceCategory(string name, IEnumerable<IReference> collection)
+        public ReferenceCategory(string name, IEnumerable<IReference> collection) : this(name, collection.Select(r => new Reference(r)))
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ReferenceCategory"/> with the given name and contained <see cref="Reference"/>s.
+        /// The <see cref="Reference"/>s will be recreated using the copy constructor.
+        /// </summary>
+        /// <param name="name">The name of the <see cref="ReferenceCategory"/>.</param>
+        /// <param name="collection">A collection of <see cref="Reference"/>s to add to the <see cref="ReferenceCategory"/>.</param>
+        public ReferenceCategory(string name, IEnumerable<Reference> collection)
         {
             Name = name;
-            References = new(collection.Select(r => new Reference(r)));
+            References = new(collection);
         }
 
         /// <summary>

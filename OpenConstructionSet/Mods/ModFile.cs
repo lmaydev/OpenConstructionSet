@@ -34,7 +34,7 @@ namespace OpenConstructionSet.Mods
 
             var type = (DataFileType)reader.ReadInt();
 
-            return new(reader.ReadHeader(), reader.ReadInt(), reader.ReadItems().ToList(), await ReadInfoAsync(cancellationToken).ConfigureAwait(false));
+            return new(reader.ReadHeader(), reader.ReadInt(), reader.ReadItems(), await ReadInfoAsync(cancellationToken).ConfigureAwait(false));
         }
 
         /// <inheritdoc/>
@@ -68,6 +68,8 @@ namespace OpenConstructionSet.Mods
         /// <inheritdoc/>
         public virtual async Task WriteDataAsync(ModFileData data, CancellationToken cancellationToken = default)
         {
+            File.Delete(Path);
+
             using var writer = new OcsWriter(File.OpenWrite(Path));
 
             writer.Write((int)DataFileType.Mod);
@@ -92,7 +94,11 @@ namespace OpenConstructionSet.Mods
         /// <inheritdoc/>
         public virtual Task WriteInfoAsync(ModInfoData info, CancellationToken cancellationToken = default)
         {
-            using var stream = File.OpenWrite(OcsPathHelper.GetInfoPath(Path));
+            var path = OcsPathHelper.GetInfoPath(Path);
+
+            File.Delete(path);
+
+            using var stream = File.OpenWrite(path);
 
             var serialiser = new XmlSerializer(typeof(ModInfoData));
 

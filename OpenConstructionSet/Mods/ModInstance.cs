@@ -1,4 +1,6 @@
-﻿namespace OpenConstructionSet.Mods;
+﻿using OpenConstructionSet.Mods.Context;
+
+namespace OpenConstructionSet.Mods;
 
 public class ModInstance : IInstance, IKeyedItem<string>
 {
@@ -57,6 +59,45 @@ public class ModInstance : IInstance, IKeyedItem<string>
     /// The <see cref="Item.StringId"/> of the targeted <see cref="Item"/>.
     /// </summary>
     public string TargetId { get; set; }
+
+    public static bool operator !=(ModInstance? left, ModInstance? right)
+    {
+        return !(left == right);
+    }
+
+    public static bool operator ==(ModInstance? left, ModInstance? right)
+    {
+        return EqualityComparer<ModInstance>.Default.Equals(left, right);
+    }
+
+    public Instance AsDeleted() => new(Id, "", Position, Rotation, States);
+
+    public override bool Equals(object? obj)
+    {
+        return obj is ModInstance instance &&
+               Id == instance.Id &&
+               Position.Equals(instance.Position) &&
+               Rotation.Equals(instance.Rotation) &&
+               EqualityComparer<List<string>>.Default.Equals(States, instance.States) &&
+               TargetId == instance.TargetId &&
+               States.SequenceEqual(instance.States);
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = new HashCode();
+
+        hashCode.Add(Id);
+        hashCode.Add(Position);
+        hashCode.Add(Rotation);
+        hashCode.Add(States);
+        hashCode.Add(TargetId);
+        States.ForEach(s => hashCode.Add(s));
+
+        return hashCode.ToHashCode();
+    }
+
+    public bool IsDeleted() => TargetId.Length == 0;
 
     internal void SetParent(ModInstanceCollection? newParent)
     {
