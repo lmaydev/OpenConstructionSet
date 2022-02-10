@@ -2,7 +2,7 @@
 
 namespace OpenConstructionSet.Mods.Context;
 
-public class ModContext
+public class ModContext : IModContext
 {
     private readonly Dictionary<string, ModItem> baseItems;
     private readonly IInstallation installation;

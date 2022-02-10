@@ -5,7 +5,7 @@ namespace OpenConstructionSet;
 
 public class ModContextBuilder
 {
-    public async Task<ModContext> Build(ModContextOptions options)
+    public async Task<IModContext> Build(ModContextOptions options)
     {
         var lastId = 0;
 
