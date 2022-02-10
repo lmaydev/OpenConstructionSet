@@ -1,5 +1,5 @@
-﻿using Microsoft.Win32;
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
+using Microsoft.Win32;
 
 namespace OpenConstructionSet.Installations.Locators;
 

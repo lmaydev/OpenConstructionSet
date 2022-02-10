@@ -1,9 +1,8 @@
-﻿namespace OpenConstructionSet.Data
-{
-    public interface IReferenceCategory
-    {
-        string Name { get; }
+﻿namespace OpenConstructionSet.Data;
 
-        IEnumerable<IReference> References { get; }
-    }
+public interface IReferenceCategory
+{
+    string Name { get; }
+
+    IEnumerable<IReference> References { get; }
 }

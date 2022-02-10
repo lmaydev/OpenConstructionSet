@@ -76,7 +76,7 @@ public sealed class OcsWriter : IDisposable
         Write(value.ReferenceCategories.Count);
         foreach (var category in value.ReferenceCategories)
         {
-            if (!category.References.Any())
+            if (category.References.Count == 0)
             {
                 continue;
             }
