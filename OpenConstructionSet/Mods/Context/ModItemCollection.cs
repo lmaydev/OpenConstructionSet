@@ -1,6 +1,6 @@
 ﻿namespace OpenConstructionSet.Mods.Context;
 
-public class ModItemCollection : KeyedItemDictionary<string, ModItem>
+public class ModItemCollection : KeyedItemCollection<string, ModItem>
 {
     internal ModItemCollection(ModContext owner, IEnumerable<IItem> collection) : this(owner)
     {

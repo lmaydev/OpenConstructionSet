@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using LMay.Collections;
 
 namespace OpenConstructionSet.Mods.Context;
 
-public class ModReferenceCollection : SortedKeyedItemCollection<string, ModReference>
+public class ModReferenceCollection : KeyedItemList<string, ModReference>
 {
     private readonly ModReferenceCategory parent;
 
