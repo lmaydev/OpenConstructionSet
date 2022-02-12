@@ -54,13 +54,13 @@ Console.WriteLine("done");
 
 Console.Write("Adding patch to end of load order... ");
 
-var enabledMods = (await installation.ReadEnabledModsAsync().ConfigureAwait(false)).ToList();
+var enabledMods = (await installation.ReadEnabledModsAsync()).ToList();
 
 // Remove this mod and then add to the end of the load order
 enabledMods.RemoveAll(s => s == ModFileName);
 enabledMods.Add(ModFileName);
 
-await installation.WriteEnabledModsAsync(enabledMods).ConfigureAwait(false);
+await installation.WriteEnabledModsAsync(enabledMods);
 
 Console.Write("done");
 

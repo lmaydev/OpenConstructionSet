@@ -6,6 +6,7 @@
 		<IsPackable>false</IsPackable>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
+		<Platforms>AnyCPU</Platforms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Configurations>Debug;Release</Configurations>
 		<AssemblyName>OCSP.Console.Scar.PathFindingFix</AssemblyName>

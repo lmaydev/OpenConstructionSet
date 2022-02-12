@@ -5,6 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
+		<Platforms>AnyCPU</Platforms>
 		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>
 
