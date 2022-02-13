@@ -2,6 +2,7 @@
 
 namespace OpenConstructionSet.Mods;
 
+/// <inheritdoc/>
 public class ModInstance : IInstance, IKeyedItem<string>
 {
     private ModInstanceCollection? parent;
@@ -31,49 +32,65 @@ public class ModInstance : IInstance, IKeyedItem<string>
         States = new(states);
     }
 
-    /// <summary>
-    /// The <see cref="ModInstance"/>'s identifier.
-    /// </summary>
+    /// <inheritdoc/>
     public string Id { get; }
 
+    /// <inheritdoc/>
     public string Key => Id;
 
-    /// <summary>
-    /// The <see cref="ModInstance"/>'s position.
-    /// </summary>
+    /// <inheritdoc/>
     public Vector3 Position { get; set; }
 
-    /// <summary>
-    /// The <see cref="ModInstance"/>'s rotation.
-    /// </summary>
+    /// <inheritdoc/>
     public Vector4 Rotation { get; set; }
 
-    /// <summary>
-    /// A collection of states for the <see cref="ModInstance"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public List<string> States { get; } = new();
 
+    /// <summary>
+    /// The target of this <see cref="ModInstance"/>.
+    /// Attempts to retrieve the <see cref="ModInstance"/> from the parent <see cref="IModContext"/>.
+    /// </summary>
     public ModItem? Target => parent?.Owner?.Items.TryGetValue(TargetId, out var target) == true ? target : null;
 
-    /// <summary>
-    /// The <see cref="Item.StringId"/> of the targeted <see cref="Item"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public string TargetId { get; set; }
 
+    /// <summary>
+    /// Determines if the two <see cref="ModInstance"/>s are not equal.
+    /// </summary>
+    /// <param name="left">First Instance.</param>
+    /// <param name="right">Second instance.</param>
+    /// <returns><c>true</c> if the two <see cref="ModInstance"/>s are not equal; otherwise, <c>false</c>.</returns>
     public static bool operator !=(ModInstance? left, ModInstance? right)
     {
         return !(left == right);
     }
 
+    /// <summary>
+    /// Determines if the two <see cref="ModInstance"/>s are equal.
+    /// </summary>
+    /// <param name="left">First Instance.</param>
+    /// <param name="right">Second instance.</param>
+    /// <returns><c>true</c> if the two <see cref="ModInstance"/>s are equal; otherwise, <c>false</c>.</returns>
     public static bool operator ==(ModInstance? left, ModInstance? right)
     {
         return EqualityComparer<ModInstance>.Default.Equals(left, right);
     }
 
+    /// <summary>
+    /// Returns an <see cref="Instance"/> that represents this marked as deleted.
+    /// </summary>
+    /// <returns>An <see cref="Instance"/> that represents this marked as deleted.</returns>
     public Instance AsDeleted() => new(Id, "", Position, Rotation, States);
 
+    /// <summary>
+    /// Performs a deep clone of this object.
+    /// </summary>
+    /// <returns>A deep clone of this object.</returns>
     public ModInstance DeepClone() => new(Id, TargetId, Position, Rotation, States);
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is ModInstance instance &&
@@ -85,6 +102,7 @@ public class ModInstance : IInstance, IKeyedItem<string>
                States.SequenceEqual(instance.States);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var hashCode = new HashCode();
@@ -99,6 +117,10 @@ public class ModInstance : IInstance, IKeyedItem<string>
         return hashCode.ToHashCode();
     }
 
+    /// <summary>
+    /// Determines if this <see cref="ModInstance"/> is marked as deleted.
+    /// </summary>
+    /// <returns><c>true</c> if this <see cref="ModInstance"/> is deleted; otherwise, <c>false</c>.</returns>
     public bool IsDeleted() => TargetId.Length == 0;
 
     internal void SetParent(ModInstanceCollection? newParent)

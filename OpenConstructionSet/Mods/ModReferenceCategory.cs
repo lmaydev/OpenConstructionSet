@@ -13,7 +13,7 @@ public class ModReferenceCategory : IReferenceCategory, IKeyedItem<string>
     /// <summary>
     /// Creates a new <see cref="ModReferenceCategory"/> from another.
     /// </summary>
-    /// <param name="category">The <see cref="IModReferenceCategory"/> to copy.</param>
+    /// <param name="category">The <see cref="IReferenceCategory"/> to copy.</param>
     internal ModReferenceCategory(IReferenceCategory category) : this(category.Name, (IEnumerable<IReference>)category)
     {
     }
@@ -49,10 +49,19 @@ public class ModReferenceCategory : IReferenceCategory, IKeyedItem<string>
     /// </summary>
     public string Name { get; }
 
+    /// <summary>
+    /// A collection of references stored by this <see cref="ModReferenceCategory"/>
+    /// </summary>
     public ModReferenceCollection References { get; }
+
     IEnumerable<IReference> IReferenceCategory.References => References.Cast<IReference>();
+
     internal ModContext? Owner => parent?.Owner;
 
+    /// <summary>
+    /// Performs a deep clone of this object.
+    /// </summary>
+    /// <returns>A deep clone of this object.</returns>
     public ModReferenceCategory DeepClone()
     {
         return new ModReferenceCategory(Name, References.Select(r => new ModReference(r)));

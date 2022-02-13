@@ -3,9 +3,7 @@ using OpenConstructionSet.Mods.Context;
 
 namespace OpenConstructionSet.Mods;
 
-/// <summary>
-/// Represents an item in the games data. All entites in the game are represented using these.
-/// </summary>
+/// <inheritdoc/>
 public class ModItem : IItem, IKeyedItem<string>
 {
     internal ModItemCollection? parent;
@@ -70,11 +68,10 @@ public class ModItem : IItem, IKeyedItem<string>
     /// </summary>
     public ModInstanceCollection Instances { get; }
 
+    /// <inheritdoc/>
     public string Key => StringId;
 
-    /// <summary>
-    /// The name of this <see cref="ModItem"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public string Name { get; set; }
 
     /// <summary>
@@ -82,14 +79,10 @@ public class ModItem : IItem, IKeyedItem<string>
     /// </summary>
     public ModReferenceCategoryCollection ReferenceCategories { get; }
 
-    /// <summary>
-    /// The unique string identifier of this <see cref="ModItem"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public string StringId { get; }
 
-    /// <summary>
-    /// The <see cref="ItemType"/> for this <see cref="ModItem"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public ItemType Type { get; set; }
 
     /// <summary>
@@ -97,13 +90,17 @@ public class ModItem : IItem, IKeyedItem<string>
     /// </summary>
     public SortedDictionary<string, object> Values { get; }
 
-    ItemChangeType IItem.ChangeType { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+    ItemChangeType IItem.ChangeType { get => ItemChangeType.New; set { } }
     int IItem.Id { get => 0; }
     IEnumerable<IInstance> IItem.Instances => Instances;
     IEnumerable<IReferenceCategory> IItem.ReferenceCategories => ReferenceCategories;
     IDictionary<string, object> IItem.Values => Values;
     internal ModContext? Owner => parent?.Owner;
 
+    /// <summary>
+    /// Returns an <see cref="Item"/> that represents this marked as deleted.
+    /// </summary>
+    /// <returns>An <see cref="Item"/> that represents this marked as deleted.</returns>
     public Item AsDeleted()
     {
         var deleted = new Item(Type, 0, Name, StringId, ItemChangeType.Changed);
@@ -113,12 +110,20 @@ public class ModItem : IItem, IKeyedItem<string>
         return deleted;
     }
 
+    /// <summary>
+    /// Performs a deep clone of this object.
+    /// </summary>
+    /// <returns>A deep clone of this object.</returns>
     public ModItem DeepClone()
     {
         return new ModItem(Type, Name, StringId, Values, ReferenceCategories.Select(c => c.DeepClone()),
             Instances.Select(i => i.DeepClone()));
     }
 
+    /// <summary>
+    /// Determines if this <see cref="ModItem"/> is marked as deleted.
+    /// </summary>
+    /// <returns><c>true</c> if this <see cref="ModItem"/> is deleted; otherwise, <c>false</c>.</returns>
     public bool IsDeleted() => Values.TryGetValue("DELETED", out var value) && value is bool deleted && deleted;
 
     /// <summary>
