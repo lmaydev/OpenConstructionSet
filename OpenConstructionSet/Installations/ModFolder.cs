@@ -63,6 +63,7 @@ public class ModFolder : IModFolder
     /// <inheritdoc/>
     public override string ToString() => $"{Path} ({Type})";
 
+    /// <inheritdoc/>
     public bool TryFind(string modName, uint id, [MaybeNullWhen(false)] out IModFile file)
     {
         var path = GetModPath(modName, id);
@@ -77,5 +78,6 @@ public class ModFolder : IModFolder
         return false;
     }
 
+    /// <inheritdoc/>
     public bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file) => TryFind(modName, 0, out file);
 }

@@ -35,7 +35,7 @@ public interface IInstallation
     IModFolder Mods { get; }
 
     /// <summary>
-    /// The path of this <see cref="IInstallation"/>.
+    /// The path of this <see cref="IInstallation"/>'s game folder.
     /// </summary>
     string Path { get; }
 
@@ -54,8 +54,21 @@ public interface IInstallation
     /// <returns>A collection of mod filenames for the currently enabled mods in load order.</returns>
     Task<string[]> ReadEnabledModsAsync(CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Attempts to find the named mod in all this <see cref="IInstallation"/>'s folders.
+    /// </summary>
+    /// <param name="modName">Name of the mod to find e.g. example or example.mod</param>
+    /// <param name="id">The ID from the mod's .info file. Only required for content folders.</param>
+    /// <param name="file">Will contain the located <see cref="IModFile"/> if found.</param>
+    /// <returns><c>true</c> if the mod could be found; otherwise, <c>false</c>.</returns>
     bool TryFind(string modName, uint id, [MaybeNullWhen(false)] out IModFile file);
 
+    /// <summary>
+    /// Attempts to find the named mod in all this <see cref="IInstallation"/>'s folders.
+    /// </summary>
+    /// <param name="modName">Name of the mod to find e.g. example or example.mod</param>
+    /// <param name="file">Will contain the located <see cref="IModFile"/> if found.</param>
+    /// <returns><c>true</c> if the mod could be found; otherwise, <c>false</c>.</returns>
     bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file);
 
     /// <summary>

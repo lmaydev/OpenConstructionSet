@@ -74,8 +74,10 @@ public class Installation : IInstallation
     /// <inheritdoc/>
     public override string ToString() => $"{Identifier} ({Path})";
 
+    /// <inheritdoc/>
     public bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file) => TryFind(modName, 0, out file);
 
+    /// <inheritdoc/>
     public bool TryFind(string modName, uint id, [MaybeNullWhen(false)] out IModFile file)
     {
         if (Data.TryFind(modName, id, out file))
