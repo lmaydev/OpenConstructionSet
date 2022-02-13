@@ -1,14 +1,12 @@
 ﻿namespace OpenConstructionSet.Data;
 
-/// <summary>
-/// Represents a <see cref="Reference"/> from the game's data.
-/// </summary>
-public record Reference : IReference
+/// <inheritdoc/>
+public class Reference : IReference
 {
     /// <summary>
-    /// Creates a <see cref="Reference"/> from another.
+    /// Creates a new <see cref="Reference"/> by copying the values of an <see cref="IReference"/>.
     /// </summary>
-    /// <param name="reference">The <see cref="Reference"/> to copy.</param>
+    /// <param name="reference">The <see cref="IReference"/> to copy.</param>
     public Reference(IReference reference)
     {
         TargetId = reference.TargetId;
@@ -18,9 +16,9 @@ public record Reference : IReference
     }
 
     /// <summary>
-    /// Creates a new <see cref="Reference"/> from the provided values.
+    /// Creates a new <see cref="Reference"/> instance from the provided values.
     /// </summary>
-    /// <param name="targetId">The <see cref="Item.StringId"/> of the target <see cref="Item"/>.</param>
+    /// <param name="targetId">The <see cref="IItem.StringId"/> of the target <see cref="IItem"/>.</param>
     /// <param name="value0">The first value.</param>
     /// <param name="value1">The second value.</param>
     /// <param name="value2">The third value.</param>
@@ -32,30 +30,57 @@ public record Reference : IReference
         Value2 = value2;
     }
 
-    /// <summary>
-    /// The <see cref="Item.StringId"/> of the target <see cref="Item"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public string TargetId { get; set; }
 
-    /// <summary>
-    /// The first value.
-    /// </summary>
+    /// <inheritdoc/>
     public int Value0 { get; set; }
 
-    /// <summary>
-    /// The second value.
-    /// </summary>
+    /// <inheritdoc/>
     public int Value1 { get; set; }
 
-    /// <summary>
-    /// The third value.
-    /// </summary>
+    /// <inheritdoc/>
     public int Value2 { get; set; }
+
+    /// <summary>
+    /// Determines if the two <see cref="Reference"/>s are not equal.
+    /// </summary>
+    /// <param name="left">First Reference.</param>
+    /// <param name="right">Second Reference.</param>
+    /// <returns><c>true</c> if the two <see cref="Reference"/>s are not equal; otherwise, <c>false</c>.</returns>
+    public static bool operator !=(Reference? left, Reference? right)
+    {
+        return !(left == right);
+    }
+
+    /// <summary>
+    /// Determines if the two <see cref="Reference"/>s are equal.
+    /// </summary>
+    /// <param name="left">First Reference.</param>
+    /// <param name="right">Second Reference.</param>
+    /// <returns><c>true</c> if the two <see cref="Reference"/>s are equal; otherwise, <c>false</c>.</returns>
+    public static bool operator ==(Reference? left, Reference? right)
+    {
+        return EqualityComparer<Reference>.Default.Equals(left, right);
+    }
 
     /// <summary>
     /// Marks this <see cref="Reference"/> as deleted.
     /// </summary>
     public void Delete() => Value0 = Value1 = Value2 = int.MaxValue;
+
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
+    {
+        return obj is Reference reference &&
+               TargetId == reference.TargetId &&
+               Value0 == reference.Value0 &&
+               Value1 == reference.Value1 &&
+               Value2 == reference.Value2;
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode() => TargetId.GetHashCode();
 
     /// <summary>
     /// Determines if this <see cref="Reference"/> is marked as deleted.

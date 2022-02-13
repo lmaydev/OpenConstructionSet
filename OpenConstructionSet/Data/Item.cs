@@ -7,19 +7,15 @@
 public class Item : IItem
 {
     /// <summary>
-    /// Creates a new <see cref="Item"/> from another.
+    /// Creates a new <see cref="Item"/> from an <see cref="IItem"/>.
     /// </summary>
-    /// <param name="item">The <see cref="Item"/> to copy.</param>
-    public Item(Item item) : this(item, item.ChangeType)
-    {
-    }
-
-    public Item(IItem item, ItemChangeType changeType) : this(
+    /// <param name="item">The <see cref="IItem"/> to copy.</param>
+    public Item(IItem item) : this(
         item.Type,
         item.Id,
         item.Name,
         item.StringId,
-        changeType,
+        item.ChangeType,
         item.Values,
         item.ReferenceCategories,
         item.Instances)
@@ -120,7 +116,7 @@ public class Item : IItem
     /// <summary>
     /// The Id of this <see cref="Item"/>.
     /// </summary>
-    public int Id { get; set; }
+    public int Id { get; }
 
     /// <summary>
     /// Collection of <see cref="Instance"/>s stored by this <see cref="Item"/>.
@@ -157,4 +153,68 @@ public class Item : IItem
     IEnumerable<IReferenceCategory> IItem.ReferenceCategories => ReferenceCategories;
 
     IDictionary<string, object> IItem.Values => Values;
+
+    /// <summary>
+    /// Determines if the two <see cref="Item"/>s are not equal.
+    /// </summary>
+    /// <param name="left">First item.</param>
+    /// <param name="right">Second item.</param>
+    /// <returns><c>true</c> if the two <see cref="Item"/>s are not equal; otherwise, <c>false</c>.</returns>
+    public static bool operator !=(Item? left, Item? right)
+    {
+        return !(left == right);
+    }
+
+    /// <summary>
+    /// Determines if the two <see cref="Item"/>s are equal.
+    /// </summary>
+    /// <param name="left">First Item.</param>
+    /// <param name="right">Second Item.</param>
+    /// <returns><c>true</c> if the two <see cref="Item"/>s are equal; otherwise, <c>false</c>.</returns>
+    public static bool operator ==(Item? left, Item? right)
+    {
+        return EqualityComparer<Item>.Default.Equals(left, right);
+    }
+
+    /// <summary>
+    /// Marks this <see cref="Reference"/> as deleted.
+    /// </summary>
+    public void Delete()
+    {
+        ReferenceCategories.Clear();
+        Instances.Clear();
+        Values.Clear();
+
+        Values["DELETED"] = true;
+    }
+
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
+    {
+        return obj is Item item &&
+               ChangeType == item.ChangeType &&
+               Id == item.Id &&
+               Name == item.Name &&
+               StringId == item.StringId &&
+               Type == item.Type &&
+               ReferenceCategories.SequenceEqual(item.ReferenceCategories) &&
+               Instances.SequenceEqual(item.Instances) &&
+               Values.SequenceEqual(item.Values);
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, StringId, Type);
+    }
+
+    /// <summary>
+    /// Determines if this <see cref="Reference"/> is marked as deleted.
+    /// </summary>
+    /// <returns><c>true</c> if marked as deleted; otherwise, <c>false</c>.</returns>
+    public bool IsDeleted() => Values.TryGetValue("DELETED", out var value) && value is bool b && b;
+
+    /// <inheritdoc/>
+    public override string ToString()
+        => $"{Name} ({StringId}) Values: {Values.Count} Instances: {Instances.Count} Reference Categories: {ReferenceCategories.Count}";
 }

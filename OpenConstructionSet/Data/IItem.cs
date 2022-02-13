@@ -3,7 +3,7 @@
 public interface IItem
 {
     ItemChangeType ChangeType { get; set; }
-    int Id { get; set; }
+    int Id { get; }
     IEnumerable<IInstance> Instances { get; }
     string Name { get; set; }
     IEnumerable<IReferenceCategory> ReferenceCategories { get; }

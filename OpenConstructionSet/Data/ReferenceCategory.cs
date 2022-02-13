@@ -1,9 +1,5 @@
 ﻿namespace OpenConstructionSet.Data;
 
-/// <summary>
-/// Represents a <see cref="ReferenceCategory"/> from the game's data.
-/// Stores a collection of related references.
-/// </summary>
 public class ReferenceCategory : IReferenceCategory
 {
     /// <summary>
@@ -57,26 +53,25 @@ public class ReferenceCategory : IReferenceCategory
         References = new(capacity);
     }
 
-    /// <summary>
-    /// The name of the <see cref="ReferenceCategory"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public string Name { get; }
 
+    /// <inheritdoc/>
     public List<Reference> References { get; }
+
+    /// <inheritdoc/>
     IEnumerable<IReference> IReferenceCategory.References => References;
 
     /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is ReferenceCategory category &&
-               Name == category.Name;
+               Name == category.Name &&
+               References.SequenceEqual(category.References);
     }
 
     /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Name);
-    }
+    public override int GetHashCode() => Name.GetHashCode();
 
     /// <inheritdoc/>
     public override string ToString() => $"{Name} (Count: {References.Count})";

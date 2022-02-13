@@ -98,7 +98,7 @@ public class ModItem : IItem, IKeyedItem<string>
     public SortedDictionary<string, object> Values { get; }
 
     ItemChangeType IItem.ChangeType { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
-    int IItem.Id { get => 0; set { } }
+    int IItem.Id { get => 0; }
     IEnumerable<IInstance> IItem.Instances => Instances;
     IEnumerable<IReferenceCategory> IItem.ReferenceCategories => ReferenceCategories;
     IDictionary<string, object> IItem.Values => Values;

@@ -31,7 +31,7 @@ public class ModItemCollection : KeyedItemCollection<string, ModItem>
         {
             if (!baseItems.TryGetValue(item.Key, out var baseItem))
             {
-                yield return new Item(item, ItemChangeType.New);
+                yield return new Item(item.Type, 0, item.Name, item.StringId, ItemChangeType.New);
             }
             else if (item.TryGetChanges(baseItem, out var changes))
             {
@@ -41,7 +41,7 @@ public class ModItemCollection : KeyedItemCollection<string, ModItem>
 
         foreach (var item in baseItems.Values.Where(i => !ContainsKey(i.Key)))
         {
-            yield return new Item(item.AsDeleted(), ItemChangeType.Changed);
+            yield return new Item(item.AsDeleted());
         }
     }
 }
