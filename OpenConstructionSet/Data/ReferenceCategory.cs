@@ -1,5 +1,6 @@
 ﻿namespace OpenConstructionSet.Data;
 
+/// <inheritdoc/>
 public class ReferenceCategory : IReferenceCategory
 {
     /// <summary>

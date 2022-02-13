@@ -15,7 +15,7 @@ public struct FileValue
     }
 
     /// <summary>
-    /// The file path reference by this <see cref="FileValue"/>
+    /// The file path referenced by this <see cref="FileValue"/>
     /// </summary>
     public string Path { get; set; }
 }

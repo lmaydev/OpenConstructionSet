@@ -16,7 +16,7 @@ public enum ItemChangeType : int
     New = -2147483646,
 
     /// <summary>
-    /// Name was changed by the active mod.
+    /// Name changed by the active mod.
     /// </summary>
     Renamed = -2147483645,
 }
