@@ -62,7 +62,8 @@ enabledMods.Add(ModFileName);
 
 await installation.WriteEnabledModsAsync(enabledMods);
 
-Console.Write("done");
+Console.WriteLine("done");
+Console.ReadKey();
 
 async Task<IInstallation> SelectInstallation()
 {
@@ -107,6 +108,7 @@ async Task<IInstallation> SelectInstallation()
 void Error(string message)
 {
     Console.WriteLine(message);
+    Console.ReadKey();
     Environment.Exit(1);
 }
 

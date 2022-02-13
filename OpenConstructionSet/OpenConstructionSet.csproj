@@ -58,13 +58,7 @@
 
   <ItemGroup>
     <EditorConfigFiles Remove="..\.editorconfig" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\.editorconfig" />
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <None Include="$(SolutionDir)README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
