@@ -86,7 +86,9 @@ public class ModFile : IModFile
     /// <inheritdoc/>
     public virtual async Task WriteHeaderAsync(Header header, CancellationToken cancellationToken = default)
     {
-        var data = await ReadDataAsync(cancellationToken).ConfigureAwait(false) with { Header = header };
+        var data = await ReadDataAsync(cancellationToken).ConfigureAwait(false);
+
+        data.Header = header;
 
         await WriteDataAsync(data, cancellationToken).ConfigureAwait(false);
     }

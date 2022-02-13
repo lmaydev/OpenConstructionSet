@@ -7,11 +7,11 @@ public enum DataFileType
 
 ```
 #### Fields
+<a name='OpenConstructionSet_Data_DataFileType_Data'></a>
+`Data` 15  
+A data file. Supports any data file that isn't a mod. .save, .platoon, .zone etc.  
+  
 <a name='OpenConstructionSet_Data_DataFileType_Mod'></a>
 `Mod` 16  
 A mod file.  
-  
-<a name='OpenConstructionSet_Data_DataFileType_Save'></a>
-`Save` 15  
-A save file. Supports .save, .platoon, .zone etc.  
   

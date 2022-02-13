@@ -6,9 +6,9 @@
 public enum DataFileType : int
 {
     /// <summary>
-    /// A save file. Supports .save, .platoon, .zone etc.
+    /// A data file. Supports any data file that isn't a mod. .save, .platoon, .zone etc.
     /// </summary>
-    Save = 15,
+    Data = 15,
 
     /// <summary>
     /// A mod file.

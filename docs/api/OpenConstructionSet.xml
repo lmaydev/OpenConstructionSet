@@ -52,26 +52,20 @@
             <summary>
             Represents the data of a game data file.
             </summary>
-            <param name="Type">The <see cref="T:OpenConstructionSet.Data.DataFileType"/> of the data file.</param>
-            <param name="LastId">The last ID number used when creating new items.</param>
-            <param name="Items">Collection of data items contained with in the file. These represent all entities in kenshi.</param>
         </member>
-        <member name="M:OpenConstructionSet.Data.DataFileData.#ctor(OpenConstructionSet.Data.DataFileType,System.Int32,System.Collections.Generic.List{OpenConstructionSet.Data.Item})">
+        <member name="M:OpenConstructionSet.Data.DataFileData.#ctor(OpenConstructionSet.Data.DataFileType,OpenConstructionSet.Data.Header,System.Int32,System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.Item})">
             <summary>
-            Represents the data of a game data file.
+            Creates a new <see cref="T:OpenConstructionSet.Data.DataFileData"/>.
             </summary>
-            <param name="Type">The <see cref="T:OpenConstructionSet.Data.DataFileType"/> of the data file.</param>
-            <param name="LastId">The last ID number used when creating new items.</param>
-            <param name="Items">Collection of data items contained with in the file. These represent all entities in kenshi.</param>
+            <param name="type">The data file's type.</param>
+            <param name="header">The mod's header.</param>
+            <param name="lastId">The last ID number used when creating new items.</param>
+            <param name="items">The collection of <see cref="T:OpenConstructionSet.Data.Item"/>s of the <see cref="T:OpenConstructionSet.Data.IDataFile"/>.</param>
         </member>
-        <member name="P:OpenConstructionSet.Data.DataFileData.Type">
+        <member name="P:OpenConstructionSet.Data.DataFileData.Header">
             <summary>
-            The <see cref="T:OpenConstructionSet.Data.DataFileType"/> of the data file.
-            </summary>
-        </member>
-        <member name="P:OpenConstructionSet.Data.DataFileData.LastId">
-            <summary>
-            The last ID number used when creating new items.
+            The <see cref="P:OpenConstructionSet.Data.DataFileData.Header"/> if it is a <see cref="F:OpenConstructionSet.Data.DataFileType.Mod"/> file.
+            <c>null</c> for other data files
             </summary>
         </member>
         <member name="P:OpenConstructionSet.Data.DataFileData.Items">
@@ -79,14 +73,24 @@
             Collection of <see cref="T:OpenConstructionSet.Data.Item"/>s contained with in the file. These represent all entities in kenshi.
             </summary>
         </member>
+        <member name="P:OpenConstructionSet.Data.DataFileData.LastId">
+            <summary>
+            The last ID number used when creating new items.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.DataFileData.Type">
+            <summary>
+            The <see cref="T:OpenConstructionSet.Data.DataFileType"/> of the data file.
+            </summary>
+        </member>
         <member name="T:OpenConstructionSet.Data.DataFileType">
             <summary>
             Type identifier for data files.
             </summary>
         </member>
-        <member name="F:OpenConstructionSet.Data.DataFileType.Save">
+        <member name="F:OpenConstructionSet.Data.DataFileType.Data">
             <summary>
-            A save file. Supports .save, .platoon, .zone etc.
+            A data file. Supports any data file that isn't a mod. .save, .platoon, .zone etc.
             </summary>
         </member>
         <member name="F:OpenConstructionSet.Data.DataFileType.Mod">
@@ -1707,19 +1711,6 @@
             <summary>
             Represents the data stored within a <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
             </summary>
-            <param name="Header">The <see cref="P:OpenConstructionSet.Mods.ModFileData.Header"/> of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
-            <param name="LastId">The last Id used to generate a new <see cref="T:OpenConstructionSet.Data.IItem"/>.</param>
-            <param name="Items">The collection of <see cref="T:OpenConstructionSet.Data.Item"/>s of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
-            <param name="Info">Optional data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.</param>
-        </member>
-        <member name="M:OpenConstructionSet.Mods.ModFileData.#ctor(OpenConstructionSet.Data.Header,System.Int32,System.Collections.Generic.List{OpenConstructionSet.Data.Item},OpenConstructionSet.Mods.ModInfoData)">
-            <summary>
-            Represents the data stored within a <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
-            </summary>
-            <param name="Header">The <see cref="P:OpenConstructionSet.Mods.ModFileData.Header"/> of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
-            <param name="LastId">The last Id used to generate a new <see cref="T:OpenConstructionSet.Data.IItem"/>.</param>
-            <param name="Items">The collection of <see cref="T:OpenConstructionSet.Data.Item"/>s of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
-            <param name="Info">Optional data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.</param>
         </member>
         <member name="M:OpenConstructionSet.Mods.ModFileData.#ctor(OpenConstructionSet.Data.Header,System.Int32,System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.Item},OpenConstructionSet.Mods.ModInfoData)">
             <summary>
@@ -1735,9 +1726,9 @@
             The <see cref="P:OpenConstructionSet.Mods.ModFileData.Header"/> of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
             </summary>
         </member>
-        <member name="P:OpenConstructionSet.Mods.ModFileData.LastId">
+        <member name="P:OpenConstructionSet.Mods.ModFileData.Info">
             <summary>
-            The last Id used to generate a new <see cref="T:OpenConstructionSet.Data.IItem"/>.
+            Optional data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.
             </summary>
         </member>
         <member name="P:OpenConstructionSet.Mods.ModFileData.Items">
@@ -1745,9 +1736,9 @@
             The collection of <see cref="T:OpenConstructionSet.Data.Item"/>s of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
             </summary>
         </member>
-        <member name="P:OpenConstructionSet.Mods.ModFileData.Info">
+        <member name="P:OpenConstructionSet.Mods.ModFileData.LastId">
             <summary>
-            Optional data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.
+            The last Id used to generate a new <see cref="T:OpenConstructionSet.Data.IItem"/>.
             </summary>
         </member>
         <member name="T:OpenConstructionSet.Mods.ModInfoData">

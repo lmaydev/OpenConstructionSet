@@ -3,18 +3,14 @@
 ## ModFileData Class
 Represents the data stored within a [IModFile](IKbYBL+aXAnVnb4gGogjfQ.md 'OpenConstructionSet.Mods.IModFile').  
 ```csharp
-public sealed class ModFileData :
-System.IEquatable<OpenConstructionSet.Mods.ModFileData>
+public class ModFileData
 ```
 
 Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; ModFileData  
 
-Implements [System.IEquatable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.IEquatable-1 'System.IEquatable`1')[ModFileData](08IeBDwBBBiNIR2IJiBaAQ.md 'OpenConstructionSet.Mods.ModFileData')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.IEquatable-1 'System.IEquatable`1')  
-
 | Constructors | |
 | :--- | :--- |
 | [ModFileData(Header, int, IEnumerable&lt;Item&gt;, ModInfoData?)](0hCESCkwrdoKxXdvGkZl5w.md 'OpenConstructionSet.Mods.ModFileData.ModFileData(OpenConstructionSet.Data.Header, int, System.Collections.Generic.IEnumerable&lt;OpenConstructionSet.Data.Item&gt;, OpenConstructionSet.Mods.ModInfoData?)') | Creates a new [ModFileData](08IeBDwBBBiNIR2IJiBaAQ.md 'OpenConstructionSet.Mods.ModFileData').<br/> |
-| [ModFileData(Header, int, List&lt;Item&gt;, ModInfoData?)](TMJjRSfj+YnIQzSzQHA53w.md 'OpenConstructionSet.Mods.ModFileData.ModFileData(OpenConstructionSet.Data.Header, int, System.Collections.Generic.List&lt;OpenConstructionSet.Data.Item&gt;, OpenConstructionSet.Mods.ModInfoData?)') | Represents the data stored within a [IModFile](IKbYBL+aXAnVnb4gGogjfQ.md 'OpenConstructionSet.Mods.IModFile').<br/> |
 
 | Properties | |
 | :--- | :--- |
