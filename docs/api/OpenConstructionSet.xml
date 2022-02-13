@@ -1,0 +1,2315 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenConstructionSet</name>
+    </assembly>
+    <members>
+        <member name="T:OpenConstructionSet.CollectionExtensions">
+            <summary>
+            A collection of extensions for collections.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.CollectionExtensions.OfType``1(System.Collections.Generic.IEnumerable{``0},OpenConstructionSet.Data.ItemType)">
+            <summary>
+            Filters a collection of <see cref="T:OpenConstructionSet.Data.IItem"/>s by their type.
+            </summary>
+            <typeparam name="TItem">The concreate type of the <see cref="T:OpenConstructionSet.Data.IItem"/>s in the collection.</typeparam>
+            <param name="collection">The collection to filter.</param>
+            <param name="itemType">The type to filter by.</param>
+            <returns>All <see cref="T:OpenConstructionSet.Data.IItem"/>s in <c>collection</c> of the matching <see cref="T:OpenConstructionSet.Data.ItemType"/>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.ContextBuilder">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.ContextBuilder.BuildAsync(OpenConstructionSet.Mods.Context.ModContextOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Data.DataFile">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.DataFile.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.DataFile"/> from the given path.
+            </summary>
+            <param name="path">The path of the data file e.g. \path\to\file\example.ext</param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.DataFile.Filename">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.DataFile.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.DataFile.Path">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.DataFile.ReadDataAsync(System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.DataFile.WriteDataAsync(OpenConstructionSet.Data.DataFileData,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Data.DataFileData">
+            <summary>
+            Represents the data of a game data file.
+            </summary>
+            <param name="Type">The <see cref="T:OpenConstructionSet.Data.DataFileType"/> of the data file.</param>
+            <param name="LastId">The last ID number used when creating new items.</param>
+            <param name="Items">Collection of data items contained with in the file. These represent all entities in kenshi.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.DataFileData.#ctor(OpenConstructionSet.Data.DataFileType,System.Int32,System.Collections.Generic.List{OpenConstructionSet.Data.Item})">
+            <summary>
+            Represents the data of a game data file.
+            </summary>
+            <param name="Type">The <see cref="T:OpenConstructionSet.Data.DataFileType"/> of the data file.</param>
+            <param name="LastId">The last ID number used when creating new items.</param>
+            <param name="Items">Collection of data items contained with in the file. These represent all entities in kenshi.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.DataFileData.Type">
+            <summary>
+            The <see cref="T:OpenConstructionSet.Data.DataFileType"/> of the data file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.DataFileData.LastId">
+            <summary>
+            The last ID number used when creating new items.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.DataFileData.Items">
+            <summary>
+            Collection of <see cref="T:OpenConstructionSet.Data.Item"/>s contained with in the file. These represent all entities in kenshi.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.DataFileType">
+            <summary>
+            Type identifier for data files.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Data.DataFileType.Save">
+            <summary>
+            A save file. Supports .save, .platoon, .zone etc.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Data.DataFileType.Mod">
+            <summary>
+            A mod file.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.FileValue">
+            <summary>
+            Represents a file stored in the game data.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.FileValue.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.FileValue"/> with the given path value.
+            </summary>
+            <param name="path">The file path reference by this <see cref="T:OpenConstructionSet.Data.FileValue"/></param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.FileValue.Path">
+            <summary>
+            The file path referenced by this <see cref="T:OpenConstructionSet.Data.FileValue"/>
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.Header">
+            <summary>
+            Represents the header of a <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Header.#ctor">
+            <summary>
+            Initialize a new empty <see cref="T:OpenConstructionSet.Data.Header"/>
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Header.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Initialize a new <see cref="T:OpenConstructionSet.Data.Header"/>
+            </summary>
+            <param name="version">The mod's version.</param>
+            <param name="author">The mod's author.</param>
+            <param name="description">A description of the mod.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Header.Author">
+            <summary>
+            The author of the mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Header.Dependencies">
+            <summary>
+            A list of mod names (e.g. exmaple.mod) that this mod is dependent on.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Header.Description">
+            <summary>
+            A description of the mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Header.References">
+            <summary>
+            A list of mod names (e.g. example.mod) that this mod referenced.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Header.Version">
+            <summary>
+            The version of the mod.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.IDataFile">
+            <summary>
+            Representation of a data file.
+            Provides methods for reading and writing to the file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IDataFile.Filename">
+            <summary>
+            The filename of the data file e.g. example.ext
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IDataFile.Name">
+            <summary>
+            The name of the data file e.g. example
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IDataFile.Path">
+            <summary>
+            The path of the data file e.g. \path\to\file\example.ext
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.IDataFile.ReadDataAsync(System.Threading.CancellationToken)">
+            <summary>
+            Reads the data from the file.
+            </summary>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>The data stored in the file.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.IDataFile.WriteDataAsync(OpenConstructionSet.Data.DataFileData,System.Threading.CancellationToken)">
+            <summary>
+            Writes the provided data to the file.
+            </summary>
+            <param name="data">The data to write to file.</param>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>An awaitable task.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Data.IInstance">
+            <summary>
+            Represents an instance from the game's data.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IInstance.Id">
+            <summary>
+            The <see cref="T:OpenConstructionSet.Data.IInstance"/>'s unique identifier.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IInstance.Position">
+            <summary>
+            The <see cref="T:OpenConstructionSet.Data.IInstance"/>'s position.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IInstance.Rotation">
+            <summary>
+            The <see cref="T:OpenConstructionSet.Data.IInstance"/>'s rotation.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IInstance.States">
+            <summary>
+            A collection of states for the <see cref="T:OpenConstructionSet.Data.IInstance"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IInstance.TargetId">
+            <summary>
+            The <see cref="P:OpenConstructionSet.Data.IItem.StringId"/> of the targeted <see cref="T:OpenConstructionSet.Data.IItem"/>.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.IItem">
+            <summary>
+            Represents an instance from the game's data.
+            All data in the game is represented by these.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IItem.ChangeType">
+            <summary>
+            The type of changes applied to this item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IItem.Id">
+            <summary>
+            The ID of the item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IItem.Instances">
+            <summary>
+            A collection of instances for this item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IItem.Name">
+            <summary>
+            The name of this item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IItem.ReferenceCategories">
+            <summary>
+            A collection of reference categories for this item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IItem.StringId">
+            <summary>
+            The unique string identifier for this item.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IItem.Type">
+            <summary>
+            The type of item this represents.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IItem.Values">
+            <summary>
+            Dictionary of values for this item.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.Instance">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Instance.#ctor(OpenConstructionSet.Data.IInstance)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Instance"/> from another.
+            </summary>
+            <param name="instance">The <see cref="T:OpenConstructionSet.Data.Instance"/> to copy.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Instance.#ctor(System.String,System.String,OpenConstructionSet.Data.Vector3,OpenConstructionSet.Data.Vector4,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Instance"/> from the provided data.
+            </summary>
+            <param name="id">The identifier for the <see cref="T:OpenConstructionSet.Data.Instance"/>.</param>
+            <param name="targetId">The <see cref="P:OpenConstructionSet.Data.Item.StringId"/> of the targeted <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="position">The <see cref="T:OpenConstructionSet.Data.Instance"/>'s position.</param>
+            <param name="rotation">The <see cref="T:OpenConstructionSet.Data.Instance"/>'s rotation.</param>
+            <param name="states">A collection of states for the <see cref="T:OpenConstructionSet.Data.Instance"/>.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Instance.Id">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Instance.Position">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Instance.Rotation">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Instance.States">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Instance.TargetId">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Instance.op_Inequality(OpenConstructionSet.Data.Instance,OpenConstructionSet.Data.Instance)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Data.Instance"/>s are not equal.
+            </summary>
+            <param name="left">First Instance.</param>
+            <param name="right">Second instance.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Data.Instance"/>s are not equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Instance.op_Equality(OpenConstructionSet.Data.Instance,OpenConstructionSet.Data.Instance)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Data.Instance"/>s are equal.
+            </summary>
+            <param name="left">First Instance.</param>
+            <param name="right">Second instance.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Data.Instance"/>s are equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Instance.Delete">
+            <summary>
+            Marks this <see cref="T:OpenConstructionSet.Data.Instance"/> as deleted.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Instance.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Instance.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Instance.IsDeleted">
+            <summary>
+            Determines if this <see cref="T:OpenConstructionSet.Data.Instance"/> is marked as deleted.
+            </summary>
+            <returns><c>true</c> if marked as deleted; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Data.IReference">
+            <summary>
+            Represents a reference from the game's data.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IReference.TargetId">
+            <summary>
+            The <see cref="P:OpenConstructionSet.Data.IItem.StringId"/> of the target <see cref="T:OpenConstructionSet.Data.IItem"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IReference.Value0">
+            <summary>
+            The first value.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IReference.Value1">
+            <summary>
+            The second value.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IReference.Value2">
+            <summary>
+            The third value.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.IReferenceCategory">
+            <summary>
+            Represents a reference category from the game's data.
+            Stores a collection of related references.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IReferenceCategory.Name">
+            <summary>
+            The name of the <see cref="T:OpenConstructionSet.Data.IReferenceCategory"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.IReferenceCategory.References">
+            <summary>
+            A collection of references stored by this <see cref="T:OpenConstructionSet.Data.IReferenceCategory"/>
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.Item">
+            <summary>
+            Represents an item in the games data.
+            All entites in the game are represented using these.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.#ctor(OpenConstructionSet.Data.IItem)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Item"/> from an <see cref="T:OpenConstructionSet.Data.IItem"/>.
+            </summary>
+            <param name="item">The <see cref="T:OpenConstructionSet.Data.IItem"/> to copy.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.#ctor(OpenConstructionSet.Data.ItemType,System.Int32,System.String,System.String,OpenConstructionSet.Data.ItemChangeType)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Item"/> from the provided data.
+            </summary>
+            <param name="type">The <see cref="T:OpenConstructionSet.Data.ItemType"/> for this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="id">The Id of this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="name">The name of this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="stringId">The unique string identifier of this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="changeType">The types of changes that have been applied to this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.#ctor(OpenConstructionSet.Data.ItemType,System.Int32,System.String,System.String,OpenConstructionSet.Data.ItemChangeType,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.IReferenceCategory},System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.IInstance})">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Item"/> from the provided data.
+            </summary>
+            <param name="type">The <see cref="T:OpenConstructionSet.Data.ItemType"/> for this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="id">The Id of this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="name">The name of this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="stringId">The unique string identifier of this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="changeType">The types of changes that have been applied to this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="values">Dictionary of values stored by this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="referenceCategories">Collection of <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> instances stored by this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="instances">Collection of <see cref="T:OpenConstructionSet.Data.Instance"/>s stored by this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.#ctor(OpenConstructionSet.Data.ItemType,System.Int32,System.String,System.String,OpenConstructionSet.Data.ItemChangeType,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.ReferenceCategory},System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.Instance})">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Item"/> from the provided data.
+            </summary>
+            <param name="type">The <see cref="T:OpenConstructionSet.Data.ItemType"/> for this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="id">The Id of this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="name">The name of this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="stringId">The unique string identifier of this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="changeType">The types of changes that have been applied to this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="values">Dictionary of values stored by this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="referenceCategories">Collection of <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> instances stored by this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="instances">Collection of <see cref="T:OpenConstructionSet.Data.Instance"/>s stored by this <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Item.ChangeType">
+            <summary>
+            The types of changes that have been applied to this <see cref="T:OpenConstructionSet.Data.Item"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Item.Id">
+            <summary>
+            The Id of this <see cref="T:OpenConstructionSet.Data.Item"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Item.Instances">
+            <summary>
+            Collection of <see cref="T:OpenConstructionSet.Data.Instance"/>s stored by this <see cref="T:OpenConstructionSet.Data.Item"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Item.Name">
+            <summary>
+            The name of this <see cref="T:OpenConstructionSet.Data.Item"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Item.ReferenceCategories">
+            <summary>
+            Collection of <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> instances stored by this <see cref="T:OpenConstructionSet.Data.Item"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Item.StringId">
+            <summary>
+            The unique string identifier of this <see cref="T:OpenConstructionSet.Data.Item"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Item.Type">
+            <summary>
+            The <see cref="T:OpenConstructionSet.Data.ItemType"/> for this <see cref="T:OpenConstructionSet.Data.Item"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Item.Values">
+            <summary>
+            Dictionary of values stored by this <see cref="T:OpenConstructionSet.Data.Item"/>.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.op_Inequality(OpenConstructionSet.Data.Item,OpenConstructionSet.Data.Item)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Data.Item"/>s are not equal.
+            </summary>
+            <param name="left">First item.</param>
+            <param name="right">Second item.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Data.Item"/>s are not equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.op_Equality(OpenConstructionSet.Data.Item,OpenConstructionSet.Data.Item)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Data.Item"/>s are equal.
+            </summary>
+            <param name="left">First Item.</param>
+            <param name="right">Second Item.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Data.Item"/>s are equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.Delete">
+            <summary>
+            Marks this <see cref="T:OpenConstructionSet.Data.Reference"/> as deleted.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.IsDeleted">
+            <summary>
+            Determines if this <see cref="T:OpenConstructionSet.Data.Reference"/> is marked as deleted.
+            </summary>
+            <returns><c>true</c> if marked as deleted; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Item.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Data.ItemChangeType">
+            <summary>
+            Change types for <see cref="T:OpenConstructionSet.Data.Item"/>s.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Data.ItemChangeType.Changed">
+            <summary>
+            Changed by the active mod.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Data.ItemChangeType.New">
+            <summary>
+            Added by the active mod.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Data.ItemChangeType.Renamed">
+            <summary>
+            Name changed by the active mod.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.ItemType">
+            <summary>
+            Type identifier for <see cref="T:OpenConstructionSet.Data.IItem"/>s.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Data.Reference">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Reference.#ctor(OpenConstructionSet.Data.IReference)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Reference"/> by copying the values of an <see cref="T:OpenConstructionSet.Data.IReference"/>.
+            </summary>
+            <param name="reference">The <see cref="T:OpenConstructionSet.Data.IReference"/> to copy.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Reference.#ctor(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Reference"/> instance from the provided values.
+            </summary>
+            <param name="targetId">The <see cref="P:OpenConstructionSet.Data.IItem.StringId"/> of the target <see cref="T:OpenConstructionSet.Data.IItem"/>.</param>
+            <param name="value0">The first value.</param>
+            <param name="value1">The second value.</param>
+            <param name="value2">The third value.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Reference.TargetId">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Reference.Value0">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Reference.Value1">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Reference.Value2">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Reference.op_Inequality(OpenConstructionSet.Data.Reference,OpenConstructionSet.Data.Reference)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Data.Reference"/>s are not equal.
+            </summary>
+            <param name="left">First Reference.</param>
+            <param name="right">Second Reference.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Data.Reference"/>s are not equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Reference.op_Equality(OpenConstructionSet.Data.Reference,OpenConstructionSet.Data.Reference)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Data.Reference"/>s are equal.
+            </summary>
+            <param name="left">First Reference.</param>
+            <param name="right">Second Reference.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Data.Reference"/>s are equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Reference.Delete">
+            <summary>
+            Marks this <see cref="T:OpenConstructionSet.Data.Reference"/> as deleted.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Reference.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Reference.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Reference.IsDeleted">
+            <summary>
+            Determines if this <see cref="T:OpenConstructionSet.Data.Reference"/> is marked as deleted.
+            </summary>
+            <returns><c>true</c> if marked as deleted; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Reference.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Data.ReferenceCategory">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.ReferenceCategory.#ctor(OpenConstructionSet.Data.IReferenceCategory)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> from another.
+            </summary>
+            <param name="category">The <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> to copy.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.ReferenceCategory.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> with the given name.
+            </summary>
+            <param name="name">The name of the <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.ReferenceCategory.#ctor(System.String,System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.IReference})">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> with the given name and contained <see cref="T:OpenConstructionSet.Data.Reference"/>s.
+            The <see cref="T:OpenConstructionSet.Data.Reference"/>s will be recreated using the copy constructor.
+            </summary>
+            <param name="name">The name of the <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/>.</param>
+            <param name="collection">A collection of <see cref="T:OpenConstructionSet.Data.Reference"/>s to add to the <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.ReferenceCategory.#ctor(System.String,System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.Reference})">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> with the given name and contained <see cref="T:OpenConstructionSet.Data.Reference"/>s.
+            The <see cref="T:OpenConstructionSet.Data.Reference"/>s will be recreated using the copy constructor.
+            </summary>
+            <param name="name">The name of the <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/>.</param>
+            <param name="collection">A collection of <see cref="T:OpenConstructionSet.Data.Reference"/>s to add to the <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Data.ReferenceCategory.#ctor(System.String,System.Int32)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> with the given name and contained <see cref="T:OpenConstructionSet.Data.Reference"/>s.
+            </summary>
+            <param name="name">The name of the <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/>.</param>
+            <param name="capacity">The initial capacity of <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> list.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.ReferenceCategory.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.ReferenceCategory.References">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Data.ReferenceCategory.OpenConstructionSet#Data#IReferenceCategory#References">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.ReferenceCategory.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.ReferenceCategory.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Data.ReferenceCategory.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Data.Vector3">
+            <summary>
+            Representation of a Vector3.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Vector3.#ctor(System.Single,System.Single,System.Single)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Vector3"/> from the provided values.
+            </summary>
+            <param name="x">The X value.</param>
+            <param name="y">The Y value.</param>
+            <param name="z">The Z value.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Vector3.X">
+            <summary>
+            The X value.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Vector3.Y">
+            <summary>
+            The Y value.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Vector3.Z">
+            <summary>
+            The Z value.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Vector3.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Data.Vector4">
+            <summary>
+            Represents of a Vector4.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Vector4.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Data.Vector4"/> from the given values.
+            </summary>
+            <param name="w"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Vector4.W">
+            <summary>
+            The W value.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Vector4.X">
+            <summary>
+            The X value.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Vector4.Y">
+            <summary>
+            The Y value.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Data.Vector4.Z">
+            <summary>
+            The Z value.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Data.Vector4.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.IContextBuilder">
+            <summary>
+            Builder used when creating FCS like mod contexts.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IContextBuilder.BuildAsync(OpenConstructionSet.Mods.Context.ModContextOptions)">
+            <summary>
+            Build a <see cref="T:OpenConstructionSet.Mods.Context.IModContext"/> from the provided <see cref="T:OpenConstructionSet.Mods.Context.ModContextOptions"/>.
+            </summary>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OpenConstructionSet.IInstallationService">
+            <summary>
+            Service used to locate <see cref="T:OpenConstructionSet.Installations.IInstallation"/>s.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.IInstallationService.SupportedLocators">
+            <summary>
+            Id of all supported <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/>s.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IInstallationService.DiscoverAllInstallationsAsync">
+            <summary>
+            Runs all supported <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/>s and returns any <see cref="T:OpenConstructionSet.Installations.IInstallation"/>s that are found.
+            </summary>
+            <returns>A collection of any <see cref="T:OpenConstructionSet.Installations.IInstallation"/>s that were found.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IInstallationService.DiscoverInstallationAsync">
+            <summary>
+            Runs all supported <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/>s and returns the first <see cref="T:OpenConstructionSet.Installations.IInstallation"/> that is found.
+            </summary>
+            <returns>The first <see cref="T:OpenConstructionSet.Installations.IInstallation"/> that was found; otherwise, <c>null</c></returns>
+        </member>
+        <member name="M:OpenConstructionSet.IInstallationService.DiscoverInstallationAsync(System.String)">
+            <summary>
+            Runs the <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/> with a matching Id and returns the result.
+            </summary>
+            <returns>The <see cref="T:OpenConstructionSet.Installations.IInstallation"/> if found; otherwise, <c>null</c></returns>
+        </member>
+        <member name="T:OpenConstructionSet.InstallationService">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.InstallationService.#ctor">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.InstallationService"/> using the default <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/>s.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.InstallationService.#ctor(System.Collections.Generic.IEnumerable{OpenConstructionSet.Installations.Locators.IInstallationLocator})">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.InstallationService"/> using the provided <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/>s.
+            </summary>
+            <param name="locators">Collection of <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/> used to find <see cref="T:OpenConstructionSet.Installations.IInstallation"/>s.</param>
+        </member>
+        <member name="P:OpenConstructionSet.InstallationService.SupportedLocators">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.InstallationService.DiscoverAllInstallationsAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.InstallationService.DiscoverInstallationAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.InstallationService.DiscoverInstallationAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Installations.IInstallation">
+            <summary>
+            Representation of an installation of the game.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.IInstallation.Content">
+            <summary>
+            An Optional content <see cref="T:OpenConstructionSet.Installations.IModFolder"/>.
+            Currently used for the Steam Workshop folder.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.IInstallation.Data">
+            <summary>
+            A <see cref="T:OpenConstructionSet.Installations.IModFolder"/> for the game's data folder.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.IInstallation.EnabledModsFile">
+            <summary>
+            The path of the file that stores the enabled mods.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.IInstallation.Identifier">
+            <summary>
+            Identifier of this <see cref="T:OpenConstructionSet.Installations.IInstallation"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.IInstallation.Mods">
+            <summary>
+            A <see cref="T:OpenConstructionSet.Installations.IModFolder"/> for the game's mods folder.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.IInstallation.Path">
+            <summary>
+            The path of this <see cref="T:OpenConstructionSet.Installations.IInstallation"/>'s game folder.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.IInstallation.GetMods">
+            <summary>
+            Search all <see cref="T:OpenConstructionSet.Installations.IModFolder"/>s for mods.
+            Searches in the order Data, Mod, Content (if not null).
+            </summary>
+            <returns>A collection of <see cref="T:OpenConstructionSet.Mods.IModFile"/>s for the <see cref="T:OpenConstructionSet.Installations.IInstallation"/>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.IInstallation.ReadEnabledModsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Reads the <see cref="P:OpenConstructionSet.Installations.IInstallation.EnabledModsFile"/> to get the currently enabled mod's filenames and their load order.
+            e.g. example.mod
+            </summary>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>A collection of mod filenames for the currently enabled mods in load order.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.IInstallation.TryFind(System.String,System.UInt32,OpenConstructionSet.Mods.IModFile@)">
+            <summary>
+            Attempts to find the named mod in all this <see cref="T:OpenConstructionSet.Installations.IInstallation"/>'s folders.
+            </summary>
+            <param name="modName">Name of the mod to find e.g. example or example.mod</param>
+            <param name="id">The ID from the mod's .info file. Only required for content folders.</param>
+            <param name="file">Will contain the located <see cref="T:OpenConstructionSet.Mods.IModFile"/> if found.</param>
+            <returns><c>true</c> if the mod could be found; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.IInstallation.TryFind(System.String,OpenConstructionSet.Mods.IModFile@)">
+            <summary>
+            Attempts to find the named mod in all this <see cref="T:OpenConstructionSet.Installations.IInstallation"/>'s folders.
+            </summary>
+            <param name="modName">Name of the mod to find e.g. example or example.mod</param>
+            <param name="file">Will contain the located <see cref="T:OpenConstructionSet.Mods.IModFile"/> if found.</param>
+            <returns><c>true</c> if the mod could be found; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.IInstallation.WriteEnabledModsAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Writes the provided list of mod filename's to the <see cref="P:OpenConstructionSet.Installations.IInstallation.EnabledModsFile"/>.
+            e.g. example.mod
+            </summary>
+            <param name="enabledMods">Collection of m od filenames e.g. example.mod</param>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>An awaitable <see cref="T:System.Threading.Tasks.Task"/>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Installations.IModFolder">
+            <summary>
+            Represents a folder containing mods.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.IModFolder.Path">
+            <summary>
+            The <see cref="T:OpenConstructionSet.Installations.IModFolder"/>'s path.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.IModFolder.Type">
+            <summary>
+            The <see cref="T:OpenConstructionSet.Installations.ModFolderType"/> for this <see cref="T:OpenConstructionSet.Installations.IModFolder"/>.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.IModFolder.GetModPath(System.String,System.UInt32)">
+            <summary>
+            Gets the full path of the provided mod name or filename.
+            e.g. example.mod or example
+            </summary>
+            <param name="modName">The mod's name or filename. e.g. example.mod or example</param>
+            <param name="modId">The Id from the mod's info file. This is only required for <see cref="F:OpenConstructionSet.Installations.ModFolderType.Content"/> folders.</param>
+            <returns>The full path of the provided mod.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.IModFolder.GetMods">
+            <summary>
+            Search the <see cref="T:OpenConstructionSet.Installations.IModFolder"/> for mods.
+            </summary>
+            <returns>A collection of <see cref="T:OpenConstructionSet.Mods.IModFile"/>s for the <see cref="T:OpenConstructionSet.Installations.IModFolder"/>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.IModFolder.TryFind(System.String,System.UInt32,OpenConstructionSet.Mods.IModFile@)">
+            <summary>
+            Attempts to find the named mod in the <see cref="T:OpenConstructionSet.Installations.IModFolder"/>.
+            </summary>
+            <param name="modName">Name of the mod to find e.g. example or example.mod</param>
+            <param name="id">The ID from the mod's .info file. Only required for content folders.</param>
+            <param name="file">Will contain the located <see cref="T:OpenConstructionSet.Mods.IModFile"/> if found.</param>
+            <returns><c>true</c> if the mod could be found; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.IModFolder.TryFind(System.String,OpenConstructionSet.Mods.IModFile@)">
+            <summary>
+            Attempts to find the named mod in the <see cref="T:OpenConstructionSet.Installations.IModFolder"/>.
+            </summary>
+            <param name="modName">Name of the mod to find e.g. example or example.mod</param>
+            <param name="file">Will contain the located <see cref="T:OpenConstructionSet.Mods.IModFile"/> if found.</param>
+            <returns><c>true</c> if the mod could be found; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Installations.Installation">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Installation.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Installations.Installation"/> from the provided values.
+            </summary>
+            <param name="identifier">Name used to identify this installation e.g. Steam</param>
+            <param name="path">The full path of the installation.</param>
+            <param name="content">Optional content folder e.g. Steam Workshop folder.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Installation.Content">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Installation.Data">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Installation.EnabledModsFile">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Installation.Identifier">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Installation.Mods">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Installation.Path">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Installation.Saves">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Installation.GetMods">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Installation.ReadEnabledModsAsync(System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Installation.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Installation.TryFind(System.String,OpenConstructionSet.Mods.IModFile@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Installation.TryFind(System.String,System.UInt32,OpenConstructionSet.Mods.IModFile@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Installation.WriteEnabledModsAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Installations.Locators.GogLocator">
+            <summary>
+            Gog implementation of a <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/>
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Locators.GogLocator.Id">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Locators.GogLocator.LocateAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Installations.Locators.IInstallationLocator">
+            <summary>
+            Used to locate game installations from various platforms.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Locators.IInstallationLocator.Id">
+            <summary>
+            The unique identifier for this locator.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Locators.IInstallationLocator.LocateAsync">
+            <summary>
+            Attempt to find an installation.
+            </summary>
+            <returns>An <see cref="T:OpenConstructionSet.Installations.Installation"/> if located; otherwise, <c>null</c></returns>
+        </member>
+        <member name="T:OpenConstructionSet.Installations.Locators.LocalLocator">
+            <summary>
+            Implementation of a <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/> that looks for the folders in the working directory.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Locators.LocalLocator.Id">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Locators.LocalLocator.LocateAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Installations.Locators.SteamLocator">
+            <summary>
+            Steam implementation of a <see cref="T:OpenConstructionSet.Installations.Locators.IInstallationLocator"/>
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.Locators.SteamLocator.Id">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.Locators.SteamLocator.LocateAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Installations.ModFolder">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.ModFolder.#ctor(System.String,OpenConstructionSet.Installations.ModFolderType)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Installations.ModFolder"/> instance from the provided values.
+            </summary>
+            <param name="path">The path of the folder.</param>
+            <param name="type">The <see cref="T:OpenConstructionSet.Installations.ModFolderType"/> of the folder.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.ModFolder.Path">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Installations.ModFolder.Type">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.ModFolder.GetModPath(System.String,System.UInt32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.ModFolder.GetMods">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.ModFolder.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.ModFolder.TryFind(System.String,System.UInt32,OpenConstructionSet.Mods.IModFile@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Installations.ModFolder.TryFind(System.String,OpenConstructionSet.Mods.IModFile@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Installations.ModFolderType">
+            <summary>
+            Represents the various types of mod folder.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Installations.ModFolderType.Content">
+            <summary>
+            Currently used for the Steam Workshop folder.
+            Files are stored in a sub folder based on the Id of their .info file.
+            e.g. [folder]/120595/example.mod
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Installations.ModFolderType.Data">
+            <summary>
+            The data folder of a game installation.
+            Contains the base game files.
+            Files are stored in the root
+            e.g [folder]/example.mod
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Installations.ModFolderType.Mod">
+            <summary>
+            The mods folder of a game installation.
+            Files are stored in a sub folder based on their name.
+            e.g. [folder]/example/example.mod
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.IO.OcsPathHelper">
+            <summary>
+            A collection of helper functions for dealing with the game's files.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsPathHelper.GetInfoPath(System.String)">
+            <summary>
+            Gets the path of the info file for the given mod file.
+            </summary>
+            <param name="mod">The file to get the info file name for.</param>
+            <returns>The path of the info file for the specified mod.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsPathHelper.AddModExtension(System.String)">
+            <summary>
+            Adds .mod to a mod name if no extension is present.
+            e.g. example becomes example.mod while example.data will be unchanged
+            </summary>
+            <param name="modName">The name, filename or path of a mod.</param>
+            <returns>
+            The given mod name with a .mod extension if there was no extension originally.
+            Otherwise simply returns the given mod name.
+            </returns>
+        </member>
+        <member name="T:OpenConstructionSet.IO.OcsReader">
+            <summary>
+            Reader for the game's data files.
+            Can read from a <c>Stream</c> or a byte buffer.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.#ctor(System.Byte[])">
+            <summary>
+            Initialize a new <see cref="T:OpenConstructionSet.IO.OcsReader"/> to work against the provided buffer.
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.#ctor(System.IO.Stream)">
+            <summary>
+            Initialize a new <see cref="T:OpenConstructionSet.IO.OcsReader"/> to work against the provided <c>Stream</c>.
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.Dispose">
+            <summary>
+            Dispose the underlying Stream if provided.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadBool">
+            <summary>
+            Read a <c>bool</c> from the data.
+            </summary>
+            <returns>A <c>bool</c> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadFloat">
+            <summary>
+            Read a <c>float</c> from the data.
+            </summary>
+            <returns>A <c>float</c> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadHeader">
+            <summary>
+            Read a <see cref="T:OpenConstructionSet.Data.Header"/> object from the data.
+            </summary>
+            <returns>A <see cref="T:OpenConstructionSet.Data.Header"/> object read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadInstance">
+            <summary>
+            Read an <see cref="T:OpenConstructionSet.Data.Instance"/> from the data.
+            </summary>
+            <returns>An <see cref="T:OpenConstructionSet.Data.Instance"></see> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadInt">
+            <summary>
+            Read an <c>int</c> from the data.
+            </summary>
+            <returns>An <c>int</c> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadItem">
+            <summary>
+            Read an <see cref="T:OpenConstructionSet.Data.Item"/> from the data.
+            This includes the <see cref="T:OpenConstructionSet.Data.Item"/>'s values, instances and references.
+            </summary>
+            <returns>An <c>Item</c> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadItems">
+            <summary>
+            Read a collection of <see cref="T:OpenConstructionSet.Data.Item"/>s from the data.
+            </summary>
+            <returns>A collection of <see cref="T:OpenConstructionSet.Data.Item"/>s read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadReference">
+            <summary>
+            Read a <see cref="T:OpenConstructionSet.Data.Reference"/> from the data.
+            </summary>
+            <returns>A <see cref="T:OpenConstructionSet.Data.Reference"/> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadString">
+            <summary>
+            Read a <c>string</c> from the data.
+            </summary>
+            <returns>A <c>string</c> read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadStringList">
+            <summary>
+            Read a comma separated list of <c>string</c>s from the data.
+            </summary>
+            <returns>An array of <c>string</c>s read from a comma separated list in the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadStrings">
+            <summary>
+            Reads a collection of <c>string</c>s from the data.
+            </summary>
+            <returns>A collection of <c>string</c>s read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadVector3">
+            <summary>
+            Read a <see cref="T:OpenConstructionSet.Data.Vector3"/> object from the data.
+            </summary>
+            <returns>A <see cref="T:OpenConstructionSet.Data.Vector3"/> object read from the data.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsReader.ReadVector4(System.Boolean)">
+            <summary>
+            Read a <see cref="T:OpenConstructionSet.Data.Vector4"/> object from the data.
+            </summary>
+            <returns>A <see cref="T:OpenConstructionSet.Data.Vector4"/> object read from the data.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.IO.OcsWriter">
+            <summary>
+            Writer for the game's data files.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.#ctor(System.IO.Stream)">
+            <summary>
+            Initialize a new writer working against the given <c>Stream</c>.
+            </summary>
+            <param name="stream">The <c>Stream</c> to write to.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Dispose">
+            <summary>
+            Dispose the underlying <c>Stream</c>.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Write a collection of objects to the <c>Stream</c>. T will be runtime bound to one of the
+            Write methods. Passing an unsupported type will result in errors.
+            </summary>
+            <param name="collection">The collection to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Data.Item)">
+            <summary>
+            Write an <see cref="T:OpenConstructionSet.Data.Item"/> to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <see cref="T:OpenConstructionSet.Data.Item"/> to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Data.Instance)">
+            <summary>
+            Write an <see cref="T:OpenConstructionSet.Data.Instance"/> to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <see cref="T:OpenConstructionSet.Data.Instance"/> to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Data.Reference)">
+            <summary>
+            Write a <see cref="T:OpenConstructionSet.Data.Reference"/> to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <see cref="T:OpenConstructionSet.Data.Reference"/> to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Data.Header)">
+            <summary>
+            Write a <see cref="T:OpenConstructionSet.Data.Header"/> object to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <see cref="T:OpenConstructionSet.Data.Header"/> object to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(System.String)">
+            <summary>
+            Write a <c>string</c> to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <c>string</c> to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Data.FileValue)">
+            <summary>
+            Write a <see cref="T:OpenConstructionSet.Data.FileValue"/> object to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <see cref="T:OpenConstructionSet.Data.FileValue"/> object to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Data.Vector3)">
+            <summary>
+            Write a <see cref="T:OpenConstructionSet.Data.Vector3"/> object to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <see cref="T:OpenConstructionSet.Data.Vector3"/> object to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(OpenConstructionSet.Data.Vector4,System.Boolean)">
+            <summary>
+            Write a <see cref="T:OpenConstructionSet.Data.Vector4"/> object to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <see cref="T:OpenConstructionSet.Data.Vector4"/> object to write to <c>Stream</c>.</param>
+            <param name="wFirst">
+            If <c>true</c> the W value will be written first. Otherwise it will be written last.
+            </param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(System.Boolean)">
+            <summary>
+            Write a <c>bool</c> to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <c>bool</c> to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(System.Single)">
+            <summary>
+            Write a <c>float</c> to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <c>float</c> to write to <c>Stream</c>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.IO.OcsWriter.Write(System.Int32)">
+            <summary>
+            Write an <c>int</c> to the <c>Stream</c>.
+            </summary>
+            <param name="value">The <c>int</c> to write to <c>Stream</c>.</param>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.Context.IModContext">
+            <summary>
+            An FCS like context that allows the loading of multiple mod's for editing.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.IModContext.Header">
+            <summary>
+            The header to use for this mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.IModContext.Info">
+            <summary>
+            The optional data for the mod's .info file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.IModContext.Items">
+            <summary>
+            Editable collection of items.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.IModContext.LastId">
+            <summary>
+            The last ID used to generate a new <see cref="P:OpenConstructionSet.Data.IItem.StringId"/>
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.IModContext.ModName">
+            <summary>
+            The name of the mod to be saved to.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.IModContext.NewItem(OpenConstructionSet.Data.ItemType,System.String)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModItem"/>.
+            Generates the <see cref="P:OpenConstructionSet.Data.IItem.StringId"/> and increases <see cref="P:OpenConstructionSet.Mods.Context.IModContext.LastId"/> value.
+            </summary>
+            <param name="type"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.IModContext.SaveAsync">
+            <summary>
+            Saves to the Mods folder with using <see cref="P:OpenConstructionSet.Mods.Context.IModContext.ModName"/> as the name.
+            </summary>
+            <returns>An awaitable task.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.IModContext.SaveAsync(OpenConstructionSet.Installations.IModFolder,System.String)">
+            <summary>
+            Saves to the given <see cref="T:OpenConstructionSet.Installations.IModFolder"/> with the given name.
+            </summary>
+            <param name="folder">The folder to save to.</param>
+            <param name="modName">The mod name to use e.g. example or example.mod</param>
+            <returns>An awaitable taks.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.IModContext.SaveAsync(System.String)">
+            <summary>
+            Saves to the given full path.
+            e.g. \path\to\mod\example.mod
+            </summary>
+            <param name="path">The full path to save the mod to.</param>
+            <returns>An awaitable task.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.Context.ModContext">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModContext.#ctor(System.Collections.Generic.Dictionary{System.String,OpenConstructionSet.Mods.ModItem},System.Collections.Generic.IEnumerable{OpenConstructionSet.Mods.ModItem},OpenConstructionSet.Installations.IInstallation,System.String,System.Int32,OpenConstructionSet.Data.Header,OpenConstructionSet.Mods.ModInfoData)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.Context.ModContext"/> from the provided data.
+            </summary>
+            <param name="baseItems">Collection of item's loaded as base data. Used to compare for changes when saving.</param>
+            <param name="activeItems">Collection of item's loaded as active data. Used for editing the mod.</param>
+            <param name="installation">The installation to use when saving.</param>
+            <param name="modName">The name of the mod when saving.</param>
+            <param name="lastId">The last ID used when generating an <see cref="P:OpenConstructionSet.Data.IItem.StringId"/>.</param>
+            <param name="header">The header to use for the mod.</param>
+            <param name="info">Optional data for the mod's .info file.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContext.Header">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContext.Info">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContext.Items">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContext.LastId">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContext.ModName">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModContext.NewItem(OpenConstructionSet.Data.ItemType,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModContext.SaveAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModContext.SaveAsync(OpenConstructionSet.Installations.IModFolder,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModContext.SaveAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.Context.ModContextOptions">
+            <summary>
+            Options used to build a mod context.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModContextOptions.#ctor(System.String,OpenConstructionSet.Installations.IInstallation,System.Boolean,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},OpenConstructionSet.Data.Header,OpenConstructionSet.Mods.ModInfoData,OpenConstructionSet.Mods.ModLoadType,OpenConstructionSet.Mods.ModLoadType)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.Context.ModContextOptions"/> from the provided values.
+            </summary>
+            <param name="name">The name of the active mod.</param>
+            <param name="installation">The installation to work against.</param>
+            <param name="throwIfMissing">If <c>true</c> the process will error when files are missing.</param>
+            <param name="activeMods">Optional collection of mod names, filenames or paths to load into the active mod.</param>
+            <param name="baseMods">Optional collection of mod names, filenames or paths to load as base data.</param>
+            <param name="header">Optional header to use for the active mod.</param>
+            <param name="info">Optional .info file data to use for the active mod.</param>
+            <param name="loadEnabledMods">Determines if/how the enabled mods will be loaded.</param>
+            <param name="loadGameFiles">Determines if/how the game's base data files will be loaded.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContextOptions.ActiveMods">
+            <summary>
+            A collection of mod names, filenames or paths to load into the active mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContextOptions.BaseMods">
+            <summary>
+            A collection of mod names, filenames or paths to load as base data.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContextOptions.Header">
+            <summary>
+            The header to use for the active mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContextOptions.Info">
+            <summary>
+            The .info file data to use for the active mod.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContextOptions.Installation">
+            <summary>
+            The installation to work against.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContextOptions.LoadEnabledMods">
+            <summary>
+            Determines if/how the enabled mods will be loaded.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContextOptions.LoadGameFiles">
+            <summary>
+            Determines if/how the game's base data files will be loaded.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContextOptions.Name">
+            <summary>
+            The name of the active mod e.g. example or example.mod
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.Context.ModContextOptions.ThrowIfMissing">
+            <summary>
+            If set to <c>true</c> missing mods will cause an exception to be thrown.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.Context.ModInstanceCollection">
+            <summary>
+            Collection to manage <see cref="T:OpenConstructionSet.Mods.ModInstance"/>s.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModInstanceCollection.Add(OpenConstructionSet.Mods.ModInstance)">
+            <summary>
+            Adds the provided <see cref="T:OpenConstructionSet.Mods.ModInstance"/> to the collection.
+            </summary>
+            <param name="item">The <see cref="T:OpenConstructionSet.Mods.ModInstance"/> to add.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModInstanceCollection.Add(System.String,System.String,OpenConstructionSet.Data.Vector3,OpenConstructionSet.Data.Vector4,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Adds a new <see cref="T:OpenConstructionSet.Mods.ModInstance"/> to the collection with the provided values.
+            </summary>
+            <param name="id">Unique identifier.</param>
+            <param name="targetId">The <see cref="P:OpenConstructionSet.Data.IItem.StringId"/> of the target.</param>
+            <param name="position">The position.</param>
+            <param name="rotation">The rotation.</param>
+            <param name="states">Attached states.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModInstanceCollection.Add(System.String,OpenConstructionSet.Data.IItem,OpenConstructionSet.Data.Vector3,OpenConstructionSet.Data.Vector4,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Adds a new <see cref="T:OpenConstructionSet.Mods.ModInstance"/> to the collection with the provided values.
+            </summary>
+            <param name="id">Unique identifier.</param>
+            <param name="target">The <see cref="T:OpenConstructionSet.Data.IItem"/> to target.</param>
+            <param name="position">The position.</param>
+            <param name="rotation">The rotation.</param>
+            <param name="states">Attached states.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModInstanceCollection.AddFrom(OpenConstructionSet.Data.IInstance)">
+            <summary>
+            Adds a new <see cref="T:OpenConstructionSet.Mods.ModInstance"/> based on the provided <see cref="T:OpenConstructionSet.Data.IInstance"/>.
+            If the <see cref="T:OpenConstructionSet.Data.IInstance"/> is a <see cref="T:OpenConstructionSet.Mods.ModInstance"/> it will be added without recreation.
+            </summary>
+            <param name="instance">The <see cref="T:OpenConstructionSet.Data.IInstance"/> to add.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModInstanceCollection.GetChanges(OpenConstructionSet.Mods.Context.ModInstanceCollection)">
+            <summary>
+            Compares this collection with another returning any changes.
+            </summary>
+            <param name="baseInstances">Collection to comapre to this one.</param>
+            <returns>A collection containing the added or modified <see cref="T:OpenConstructionSet.Data.Instance"/>s.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.Context.ModItemCollection">
+            <summary>
+            Collection to manage <see cref="T:OpenConstructionSet.Mods.ModItem"/>s.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModItemCollection.Add(OpenConstructionSet.Mods.ModItem)">
+            <summary>
+            Adds the provided <see cref="T:OpenConstructionSet.Mods.ModItem"/> to the collection.
+            </summary>
+            <param name="item">The <see cref="T:OpenConstructionSet.Mods.ModItem"/> to add.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModItemCollection.AddFrom(OpenConstructionSet.Data.IItem)">
+            <summary>
+            Adds a new <see cref="T:OpenConstructionSet.Mods.ModItem"/> based on the provided <see cref="T:OpenConstructionSet.Data.IItem"/>.
+            If the <see cref="T:OpenConstructionSet.Data.IItem"/> is a <see cref="T:OpenConstructionSet.Mods.ModItem"/> it will be added without recreation.
+            </summary>
+            <param name="reference">The <see cref="T:OpenConstructionSet.Data.IReference"/> to add.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModItemCollection.GetChanges(System.Collections.Generic.IDictionary{System.String,OpenConstructionSet.Mods.ModItem})">
+            <summary>
+            Compares this collection with another returning any changes.
+            </summary>
+            <param name="baseItems">Collection to comapre to this one.</param>
+            <returns>A collection containing the added or modified <see cref="T:OpenConstructionSet.Data.Item"/>s.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.Context.ModReferenceCategoryCollection">
+            <summary>
+            Collection to manage <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> objects.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCategoryCollection.Add(OpenConstructionSet.Mods.ModReferenceCategory)">
+            <summary>
+            Adds the provided <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> to the collection.
+            </summary>
+            <param name="item">The <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> to add.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCategoryCollection.Add(System.String)">
+            <summary>
+            Adds a new <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> to the collection with the provided name.
+            </summary>
+            <param name="name">Unique name.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCategoryCollection.AddFrom(OpenConstructionSet.Data.IReferenceCategory)">
+            <summary>
+            Adds a new <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> based on the provided <see cref="T:OpenConstructionSet.Data.IReferenceCategory"/>.
+            If the <see cref="T:OpenConstructionSet.Data.IReferenceCategory"/> is a <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> it will be added without recreation.
+            </summary>
+            <param name="category">The <see cref="T:OpenConstructionSet.Data.IReferenceCategory"/> to add.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCategoryCollection.GetChanges(OpenConstructionSet.Mods.Context.ModReferenceCategoryCollection)">
+            <summary>
+            Compares this collection with another returning any changes.
+            </summary>
+            <param name="baseCategories">Collection to comapre to this one.</param>
+            <returns>A collection containing the added or modified <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/>s.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.Context.ModReferenceCollection">
+            <summary>
+            Collection to manage <see cref="T:OpenConstructionSet.Mods.ModReference"/>s.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCollection.Add(OpenConstructionSet.Mods.ModReference)">
+            <summary>
+            Adds the provided <see cref="T:OpenConstructionSet.Mods.ModReference"/> to the collection.
+            </summary>
+            <param name="item">The <see cref="T:OpenConstructionSet.Mods.ModReference"/> to add.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCollection.Add(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Adds a new <see cref="T:OpenConstructionSet.Mods.ModReference"/> to the collection with the provided values.
+            </summary>
+            <param name="targetId">The <see cref="P:OpenConstructionSet.Data.IItem.StringId"/> of the target.</param>
+            <param name="value0">The first value.</param>
+            <param name="value1">The second value.</param>
+            <param name="value2">The third value.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCollection.Add(OpenConstructionSet.Data.IItem,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Adds a new <see cref="T:OpenConstructionSet.Mods.ModReference"/> to the collection with the provided values.
+            </summary>
+            <param name="target">The <see cref="T:OpenConstructionSet.Data.IItem"/> to target.</param>
+            <param name="value0">The first value.</param>
+            <param name="value1">The second value.</param>
+            <param name="value2">The third value.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCollection.AddFrom(OpenConstructionSet.Data.IReference)">
+            <summary>
+            Adds a new <see cref="T:OpenConstructionSet.Mods.ModReference"/> based on the provided <see cref="T:OpenConstructionSet.Data.IReference"/>.
+            If the <see cref="T:OpenConstructionSet.Data.IReference"/> is a <see cref="T:OpenConstructionSet.Mods.ModReference"/> it will be added without recreation.
+            </summary>
+            <param name="reference">The <see cref="T:OpenConstructionSet.Data.IReference"/> to add.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCollection.GetChanges(OpenConstructionSet.Mods.Context.ModReferenceCollection)">
+            <summary>
+            Compares this collection with another returning any changes.
+            </summary>
+            <param name="baseReferences">Collection to comapre to this one.</param>
+            <returns>A collection containing the added or modified <see cref="T:OpenConstructionSet.Data.Reference"/>s.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.Context.ModReferenceCollection.TryGetChanges(OpenConstructionSet.Mods.Context.ModReferenceCollection,System.Collections.Generic.List{OpenConstructionSet.Data.Reference}@)">
+            <summary>
+            Compares this collection with another returning any changes.
+            </summary>
+            <param name="baseReferences">Collection to comapre to this one.</param>
+            <param name="changes">A collection containing the added or modified <see cref="T:OpenConstructionSet.Data.Reference"/>s.</param>
+            <returns><c>true</c> if there are any changes; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.IModFile">
+            <summary>
+            Represents a mod file.
+            Provides methods for reading and writing the various asociated files and data.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.IModFile.Filename">
+            <summary>
+            The filename of the mod file.
+            e.g. example.mod
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.IModFile.Name">
+            <summary>
+            The name of the mod file.
+            e.g. example
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.IModFile.Path">
+            <summary>
+            The path of the mod file.
+            e.g. \path\to\the\mod\example.mod
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.IModFile.ReadDataAsync(System.Threading.CancellationToken)">
+            <summary>
+            Reads the data of this <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>The data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.IModFile.ReadHeaderAsync(System.Threading.CancellationToken)">
+            <summary>
+            Reads the <see cref="T:OpenConstructionSet.Data.Header"/> of this <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>The <see cref="T:OpenConstructionSet.Data.Header"/> contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.IModFile.ReadInfoAsync(System.Threading.CancellationToken)">
+            <summary>
+            Reads the .info file of this <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>The data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.IModFile.WriteDataAsync(OpenConstructionSet.Mods.ModFileData,System.Threading.CancellationToken)">
+            <summary>
+            Writes the provided data to the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+            <param name="data">The data to write to the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>An awaitable <c>Task</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.IModFile.WriteHeaderAsync(OpenConstructionSet.Data.Header,System.Threading.CancellationToken)">
+            <summary>
+            Writes the provided header to the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+            <param name="header">The <see cref="T:OpenConstructionSet.Data.Header"/> to write to the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>An awaitable <c>Task</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.IModFile.WriteInfoAsync(OpenConstructionSet.Mods.ModInfoData,System.Threading.CancellationToken)">
+            <summary>
+            Writes the provided info to the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.
+            </summary>
+            <param name="info">The <see cref="T:OpenConstructionSet.Mods.ModInfoData"/> to write to the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
+            <param name="cancellationToken">Token used to cancel the operation.</param>
+            <returns>An awaitable <c>Task</c>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.ModFile">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFile.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModFile"/> instance from the provided path.
+            </summary>
+            <param name="path">The full path of the <see cref="T:OpenConstructionSet.Mods.ModFile"/>.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModFile.Filename">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModFile.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModFile.Path">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFile.ReadDataAsync(System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFile.ReadHeaderAsync(System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFile.ReadInfoAsync(System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFile.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFile.WriteDataAsync(OpenConstructionSet.Mods.ModFileData,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFile.WriteHeaderAsync(OpenConstructionSet.Data.Header,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFile.WriteInfoAsync(OpenConstructionSet.Mods.ModInfoData,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.ModFileData">
+            <summary>
+            Represents the data stored within a <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+            <param name="Header">The <see cref="P:OpenConstructionSet.Mods.ModFileData.Header"/> of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
+            <param name="LastId">The last Id used to generate a new <see cref="T:OpenConstructionSet.Data.IItem"/>.</param>
+            <param name="Items">The collection of <see cref="T:OpenConstructionSet.Data.Item"/>s of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
+            <param name="Info">Optional data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFileData.#ctor(OpenConstructionSet.Data.Header,System.Int32,System.Collections.Generic.List{OpenConstructionSet.Data.Item},OpenConstructionSet.Mods.ModInfoData)">
+            <summary>
+            Represents the data stored within a <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+            <param name="Header">The <see cref="P:OpenConstructionSet.Mods.ModFileData.Header"/> of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
+            <param name="LastId">The last Id used to generate a new <see cref="T:OpenConstructionSet.Data.IItem"/>.</param>
+            <param name="Items">The collection of <see cref="T:OpenConstructionSet.Data.Item"/>s of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
+            <param name="Info">Optional data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModFileData.#ctor(OpenConstructionSet.Data.Header,System.Int32,System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.Item},OpenConstructionSet.Mods.ModInfoData)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModFileData"/>.
+            </summary>
+            <param name="header">The mod's header.</param>
+            <param name="lastId">The last ID number used when creating new items.</param>
+            <param name="items">The collection of <see cref="T:OpenConstructionSet.Data.Item"/>s of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.</param>
+            <param name="info">Optional data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModFileData.Header">
+            <summary>
+            The <see cref="P:OpenConstructionSet.Mods.ModFileData.Header"/> of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModFileData.LastId">
+            <summary>
+            The last Id used to generate a new <see cref="T:OpenConstructionSet.Data.IItem"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModFileData.Items">
+            <summary>
+            The collection of <see cref="T:OpenConstructionSet.Data.Item"/>s of the <see cref="T:OpenConstructionSet.Mods.IModFile"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModFileData.Info">
+            <summary>
+            Optional data contained within the <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.ModInfoData">
+            <summary>
+            Represents the data stored within an <see cref="T:OpenConstructionSet.Mods.IModFile"/>'s .info file.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInfoData.#ctor">
+            <summary>
+            Creates an empty <see cref="T:OpenConstructionSet.Mods.ModInfoData"/> instance.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInfoData.#ctor(System.UInt32,System.String,System.String,System.String[],System.Byte,System.Nullable{System.DateTime})">
+            <summary>
+            Creates a <see cref="T:OpenConstructionSet.Mods.ModInfoData"/> based on the provided data.
+            </summary>
+            <param name="id">Mod's Id.</param>
+            <param name="mod">Mod's name.</param>
+            <param name="title">Mod's title.</param>
+            <param name="tags">Mod's tags. See <see cref="F:OpenConstructionSet.OcsConstants.InfoTags"/> for valid values.</param>
+            <param name="visibility">Mod's visibility.</param>
+            <param name="lastUpdate">Date/time of the mod's last update.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInfoData.Id">
+            <summary>
+            Mod's Id.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInfoData.LastUpdate">
+            <summary>
+            Date/time of the mod's laste update.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInfoData.ModName">
+            <summary>
+            Mod's name.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInfoData.Tags">
+            <summary>
+            Mod's tags. See <see cref="F:OpenConstructionSet.OcsConstants.InfoTags"/> for valid values.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInfoData.Title">
+            <summary>
+            Mod's title.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInfoData.Visibility">
+            <summary>
+            Mod's visibility.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.ModInstance">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInstance.#ctor(OpenConstructionSet.Data.IInstance)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModInstance"/> from another.
+            </summary>
+            <param name="instance">The <see cref="T:OpenConstructionSet.Data.IInstance"/> to copy.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInstance.#ctor(System.String,System.String,OpenConstructionSet.Data.Vector3,OpenConstructionSet.Data.Vector4,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModInstance"/> from the provided data.
+            </summary>
+            <param name="id">The identifier for the <see cref="T:OpenConstructionSet.Mods.ModInstance"/>.</param>
+            <param name="targetId">The <see cref="P:OpenConstructionSet.Data.IItem.StringId"/> of the targeted <see cref="T:OpenConstructionSet.Data.IItem"/>.</param>
+            <param name="position">The <see cref="T:OpenConstructionSet.Mods.ModInstance"/>'s position.</param>
+            <param name="rotation">The <see cref="T:OpenConstructionSet.Mods.ModInstance"/>'s rotation.</param>
+            <param name="states">A collection of states for the <see cref="T:OpenConstructionSet.Mods.ModInstance"/>.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInstance.Id">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInstance.Key">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInstance.Position">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInstance.Rotation">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInstance.States">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInstance.Target">
+            <summary>
+            The target of this <see cref="T:OpenConstructionSet.Mods.ModInstance"/>.
+            Attempts to retrieve the <see cref="T:OpenConstructionSet.Mods.ModInstance"/> from the parent <see cref="T:OpenConstructionSet.Mods.Context.IModContext"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModInstance.TargetId">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInstance.op_Inequality(OpenConstructionSet.Mods.ModInstance,OpenConstructionSet.Mods.ModInstance)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Mods.ModInstance"/>s are not equal.
+            </summary>
+            <param name="left">First Instance.</param>
+            <param name="right">Second instance.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Mods.ModInstance"/>s are not equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInstance.op_Equality(OpenConstructionSet.Mods.ModInstance,OpenConstructionSet.Mods.ModInstance)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Mods.ModInstance"/>s are equal.
+            </summary>
+            <param name="left">First Instance.</param>
+            <param name="right">Second instance.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Mods.ModInstance"/>s are equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInstance.AsDeleted">
+            <summary>
+            Returns an <see cref="T:OpenConstructionSet.Data.Instance"/> that represents this marked as deleted.
+            </summary>
+            <returns>An <see cref="T:OpenConstructionSet.Data.Instance"/> that represents this marked as deleted.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInstance.DeepClone">
+            <summary>
+            Performs a deep clone of this object.
+            </summary>
+            <returns>A deep clone of this object.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInstance.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInstance.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModInstance.IsDeleted">
+            <summary>
+            Determines if this <see cref="T:OpenConstructionSet.Mods.ModInstance"/> is marked as deleted.
+            </summary>
+            <returns><c>true</c> if this <see cref="T:OpenConstructionSet.Mods.ModInstance"/> is deleted; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.ModItem">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModItem.#ctor(OpenConstructionSet.Data.IItem)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModItem"/> from another.
+            </summary>
+            <param name="item">The <see cref="T:OpenConstructionSet.Mods.ModItem"/> to copy.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModItem.#ctor(OpenConstructionSet.Data.ItemType,System.String,System.String)">
+             <summary>
+             Creates a new <see cref="T:OpenConstructionSet.Mods.ModItem"/> from the provided data.
+             </summary>
+             <param name="type">The <see cref="T:OpenConstructionSet.Data.ItemType"/> for this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.</param>
+             <param name="name">The name of this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.</param>
+             <param name="stringId">The unique string identifier of this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.</param>
+            
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModItem.#ctor(OpenConstructionSet.Data.ItemType,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.IReferenceCategory},System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.IInstance})">
+             <summary>
+             Creates a new <see cref="T:OpenConstructionSet.Mods.ModItem"/> from the provided data.
+             </summary>
+             <param name="type">The <see cref="T:OpenConstructionSet.Data.ItemType"/> for this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.</param>
+             <param name="name">The name of this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.</param>
+             <param name="stringId">The unique string identifier of this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.</param>
+             <param name="values">Dictionary of values stored by this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.</param>
+             <param name="referenceCategories">
+             Collection of <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> instances stored by this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.
+             </param>
+             <param name="instances">Collection of <see cref="T:OpenConstructionSet.Data.Instance"/> s stored by this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.</param>
+            
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModItem.Instances">
+            <summary>
+            Collection of <see cref="T:OpenConstructionSet.Data.Instance"/> s stored by this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModItem.Key">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModItem.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModItem.ReferenceCategories">
+            <summary>
+            Collection of <see cref="T:OpenConstructionSet.Data.ReferenceCategory"/> instances stored by this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModItem.StringId">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModItem.Type">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModItem.Values">
+            <summary>
+            Dictionary of values stored by this <see cref="T:OpenConstructionSet.Mods.ModItem"/>.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModItem.AsDeleted">
+            <summary>
+            Returns an <see cref="T:OpenConstructionSet.Data.Item"/> that represents this marked as deleted.
+            </summary>
+            <returns>An <see cref="T:OpenConstructionSet.Data.Item"/> that represents this marked as deleted.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModItem.DeepClone">
+            <summary>
+            Performs a deep clone of this object.
+            </summary>
+            <returns>A deep clone of this object.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModItem.IsDeleted">
+            <summary>
+            Determines if this <see cref="T:OpenConstructionSet.Mods.ModItem"/> is marked as deleted.
+            </summary>
+            <returns><c>true</c> if this <see cref="T:OpenConstructionSet.Mods.ModItem"/> is deleted; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModItem.TryGetChanges(OpenConstructionSet.Mods.ModItem,OpenConstructionSet.Data.Item@)">
+            <summary>
+            Attempts to get an <see cref="T:OpenConstructionSet.Data.Item"/> representing the changes between this and the provided <c>baseItem</c>.
+            </summary>
+            <param name="baseItem">Base item to compare to.</param>
+            <param name="changes">If successful will contain the changes.</param>
+            <returns><c>true</c> if there are changes; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.ModLoadType">
+            <summary>
+            Used to specify how a mod should be loaded.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Mods.ModLoadType.None">
+            <summary>
+            Do not load. Default value.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Mods.ModLoadType.Base">
+            <summary>
+            Load as base data.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.Mods.ModLoadType.Active">
+            <summary>
+            Load as part of the active mod.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.ModReference">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReference.#ctor(OpenConstructionSet.Data.IReference)">
+            <summary>
+            Creates a <see cref="T:OpenConstructionSet.Mods.ModReference"/> from another.
+            </summary>
+            <param name="reference">The <see cref="T:OpenConstructionSet.Data.IReference"/> to copy.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReference.#ctor(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModReference"/> from the provided values.
+            </summary>
+            <param name="targetId">The <see cref="P:OpenConstructionSet.Data.Item.StringId"/> of the target <see cref="T:OpenConstructionSet.Data.Item"/>.</param>
+            <param name="value0">The first value.</param>
+            <param name="value1">The second value.</param>
+            <param name="value2">The third value.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModReference.Key">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModReference.Target">
+            <summary>
+            The target of this <see cref="T:OpenConstructionSet.Mods.ModReference"/>.
+            Attempts to retrieve the <see cref="T:OpenConstructionSet.Mods.ModReference"/> from the parent <see cref="T:OpenConstructionSet.Mods.Context.IModContext"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModReference.TargetId">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModReference.Value0">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModReference.Value1">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModReference.Value2">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReference.op_Inequality(OpenConstructionSet.Mods.ModReference,OpenConstructionSet.Mods.ModReference)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Mods.ModReference"/>s are not equal.
+            </summary>
+            <param name="left">First Instance.</param>
+            <param name="right">Second instance.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Mods.ModReference"/>s are not equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReference.op_Equality(OpenConstructionSet.Mods.ModReference,OpenConstructionSet.Mods.ModReference)">
+            <summary>
+            Determines if the two <see cref="T:OpenConstructionSet.Mods.ModReference"/>s are equal.
+            </summary>
+            <param name="left">First Instance.</param>
+            <param name="right">Second instance.</param>
+            <returns><c>true</c> if the two <see cref="T:OpenConstructionSet.Mods.ModReference"/>s are equal; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReference.AsDeleted">
+            <summary>
+            Returns an <see cref="T:OpenConstructionSet.Data.Reference"/> that represents this marked as deleted.
+            </summary>
+            <returns>An <see cref="T:OpenConstructionSet.Data.Reference"/> that represents this marked as deleted.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReference.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReference.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReference.IsDeleted">
+            <summary>
+            Determines if this <see cref="T:OpenConstructionSet.Mods.ModReference"/> is marked as deleted.
+            </summary>
+            <returns><c>true</c> if this <see cref="T:OpenConstructionSet.Mods.ModReference"/> is deleted; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Mods.ModReferenceCategory">
+            <summary>
+            Represents a <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> from the game's data. Stores a collection of
+            related references.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReferenceCategory.#ctor(OpenConstructionSet.Data.IReferenceCategory)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> from another.
+            </summary>
+            <param name="category">The <see cref="T:OpenConstructionSet.Data.IReferenceCategory"/> to copy.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReferenceCategory.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> with the given name.
+            </summary>
+            <param name="name">The name of the <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/>.</param>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReferenceCategory.#ctor(System.String,System.Collections.Generic.IEnumerable{OpenConstructionSet.Data.IReference})">
+            <summary>
+            Creates a new <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/> with the given name and contained <see
+            cref="T:OpenConstructionSet.Data.Reference"/> s. The <see cref="T:OpenConstructionSet.Data.Reference"/> s will be recreated using the copy constructor.
+            </summary>
+            <param name="name">The name of the <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/>.</param>
+            <param name="collection">A collection of <see cref="T:OpenConstructionSet.Data.Reference"/> s to add to the <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/>.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModReferenceCategory.Key">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModReferenceCategory.Name">
+            <summary>
+            The name of the <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Mods.ModReferenceCategory.References">
+            <summary>
+            A collection of references stored by this <see cref="T:OpenConstructionSet.Mods.ModReferenceCategory"/>
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReferenceCategory.DeepClone">
+            <summary>
+            Performs a deep clone of this object.
+            </summary>
+            <returns>A deep clone of this object.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReferenceCategory.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReferenceCategory.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Mods.ModReferenceCategory.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.OcsConstants">
+            <summary>
+            Useful constants for working with the OCS.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.OcsConstants.BaseMods">
+            <summary>
+            The names of the game's data and mod files.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.OcsConstants.DefaultSaveFolder">
+            <summary>
+            The default location of the save folder.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.OcsConstants.EnabledModFile">
+            <summary>
+            The name of the file that stores the enabled mods and load order.
+            </summary>
+        </member>
+        <member name="F:OpenConstructionSet.OcsConstants.InfoTags">
+            <summary>
+            The valid tags for a mod's info file.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Saves.IPlatoonFile">
+            <summary>
+            Represents a .platoon file from a <see cref="T:OpenConstructionSet.Saves.ISave"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.IPlatoonFile.Faction">
+            <summary>
+            The faction this platoon belongs to.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.IPlatoonFile.Id">
+            <summary>
+            The Id of this platoon.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Saves.ISave">
+            <summary>
+            Represents an individual save folder.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.ISave.Path">
+            <summary>
+            Path of the <see cref="T:OpenConstructionSet.Saves.ISave"/>'s root folder.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.ISave.PlatoonFolder">
+            <summary>
+            Path of the <see cref="T:OpenConstructionSet.Saves.ISave"/>'s platoon folder.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.ISave.PortraitsTexture">
+            <summary>
+            Path of the <see cref="T:OpenConstructionSet.Saves.ISave"/>'s portrait image file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.ISave.SaveFile">
+            <summary>
+            Representation of the <see cref="T:OpenConstructionSet.Saves.ISave"/>'s quick.save file.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.ISave.ZoneFolder">
+            <summary>
+            Path of the <see cref="T:OpenConstructionSet.Saves.ISave"/>'s zone folder.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.ISave.GetPlatoonFiles">
+            <summary>
+            Get's all <see cref="T:OpenConstructionSet.Saves.IPlatoonFile"/>s in the <see cref="P:OpenConstructionSet.Saves.ISave.PlatoonFolder"/>.
+            </summary>
+            <returns>A collection of <see cref="T:OpenConstructionSet.Saves.IPlatoonFile"/>s contained in this <see cref="T:OpenConstructionSet.Saves.ISave"/>.</returns>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.ISave.GetZoneFiles">
+            <summary>
+            Get's all <see cref="T:OpenConstructionSet.Saves.IZoneFile"/>s in the <see cref="P:OpenConstructionSet.Saves.ISave.ZoneFolder"/>.
+            </summary>
+            <returns>A collection of <see cref="T:OpenConstructionSet.Saves.IZoneFile"/>s contained in this <see cref="T:OpenConstructionSet.Saves.ISave"/>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Saves.ISaveFolder">
+            <summary>
+            Represents a folder that contains the folder's of <see cref="T:OpenConstructionSet.Saves.ISave"/>s.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.ISaveFolder.Path">
+            <summary>
+            The path to the <see cref="T:OpenConstructionSet.Saves.ISaveFolder"/>.
+            </summary>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.ISaveFolder.GetSaves">
+            <summary>
+            Get's all <see cref="T:OpenConstructionSet.Saves.ISave"/>s contained in this <see cref="T:OpenConstructionSet.Saves.ISaveFolder"/>.
+            </summary>
+            <returns>A collection of <see cref="T:OpenConstructionSet.Saves.ISave"/>s contained in this <see cref="T:OpenConstructionSet.Saves.ISaveFolder"/>.</returns>
+        </member>
+        <member name="T:OpenConstructionSet.Saves.IZoneFile">
+            <summary>
+            Represents a .zone file from a <see cref="T:OpenConstructionSet.Saves.ISave"/>.
+            </summary>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.IZoneFile.Id">
+            <summary>
+            The unique Id of this <see cref="T:OpenConstructionSet.Saves.IZoneFile"/>.
+            </summary>
+        </member>
+        <member name="T:OpenConstructionSet.Saves.PlatoonFile">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.PlatoonFile.#ctor(System.String)">
+            <summary>
+            Creats a new <see cref="T:OpenConstructionSet.Saves.PlatoonFile"/> instance from the given path.
+            </summary>
+            <param name="path">The path of the <see cref="T:OpenConstructionSet.Saves.PlatoonFile"/>.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.PlatoonFile.Faction">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.PlatoonFile.Id">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.PlatoonFile.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Saves.Save">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.Save.#ctor(System.String)">
+            <summary>
+            Creats a new <see cref="T:OpenConstructionSet.Saves.Save"/> instance from the given path.
+            </summary>
+            <param name="path">The path of the <see cref="T:OpenConstructionSet.Saves.Save"/>'s root folder.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.Save.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.Save.Path">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.Save.PlatoonFolder">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.Save.PortraitsTexture">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.Save.SaveFile">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.Save.ZoneFolder">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.Save.GetPlatoonFiles">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.Save.GetZoneFiles">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.Save.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Saves.SaveFolder">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.SaveFolder.#ctor(System.String)">
+            <summary>
+            Creats a new <see cref="T:OpenConstructionSet.Saves.SaveFolder"/> instance from the given path.
+            </summary>
+            <param name="path">The path of the <see cref="T:OpenConstructionSet.Saves.SaveFolder"/>.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.SaveFolder.Path">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.SaveFolder.GetSaves">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.SaveFolder.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenConstructionSet.Saves.ZoneFile">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.ZoneFile.#ctor(System.String)">
+            <summary>
+            Creats a new <see cref="T:OpenConstructionSet.Saves.ZoneFile"/> instance from the given path.
+            </summary>
+            <param name="path">The path of the <see cref="T:OpenConstructionSet.Saves.ZoneFile"/>.</param>
+        </member>
+        <member name="P:OpenConstructionSet.Saves.ZoneFile.Id">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenConstructionSet.Saves.ZoneFile.ToString">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>
