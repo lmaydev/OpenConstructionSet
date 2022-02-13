@@ -1,12 +1,13 @@
-﻿using LMay.Collections;
+﻿namespace OpenConstructionSet.Mods.Context;
 
-namespace OpenConstructionSet.Mods.Context;
-
+/// <summary>
+/// Collection to manage <see cref="ModReferenceCategory"/> objects.
+/// </summary>
 public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, ModReferenceCategory>
 {
     private readonly ModItem parent;
 
-    public ModReferenceCategoryCollection(ModItem parent, IEnumerable<IReferenceCategory> collection) : this(parent)
+    internal ModReferenceCategoryCollection(ModItem parent, IEnumerable<IReferenceCategory> collection) : this(parent)
     {
         foreach (var item in collection)
         {
@@ -21,16 +22,34 @@ public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, 
 
     internal ModContext? Owner => parent.Owner;
 
+    /// <summary>
+    /// Adds the provided <see cref="ModReferenceCategory"/> to the collection.
+    /// </summary>
+    /// <param name="item">The <see cref="ModReferenceCategory"/> to add.</param>
     public override void Add(ModReferenceCategory item)
     {
         item.SetParent(this);
         base.Add(item);
     }
 
+    /// <summary>
+    /// Adds a new <see cref="ModReferenceCategory"/> to the collection with the provided name.
+    /// </summary>
+    /// <param name="name">Unique name.</param>
     public void Add(string name) => Add(new ModReferenceCategory(name));
 
+    /// <summary>
+    /// Adds a new <see cref="ModReferenceCategory"/> based on the provided <see cref="IReferenceCategory"/>.
+    /// If the <see cref="IReferenceCategory"/> is a <see cref="ModReferenceCategory"/> it will be added without recreation.
+    /// </summary>
+    /// <param name="category">The <see cref="IReferenceCategory"/> to add.</param>
     public void AddFrom(IReferenceCategory category) => Add(category is ModReferenceCategory mrc ? mrc : new ModReferenceCategory(category));
 
+    /// <summary>
+    /// Compares this collection with another returning any changes.
+    /// </summary>
+    /// <param name="baseCategories">Collection to comapre to this one.</param>
+    /// <returns>A collection containing the added or modified <see cref="ReferenceCategory"/>s.</returns>
     public IEnumerable<ReferenceCategory> GetChanges(ModReferenceCategoryCollection baseCategories)
     {
         foreach (var category in this)

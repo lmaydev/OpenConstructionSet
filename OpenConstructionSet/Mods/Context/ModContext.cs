@@ -2,11 +2,22 @@
 
 namespace OpenConstructionSet.Mods.Context;
 
+/// <inheritdoc/>
 public class ModContext : IModContext
 {
     private readonly Dictionary<string, ModItem> baseItems;
     private readonly IInstallation installation;
 
+    /// <summary>
+    /// Creates a new <see cref="ModContext"/> from the provided data.
+    /// </summary>
+    /// <param name="baseItems">Collection of item's loaded as base data. Used to compare for changes when saving.</param>
+    /// <param name="activeItems">Collection of item's loaded as active data. Used for editing the mod.</param>
+    /// <param name="installation">The installation to use when saving.</param>
+    /// <param name="modName">The name of the mod when saving.</param>
+    /// <param name="lastId">The last ID used when generating an <see cref="IItem.StringId"/>.</param>
+    /// <param name="header">The header to use for the mod.</param>
+    /// <param name="info">Optional data for the mod's .info file.</param>
     public ModContext(Dictionary<string, ModItem> baseItems, IEnumerable<ModItem> activeItems, IInstallation installation, string modName, int lastId, Header? header = null, ModInfoData? info = null)
     {
         this.baseItems = baseItems;
@@ -20,19 +31,22 @@ public class ModContext : IModContext
         Info = info;
     }
 
+    /// <inheritdoc/>
     public Header Header { get; set; }
+
+    /// <inheritdoc/>
     public ModInfoData? Info { get; set; }
+
+    /// <inheritdoc/>
     public ModItemCollection Items { get; }
+
+    /// <inheritdoc/>
     public int LastId { get; set; }
+
+    /// <inheritdoc/>
     public string ModName { get; }
 
-    /// <summary>
-    /// Generates a new ID and creates an item with it.
-    /// LastId will be increased.
-    /// </summary>
-    /// <param name="type">The type of item to create.</param>
-    /// <param name="name">The name of the new item.</param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public virtual ModItem NewItem(ItemType type, string name)
     {
         LastId++;
@@ -46,10 +60,13 @@ public class ModContext : IModContext
         return item;
     }
 
+    /// <inheritdoc/>
     public virtual Task SaveAsync() => SaveAsync(installation.Mods.GetModPath(ModName));
 
+    /// <inheritdoc/>
     public virtual Task SaveAsync(IModFolder folder, string modName) => SaveAsync(folder.GetModPath(modName, Info?.Id ?? 0));
 
+    /// <inheritdoc/>
     public virtual async Task SaveAsync(string path)
     {
         var directory = Path.GetDirectoryName(path);

@@ -76,9 +76,12 @@ public class ModContextOptions
     public ModLoadType LoadGameFiles { get; set; }
 
     /// <summary>
-    /// The name of the active mod.
+    /// The name of the active mod e.g. example or example.mod
     /// </summary>
     public string Name { get; set; }
 
+    /// <summary>
+    /// If set to <c>true</c> missing mods will cause an exception to be thrown.
+    /// </summary>
     public bool ThrowIfMissing { get; set; }
 }
