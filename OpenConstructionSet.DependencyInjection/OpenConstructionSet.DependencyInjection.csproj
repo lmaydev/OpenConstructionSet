@@ -10,17 +10,14 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<Version>0</Version>
 		<Authors>lmaydev</Authors>
 		<Description>
-			Microsoft.Extensions.DependencyInjection implementation for the OpenConstructionSet.
-			
 			The OCS is a modding SDK for Kenshi (https://lofigames.com/) written in C#
 
 			It provides services for dealing with the various folders and data files used by the game.
@@ -28,7 +25,6 @@
 		</Description>
 		<PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
-		<RepositoryType>github</RepositoryType>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 	</PropertyGroup>
 

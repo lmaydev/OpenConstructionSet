@@ -6,19 +6,13 @@
     <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Configurations>Debug;Release;Docs</Configurations>
+    <Platforms>AnyCPU</Platforms>
     <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
-    <Platforms>AnyCPU;AnyCPU</Platforms>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Docs' ">
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>$(SolutionDir)/docs/OpenConstructionSet.xml</DocumentationFile>
+    <DocumentationFile>$(SolutionDir)/docs/api/OpenConstructionSet.xml</DocumentationFile>
     <DisableDefaultDocumentation>false</DisableDefaultDocumentation>
     <DefaultDocumentationFileNameMode>Md5</DefaultDocumentationFileNameMode>
     <DefaultDocumentationRemoveFileExtensionFromLinks>false</DefaultDocumentationRemoveFileExtensionFromLinks>
@@ -27,9 +21,12 @@
 
   <!--Nuget package properties-->
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>0</Version>
     <Authors>lmaydev</Authors>
     <Description>
       The OCS is a modding SDK for Kenshi (https://lofigames.com/) written in C#
@@ -39,16 +36,11 @@
     </Description>
     <PackageProjectUrl>https://github.com/lmaydev/OpenConstructionSet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/lmaydev/OpenConstructionSet</RepositoryUrl>
-    <RepositoryType>github</RepositoryType>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="DefaultDocumentation" Version="0.7.9">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="LMay.Collections" Version="3.0.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
   </ItemGroup>
@@ -70,5 +62,9 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 </Project>
