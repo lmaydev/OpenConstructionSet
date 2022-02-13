@@ -3,8 +3,10 @@ using OpenConstructionSet.Mods.Context;
 
 namespace OpenConstructionSet;
 
+/// <inheritdoc/>
 public class ContextBuilder : IContextBuilder
 {
+    /// <inheritdoc/>
     public async Task<IModContext> BuildAsync(ModContextOptions options)
     {
         var lastId = 0;

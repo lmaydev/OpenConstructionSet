@@ -14,7 +14,7 @@ public interface IInstallationService
     string[] SupportedLocators { get; }
 
     /// <summary>
-    /// Runs all supported <see cref="IInstallationLocator"/>s and returns any that are found.
+    /// Runs all supported <see cref="IInstallationLocator"/>s and returns any <see cref="IInstallation"/>s that are found.
     /// </summary>
     /// <returns>A collection of any <see cref="IInstallation"/>s that were found.</returns>
     IAsyncEnumerable<IInstallation> DiscoverAllInstallationsAsync();
