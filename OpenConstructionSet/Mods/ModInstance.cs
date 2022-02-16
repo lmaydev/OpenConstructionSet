@@ -97,25 +97,12 @@ public class ModInstance : IInstance, IKeyedItem<string>
                Id == instance.Id &&
                Position.Equals(instance.Position) &&
                Rotation.Equals(instance.Rotation) &&
-               EqualityComparer<List<string>>.Default.Equals(States, instance.States) &&
                TargetId == instance.TargetId &&
                States.SequenceEqual(instance.States);
     }
 
     /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        var hashCode = new HashCode();
-
-        hashCode.Add(Id);
-        hashCode.Add(Position);
-        hashCode.Add(Rotation);
-        hashCode.Add(States);
-        hashCode.Add(TargetId);
-        States.ForEach(s => hashCode.Add(s));
-
-        return hashCode.ToHashCode();
-    }
+    public override int GetHashCode() => Id.GetHashCode();
 
     /// <summary>
     /// Determines if this <see cref="ModInstance"/> is marked as deleted.
