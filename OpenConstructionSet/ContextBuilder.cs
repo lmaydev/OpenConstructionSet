@@ -146,6 +146,11 @@ public class ContextBuilder : IContextBuilder
 
                     items[stringId] = item;
                 }
+                else
+                {
+                    item.Type = type;
+                    item.Name = name;
+                }
 
                 var dictionaryCount = reader.ReadInt();
 
