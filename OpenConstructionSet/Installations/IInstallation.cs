@@ -9,8 +9,7 @@ namespace OpenConstructionSet.Installations;
 public interface IInstallation
 {
     /// <summary>
-    /// An Optional content <see cref="IModFolder"/>.
-    /// Currently used for the Steam Workshop folder.
+    /// An Optional content <see cref="IModFolder"/>. Currently used for the Steam Workshop folder.
     /// </summary>
     IModFolder? Content { get; }
 
@@ -40,28 +39,19 @@ public interface IInstallation
     string Path { get; }
 
     /// <summary>
-    /// Search all <see cref="IModFolder"/>s for mods.
-    /// Searches in the order Data, Mod, Content (if not null).
+    /// Search all <see cref="IModFolder"/> s for mods. Searches in the order Data, Mod, Content (if
+    /// not null).
     /// </summary>
-    /// <returns>A collection of <see cref="IModFile"/>s for the <see cref="IInstallation"/>.</returns>
+    /// <returns>A collection of <see cref="IModFile"/> s for the <see cref="IInstallation"/>.</returns>
     IEnumerable<IModFile> GetMods();
 
     /// <summary>
-    /// Reads the <see cref="EnabledModsFile"/> to get the currently enabled mod's filenames and their load order.
-    /// e.g. example.mod
+    /// Reads the <see cref="EnabledModsFile"/> to get the currently enabled mod's filenames and
+    /// their load order. e.g. example.mod
     /// </summary>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
     /// <returns>A collection of mod filenames for the currently enabled mods in load order.</returns>
     Task<string[]> ReadEnabledModsAsync(CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Attempts to find the named mod in all this <see cref="IInstallation"/>'s folders.
-    /// </summary>
-    /// <param name="modName">Name of the mod to find e.g. example or example.mod</param>
-    /// <param name="id">The ID from the mod's .info file. Only required for content folders.</param>
-    /// <param name="file">Will contain the located <see cref="IModFile"/> if found.</param>
-    /// <returns><c>true</c> if the mod could be found; otherwise, <c>false</c>.</returns>
-    bool TryFind(string modName, uint id, [MaybeNullWhen(false)] out IModFile file);
 
     /// <summary>
     /// Attempts to find the named mod in all this <see cref="IInstallation"/>'s folders.
@@ -72,11 +62,10 @@ public interface IInstallation
     bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file);
 
     /// <summary>
-    /// Writes the provided list of mod filename's to the <see cref="EnabledModsFile"/>.
-    /// e.g. example.mod
+    /// Writes the provided list of mod filename's to the <see cref="EnabledModsFile"/>. e.g. example.mod
     /// </summary>
-    /// <param name="enabledMods">Collection of m od filenames e.g. example.mod</param>
+    /// <param name="enabledMods">Collection of mod filenames e.g. example.mod</param>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
-    /// <returns>An awaitable <see cref="Task"/>.</returns>
+    /// <returns>An await-able <see cref="Task"/>.</returns>
     Task WriteEnabledModsAsync(IEnumerable<string> enabledMods, CancellationToken cancellationToken = default);
 }

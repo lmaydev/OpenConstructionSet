@@ -75,29 +75,7 @@ public class Installation : IInstallation
     public override string ToString() => $"{Identifier} ({Path})";
 
     /// <inheritdoc/>
-    public bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file) => TryFind(modName, 0, out file);
-
-    /// <inheritdoc/>
-    public bool TryFind(string modName, uint id, [MaybeNullWhen(false)] out IModFile file)
-    {
-        if (Data.TryFind(modName, id, out file))
-        {
-            return true;
-        }
-
-        if (Mods.TryFind(modName, id, out file))
-        {
-            return true;
-        }
-
-        if (Content?.TryFind(modName, id, out file) == true)
-        {
-            return true;
-        }
-
-        file = null;
-        return false;
-    }
+    public bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file) => Data.TryFind(modName, out file) || Mods.TryFind(modName, out file) || (Content?.TryFind(modName, out file) ?? false);
 
     /// <inheritdoc/>
     public virtual async Task WriteEnabledModsAsync(IEnumerable<string> enabledMods, CancellationToken cancellationToken = default)
