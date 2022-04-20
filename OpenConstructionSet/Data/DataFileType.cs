@@ -13,5 +13,10 @@ public enum DataFileType : int
     /// <summary>
     /// A mod file.
     /// </summary>
-    Mod = 16
+    Mod = 16,
+
+    /// <summary>
+    /// Newer mod format that
+    /// </summary>
+    MergeMod = 17,
 }

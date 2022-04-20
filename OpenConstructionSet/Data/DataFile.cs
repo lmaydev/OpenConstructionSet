@@ -31,7 +31,7 @@ public class DataFile : IDataFile
         using var reader = new OcsReader(buffer);
 
         var type = (DataFileType)reader.ReadInt();
-        var header = type == DataFileType.Mod ? reader.ReadHeader() : null;
+        var header = type.IsModType() ? reader.ReadHeader(type) : null;
         var lastId = reader.ReadInt();
 
         return new(type, header, lastId, reader.ReadItems());
@@ -44,7 +44,7 @@ public class DataFile : IDataFile
 
         writer.Write((int)data.Type);
 
-        if (data.Type == DataFileType.Mod)
+        if (data.Type.IsModType())
         {
             writer.Write(data.Header ?? new Header());
         }

@@ -34,7 +34,7 @@ public class ModFile : IModFile
 
         var type = (DataFileType)reader.ReadInt();
 
-        return new(reader.ReadHeader(), reader.ReadInt(), reader.ReadItems(), await ReadInfoAsync(cancellationToken).ConfigureAwait(false));
+        return new(type, reader.ReadHeader(type), reader.ReadInt(), reader.ReadItems(), await ReadInfoAsync(cancellationToken).ConfigureAwait(false));
     }
 
     /// <inheritdoc/>
@@ -42,7 +42,11 @@ public class ModFile : IModFile
     {
         using var reader = new OcsReader(File.OpenRead(Path));
 
-        return Task.FromResult((DataFileType)reader.ReadInt() == DataFileType.Mod ? reader.ReadHeader() : throw new InvalidDataException("Target file is not a valid mod"));
+        var type = (DataFileType)reader.ReadInt();
+
+        var header = type.IsModType() ? reader.ReadHeader(type) : throw new InvalidDataException("Target file is not a valid mod");
+
+        return Task.FromResult(header);
     }
 
     /// <inheritdoc/>

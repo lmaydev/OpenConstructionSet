@@ -11,8 +11,12 @@ public class ModContext : IModContext
     /// <summary>
     /// Creates a new <see cref="ModContext"/> from the provided data.
     /// </summary>
-    /// <param name="baseItems">Collection of item's loaded as base data. Used to compare for changes when saving.</param>
-    /// <param name="activeItems">Collection of item's loaded as active data. Used for editing the mod.</param>
+    /// <param name="baseItems">
+    /// Collection of item's loaded as base data. Used to compare for changes when saving.
+    /// </param>
+    /// <param name="activeItems">
+    /// Collection of item's loaded as active data. Used for editing the mod.
+    /// </param>
     /// <param name="installation">The installation to use when saving.</param>
     /// <param name="modName">The name of the mod when saving.</param>
     /// <param name="lastId">The last ID used when generating an <see cref="IItem.StringId"/>.</param>
@@ -84,5 +88,5 @@ public class ModContext : IModContext
         await mod.WriteDataAsync(data).ConfigureAwait(false);
     }
 
-    private ModFileData GetChanges() => new(Header, LastId, Items.GetChanges(baseItems), Info);
+    private ModFileData GetChanges() => new(DataFileType.Mod, Header, LastId, Items.GetChanges(baseItems), Info);
 }

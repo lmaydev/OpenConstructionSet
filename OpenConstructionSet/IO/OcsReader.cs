@@ -3,8 +3,7 @@
 namespace OpenConstructionSet.IO;
 
 /// <summary>
-/// Reader for the game's data files.
-/// Can read from a <c>Stream</c> or a byte buffer.
+/// Reader for the game's data files. Can read from a <c>Stream</c> or a byte buffer.
 /// </summary>
 public sealed class OcsReader : IDisposable
 {
@@ -41,15 +40,20 @@ public sealed class OcsReader : IDisposable
     /// <returns>A <c>float</c> read from the data.</returns>
     public float ReadFloat() => reader.ReadSingle();
 
-    /// <summary>
-    /// Read a <see cref="Header"/> object from the data.
-    /// </summary>
-    /// <returns>A <see cref="Header"/> object read from the data.</returns>
-    public Header ReadHeader() => new(ReadInt(), ReadString(), ReadString())
+    public Header ReadHeader(DataFileType type)
     {
-        Dependencies = ReadStringList().ToList(),
-        References = ReadStringList().ToList()
-    };
+        // Thanks to https://github.com/TokcDK (https://github.com/lmaydev/OpenConstructionSet/pull/8/)
+        var endPosition = type == DataFileType.MergeMod ? ReadInt()/*header length*/ + reader.BaseStream.Position : 0;
+
+        var header = ReadHeader();
+
+        if (type == DataFileType.MergeMod)
+        {
+            reader.BaseStream.Seek(endPosition, SeekOrigin.Begin);
+        }
+
+        return header;
+    }
 
     /// <summary>
     /// Read an <see cref="Instance"/> from the data.
@@ -64,8 +68,8 @@ public sealed class OcsReader : IDisposable
     public int ReadInt() => reader.ReadInt32();
 
     /// <summary>
-    /// Read an <see cref="Item"/> from the data.
-    /// This includes the <see cref="Item"/>'s values, instances and references.
+    /// Read an <see cref="Item"/> from the data. This includes the <see cref="Item"/>'s values,
+    /// instances and references.
     /// </summary>
     /// <returns>An <c>Item</c> read from the data.</returns>
     public Item ReadItem()
@@ -73,7 +77,8 @@ public sealed class OcsReader : IDisposable
         // Instance count?
         ReadInt();
 
-        var item = new Item((ItemType)ReadInt(), ReadInt(), ReadString(), ReadString(), (ItemChangeType)ReadInt());
+        // & change type with 3 to remove save count from number.
+        var item = new Item((ItemType)ReadInt(), ReadInt(), ReadString(), ReadString(), (ItemChangeType)(ReadInt() & 0x3));
 
         ReadDictionary(ReadBool);
         ReadDictionary(ReadFloat);
@@ -122,9 +127,9 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Read a collection of <see cref="Item"/>s from the data.
+    /// Read a collection of <see cref="Item"/> s from the data.
     /// </summary>
-    /// <returns>A collection of <see cref="Item"/>s read from the data.</returns>
+    /// <returns>A collection of <see cref="Item"/> s read from the data.</returns>
     public IEnumerable<Item> ReadItems()
     {
         var count = ReadInt();
@@ -153,15 +158,15 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Read a comma separated list of <c>string</c>s from the data.
+    /// Read a comma separated list of <c>string</c> s from the data.
     /// </summary>
-    /// <returns>An array of <c>string</c>s read from a comma separated list in the data.</returns>
+    /// <returns>An array of <c>string</c> s read from a comma separated list in the data.</returns>
     public string[] ReadStringList() => ReadString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
     /// <summary>
-    /// Reads a collection of <c>string</c>s from the data.
+    /// Reads a collection of <c>string</c> s from the data.
     /// </summary>
-    /// <returns>A collection of <c>string</c>s read from the data.</returns>
+    /// <returns>A collection of <c>string</c> s read from the data.</returns>
     public string[] ReadStrings()
     {
         var count = ReadInt();
@@ -207,4 +212,14 @@ public sealed class OcsReader : IDisposable
 
         return new Vector4(w, x, y, z);
     }
+
+    /// <summary>
+    /// Read a <see cref="Header"/> object from the data.
+    /// </summary>
+    /// <returns>A <see cref="Header"/> object read from the data.</returns>
+    private Header ReadHeader() => new(ReadInt(), ReadString(), ReadString())
+    {
+        Dependencies = ReadStringList().ToList(),
+        References = ReadStringList().ToList()
+    };
 }
