@@ -4,6 +4,7 @@ using GameFinder.StoreHandlers.Steam;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NexusMods.Paths;
 using OpenConstructionSet;
+using OpenConstructionSet.Installations;
 using OpenConstructionSet.Installations.Locators;
 
 namespace Microsoft.Extensions.DependencyInjection;
