@@ -1,33 +1,33 @@
-﻿using OpenConstructionSet.Installations;
-using OpenConstructionSet.Installations.Locators;
+﻿using System.Diagnostics.CodeAnalysis;
+using OpenConstructionSet.Installations;
 
 namespace OpenConstructionSet;
 
-/// <summary>
-/// Service used to locate <see cref="IInstallation"/>s.
-/// </summary>
 public interface IInstallationService
 {
     /// <summary>
-    /// Id of all supported <see cref="IInstallationLocator"/>s.
+    /// List of supported <see cref="IInstallationLocator"/>.
     /// </summary>
     string[] SupportedLocators { get; }
 
     /// <summary>
-    /// Runs all supported <see cref="IInstallationLocator"/>s and returns any <see cref="IInstallation"/>s that are found.
+    /// Find all available installations.
     /// </summary>
-    /// <returns>A collection of any <see cref="IInstallation"/>s that were found.</returns>
-    IAsyncEnumerable<IInstallation> DiscoverAllInstallationsAsync();
+    /// <returns>All <see cref="IInstallation"/> that could be found.</returns>
+    IEnumerable<IInstallation> LocateAll();
 
     /// <summary>
-    /// Runs all supported <see cref="IInstallationLocator"/>s and returns the first <see cref="IInstallation"/> that is found.
+    /// Attempt to locate any <see cref="IInstallation"/>.
     /// </summary>
-    /// <returns>The first <see cref="IInstallation"/> that was found; otherwise, <c>null</c></returns>
-    Task<IInstallation?> DiscoverInstallationAsync();
+    /// <param name="installation">Will contain the <see cref="IInstallation"/> if found.</param>
+    /// <returns><c>true</c> if an <see cref="IInstallation"/> could be located</returns>
+    bool TryLocate([MaybeNullWhen(false)] out IInstallation installation);
 
     /// <summary>
-    /// Runs the <see cref="IInstallationLocator"/> with a matching Id and returns the result.
+    /// Attempt to locate an <see cref="IInstallation"/> using the specified detector.
     /// </summary>
-    /// <returns>The <see cref="IInstallation"/> if found; otherwise, <c>null</c></returns>
-    Task<IInstallation?> DiscoverInstallationAsync(string locatorId);
+    /// <param name="Id">The Id of the <see cref="IInstallationLocator"/> to use.</param>
+    /// <param name="installation">Will contain the <see cref="IInstallation"/> if found./param>
+    /// <returns><c>true</c> if an <see cref="IInstallation"/> could be located</returns>
+    bool TryLocate(string Id, [MaybeNullWhen(false)] out IInstallation installation);
 }

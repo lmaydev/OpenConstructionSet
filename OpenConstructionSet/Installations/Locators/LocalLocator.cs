@@ -1,4 +1,6 @@
-﻿namespace OpenConstructionSet.Installations.Locators;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace OpenConstructionSet.Installations.Locators;
 
 /// <summary>
 /// Implementation of a <see cref="IInstallationLocator"/> that looks for the folders in the working directory.
@@ -8,14 +10,15 @@ public class LocalLocator : IInstallationLocator
     /// <inheritdoc/>
     public string Id { get; } = "Local";
 
-    /// <inheritdoc/>
-    public Task<IInstallation?> LocateAsync()
+    public bool TryLocate([MaybeNullWhen(false)] out IInstallation installation)
     {
         if (!Directory.Exists("data") || !Directory.Exists("mods"))
         {
-            return Task.FromResult<IInstallation?>(null);
+            installation = null;
+            return false;
         }
 
-        return Task.FromResult<IInstallation?>(new Installation(Id, Path.GetFullPath("."), null));
+        installation = new Installation(Id, Path.GetFullPath("."), null);
+        return true;
     }
 }

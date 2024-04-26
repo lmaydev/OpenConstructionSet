@@ -1,5 +1,8 @@
-﻿using System.Runtime.Versioning;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
+using GameFinder.StoreHandlers.Steam;
+using GameFinder.StoreHandlers.Steam.Models.ValueTypes;
 using Microsoft.Win32;
 
 namespace OpenConstructionSet.Installations.Locators;
@@ -8,100 +11,37 @@ namespace OpenConstructionSet.Installations.Locators;
 /// Steam implementation of a <see cref="IInstallationLocator"/>
 /// </summary>
 [SupportedOSPlatform("windows")]
-public class SteamLocator : IInstallationLocator
+public class SteamLocator(SteamHandler handler) : IInstallationLocator
 {
+    readonly AppId gameId = AppId.From(233860);
+
     /// <inheritdoc/>
     public string Id { get; } = "Steam";
 
     /// <inheritdoc/>
-    public Task<IInstallation?> LocateAsync()
+    public bool TryLocate([MaybeNullWhen(false)] out IInstallation installation)
     {
-        var folder = SteamFolder();
-
-        if (string.IsNullOrWhiteSpace(folder))
         {
-            return Task.FromResult<IInstallation?>(null);
-        }
+            var game = handler.FindOneGameById(gameId, out var _);
 
-        string? gameFolder = null;
-        string? contentFolder = null;
-
-        foreach (var library in Libraries())
-        {
-            var path = Path.Combine(library, "steamapps", "common", "Kenshi");
-
-            if (Directory.Exists(path))
+            if (game is null)
             {
-                gameFolder = path;
+                installation = null;
+                return false;
             }
 
-            path = Path.Combine(library, "steamapps", "workshop", "content", "233860");
+            var content = game.ParseWorkshopManifest().ValueOrDefault?.GetContentDirectoryPath().GetFullPath();
 
-            if (Directory.Exists(path))
+            var path = game.Path.GetFullPath();
+
+            if (!Directory.Exists(path) || !Directory.Exists(path))
             {
-                contentFolder = path;
-            }
-        }
-
-        if (string.IsNullOrWhiteSpace(gameFolder))
-        {
-            return Task.FromResult<IInstallation?>(null);
-        }
-
-        return Task.FromResult<IInstallation?>(new Installation(Id, gameFolder, contentFolder));
-
-        string SteamFolder()
-        {
-            try
-            {
-                var registryKey = Environment.Is64BitProcess ? @"SOFTWARE\Wow6432Node\Valve\Steam" : @"SOFTWARE\Valve\Steam";
-
-                return Registry.LocalMachine.OpenSubKey(registryKey)?.GetValue("InstallPath", "")?.ToString() ?? "";
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        IEnumerable<string> Libraries()
-        {
-            var path = Path.Combine(folder, "steamapps", "libraryfolders.vdf");
-
-            // [whitespace] "[number]" [whitespace] "[library path]"
-            const string pattern = "^\\s+\"\\d+\"\\s+\"(.+)\"";
-
-            var libraries = new List<string> { folder };
-
-            IEnumerable<string> lines;
-
-            try
-            {
-                lines = File.ReadLines(path);
-            }
-            catch
-            {
-                return Enumerable.Empty<string>();
+                installation = null;
+                return false;
             }
 
-            foreach (var line in lines)
-            {
-                var match = Regex.Match(line, pattern);
-
-                if (match.Success)
-                {
-                    var library = match.Groups[1].Value;
-
-                    if (!Directory.Exists(library))
-                    {
-                        continue;
-                    }
-
-                    libraries.Add(library);
-                }
-            }
-
-            return libraries;
+            installation = new Installation(Id, path, content);
+            return true;
         }
     }
 }
