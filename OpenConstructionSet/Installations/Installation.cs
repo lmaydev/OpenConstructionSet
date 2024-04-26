@@ -18,14 +18,14 @@ public class Installation : IInstallation
         Identifier = identifier;
         RootPath = path;
 
-        Data = new ModFolder(System.IO.Path.Combine(path, "data"), ModFolderType.Data);
-        Mods = new ModFolder(System.IO.Path.Combine(path, "mods"), ModFolderType.Mod);
+        Data = new ModFolder(Path.Combine(path, "data"), ModFolderType.Data);
+        Mods = new ModFolder(Path.Combine(path, "mods"), ModFolderType.Mod);
 
         Content = content is not null ? new ModFolder(content, ModFolderType.Content) : null;
 
-        Saves = new SaveFolder(System.IO.Path.Combine(RootPath, "save"));
+        Saves = new SaveFolder(Path.Combine(RootPath, "save"));
 
-        EnabledModsFile = System.IO.Path.Combine(Data.Path, OcsConstants.EnabledModFile);
+        EnabledModsFile = Path.Combine(Data.Path, OcsConstants.EnabledModFile);
     }
 
     /// <inheritdoc/>

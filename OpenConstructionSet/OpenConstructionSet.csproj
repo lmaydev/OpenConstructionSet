@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8</TargetFramework>
+    <TargetFramework>net8-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Configurations>Debug;Release;Docs</Configurations>
     <Platforms>AnyCPU</Platforms>

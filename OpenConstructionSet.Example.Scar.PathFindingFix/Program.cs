@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using OpenConstructionSet.Data;
 using OpenConstructionSet.Installations;
 using OpenConstructionSet.Mods;
@@ -6,6 +7,8 @@ using OpenConstructionSet.Mods.Context;
 const string ModName = "OCSP SCAR's pathfinding fix";
 const string ModFileName = ModName + ".mod";
 const string ReferenceModName = "SCAR's pathfinding fix.mod";
+
+var services = new ServiceCollection().AddOpenConstructionSet().BuildServiceProvider();
 
 Console.WriteLine("OpenConstructionSet Patcher Example");
 Console.WriteLine("SCAR's pathfinding fix https://www.nexusmods.com/kenshi/mods/602");
@@ -67,7 +70,7 @@ Console.ReadKey();
 
 async Task<IInstallation> SelectInstallation()
 {
-    var installations = await new InstallationService().DiscoverAllInstallationsAsync().ToDictionaryAsync(i => i.Identifier);
+    var installations = services.GetRequiredService<IInstallationService>().LocateAll().ToDictionary(i => i.Identifier);
 
     if (installations.Count == 0)
     {
