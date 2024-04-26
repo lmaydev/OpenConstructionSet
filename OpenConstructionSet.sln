@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet", "OpenConstructionSet\OpenConstructionSet.csproj", "{8E0241C5-FA39-4761-8539-5259BB85A739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenConstructionSet.Tests", "OpenConstructionSet.Tests\OpenConstructionSet.Tests.csproj", "{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet.Tests", "OpenConstructionSet.Tests\OpenConstructionSet.Tests.csproj", "{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2A96466C-7A9C-49DB-8223-B1EF05C3D1CD}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,8 +15,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet.Example.Scar.PathFindingFix", "OpenConstructionSet.Example.Scar.PathFindingFix\OpenConstructionSet.Example.Scar.PathFindingFix.csproj", "{45BF1B22-EB10-40CE-BC54-47BF41BF4325}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet.DependencyInjection", "OpenConstructionSet.DependencyInjection\OpenConstructionSet.DependencyInjection.csproj", "{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenConstructionSet.Tests", "OpenConstructionSet.Tests\OpenConstructionSet.Tests.csproj", "{6B082D1B-9015-4437-B623-0633613B811A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +29,12 @@ Global
 		{8E0241C5-FA39-4761-8539-5259BB85A739}.Docs|Any CPU.Build.0 = Docs|Any CPU
 		{8E0241C5-FA39-4761-8539-5259BB85A739}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E0241C5-FA39-4761-8539-5259BB85A739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Docs|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Docs|Any CPU.Build.0 = Debug|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Docs|Any CPU.ActiveCfg = Debug|Any CPU
@@ -43,12 +47,6 @@ Global
 		{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}.Docs|Any CPU.Build.0 = Debug|Any CPU
 		{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B082D1B-9015-4437-B623-0633613B811A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B082D1B-9015-4437-B623-0633613B811A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B082D1B-9015-4437-B623-0633613B811A}.Docs|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B082D1B-9015-4437-B623-0633613B811A}.Docs|Any CPU.Build.0 = Debug|Any CPU
-		{6B082D1B-9015-4437-B623-0633613B811A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B082D1B-9015-4437-B623-0633613B811A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
