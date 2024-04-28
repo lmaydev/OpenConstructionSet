@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Configurations>Debug;Release;Docs</Configurations>
     <Platforms>AnyCPU</Platforms>
@@ -43,6 +42,8 @@
   <ItemGroup>
     <PackageReference Include="LMay.Collections" Version="3.0.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageReference Include="GameFinder.StoreHandlers.Steam" Version="4.2.0" />
+    <PackageReference Include="GameFinder.StoreHandlers.GOG" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">

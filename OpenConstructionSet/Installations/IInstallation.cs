@@ -36,7 +36,7 @@ public interface IInstallation
     /// <summary>
     /// The path of this <see cref="IInstallation"/>'s game folder.
     /// </summary>
-    string Path { get; }
+    string RootPath { get; }
 
     /// <summary>
     /// Search all <see cref="IModFolder"/> s for mods. Searches in the order Data, Mod, Content (if

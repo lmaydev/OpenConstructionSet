@@ -16,16 +16,16 @@ public class Installation : IInstallation
     public Installation(string identifier, string path, string? content)
     {
         Identifier = identifier;
-        Path = path;
+        RootPath = path;
 
-        Data = new ModFolder(System.IO.Path.Combine(path, "data"), ModFolderType.Data);
-        Mods = new ModFolder(System.IO.Path.Combine(path, "mods"), ModFolderType.Mod);
+        Data = new ModFolder(Path.Combine(path, "data"), ModFolderType.Data);
+        Mods = new ModFolder(Path.Combine(path, "mods"), ModFolderType.Mod);
 
         Content = content is not null ? new ModFolder(content, ModFolderType.Content) : null;
 
-        Saves = new SaveFolder(System.IO.Path.Combine(Path, "save"));
+        Saves = new SaveFolder(Path.Combine(RootPath, "save"));
 
-        EnabledModsFile = System.IO.Path.Combine(Data.Path, OcsConstants.EnabledModFile);
+        EnabledModsFile = Path.Combine(Data.Path, OcsConstants.EnabledModFile);
     }
 
     /// <inheritdoc/>
@@ -44,7 +44,7 @@ public class Installation : IInstallation
     public IModFolder Mods { get; }
 
     /// <inheritdoc/>
-    public string Path { get; }
+    public string RootPath { get; }
 
     /// <inheritdoc/>
     public ISaveFolder Saves { get; }
@@ -72,7 +72,7 @@ public class Installation : IInstallation
         => await File.ReadAllLinesAsync(EnabledModsFile, cancellationToken).ConfigureAwait(false);
 
     /// <inheritdoc/>
-    public override string ToString() => $"{Identifier} ({Path})";
+    public override string ToString() => $"{Identifier} ({RootPath})";
 
     /// <inheritdoc/>
     public bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file) => Data.TryFind(modName, out file) || Mods.TryFind(modName, out file) || (Content?.TryFind(modName, out file) ?? false);

@@ -1,73 +1,48 @@
-﻿using System.Runtime.Versioning;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
 using OpenConstructionSet.Installations;
 using OpenConstructionSet.Installations.Locators;
 
 namespace OpenConstructionSet;
 
 /// <inheritdoc/>
+/// <summary>
+/// Creates a new <see cref="InstallationService"/> using the provided <see cref="IInstallationLocator"/>s.
+/// </summary>
+/// <param name="locators">Collection of <see cref="IInstallationLocator"/> used to find <see cref="IInstallation"/>s.</param>
 [SupportedOSPlatform("windows")]
-public class InstallationService : IInstallationService
+public class InstallationService(IEnumerable<IInstallationLocator> locators) : IInstallationService
 {
-    private readonly Dictionary<string, IInstallationLocator> locators;
-
-    /// <summary>
-    /// Creates a new <see cref="InstallationService"/> using the default <see cref="IInstallationLocator"/>s.
-    /// </summary>
-    public InstallationService() : this(new IInstallationLocator[] { new SteamLocator(), new GogLocator(), new LocalLocator() })
-    {
-    }
-
-    /// <summary>
-    /// Creates a new <see cref="InstallationService"/> using the provided <see cref="IInstallationLocator"/>s.
-    /// </summary>
-    /// <param name="locators">Collection of <see cref="IInstallationLocator"/> used to find <see cref="IInstallation"/>s.</param>
-    public InstallationService(IEnumerable<IInstallationLocator> locators)
-    {
-        this.locators = locators.ToDictionary(l => l.Id, l => l, StringComparer.OrdinalIgnoreCase);
-        SupportedLocators = locators.Select(l => l.Id).ToArray();
-    }
+    private readonly Dictionary<string, IInstallationLocator> locatorDictionary = locators.ToDictionary(l => l.Id, l => l, StringComparer.OrdinalIgnoreCase);
 
     /// <inheritdoc/>
-    public string[] SupportedLocators { get; }
+    public string[] SupportedLocators { get; } = locators.Select(l => l.Id).ToArray();
 
     /// <inheritdoc/>
-    public async IAsyncEnumerable<IInstallation> DiscoverAllInstallationsAsync()
+    public bool TryLocate([MaybeNullWhen(false)] out IInstallation installation)
     {
-        foreach (var locator in SupportedLocators)
+        foreach (var locator in locatorDictionary.Values)
         {
-            var installation = await DiscoverInstallationAsync(locator).ConfigureAwait(false);
-
-            if (installation is not null)
+            if (locator.TryLocate(out installation))
             {
-                yield return installation;
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public async Task<IInstallation?> DiscoverInstallationAsync(string locatorId)
-    {
-        if (!locators.TryGetValue(locatorId, out var locator))
-        {
-            throw new Exception($"Locator {locatorId} not found");
-        }
-
-        return await locator.LocateAsync().ConfigureAwait(false);
-    }
-
-    /// <inheritdoc/>
-    public async Task<IInstallation?> DiscoverInstallationAsync()
-    {
-        foreach (var locatorId in SupportedLocators)
-        {
-            var installation = await DiscoverInstallationAsync(locatorId).ConfigureAwait(false);
-
-            if (installation is not null)
-            {
-                return installation;
+                return true;
             }
         }
 
-        return null;
+        installation = null;
+        return false;
+    }
+
+    /// <inheritdoc/>
+    public bool TryLocate(string Id, [MaybeNullWhen(false)] out IInstallation installation)
+        => locatorDictionary.TryGetValue(Id, out var locator) ? locator.TryLocate(out installation) : throw new InvalidOperationException($"Unknown locator: {Id}");
+
+    /// <inheritdoc/>
+    public IEnumerable<IInstallation> LocateAll()
+    {
+        foreach (var locator in locatorDictionary.Values)
+        {
+            if (locator.TryLocate(out var installation)) { yield return installation; }
+        }
     }
 }
