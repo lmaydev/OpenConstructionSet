@@ -1,4 +1,6 @@
-﻿namespace OpenConstructionSet.Installations.Locators;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace OpenConstructionSet.Installations.Locators;
 
 /// <summary>
 /// Used to locate game installations from various platforms.
@@ -11,8 +13,9 @@ public interface IInstallationLocator
     string Id { get; }
 
     /// <summary>
-    /// Attempt to find an installation.
+    /// Attempts to find an installation
     /// </summary>
-    /// <returns>An <see cref="Installation"/> if located; otherwise, <c>null</c></returns>
-    Task<IInstallation?> LocateAsync();
+    /// <param name="installation">If the game is located this parameter will contain the resulting <see cref="IInstallation"/></param>
+    /// <returns></returns>
+    bool TryLocate([MaybeNullWhen(false)] out IInstallation installation);
 }

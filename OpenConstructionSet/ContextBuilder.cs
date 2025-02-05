@@ -32,6 +32,8 @@ public class ContextBuilder : IContextBuilder
 
         baseMods.Remove(modFileName);
 
+        var dependencies = baseMods.Except(OcsConstants.BaseMods);
+
         var baseItems = new Dictionary<string, ModItem>();
 
         await ReadModsAsync(baseMods, baseItems).ConfigureAwait(false);
@@ -82,6 +84,13 @@ public class ContextBuilder : IContextBuilder
             }
         }
 
+        header ??= new();
+
+        if (options.PopulateDependencies)
+        {
+            header.Dependencies = header.Dependencies.Concat(dependencies).Distinct().ToList();
+        }
+
         return new ModContext(baseItems, activeItems.Values, options.Installation, modFileName, lastId, header, info);
 
         async Task ReadModsAsync(IEnumerable<string> toLoad, IDictionary<string, ModItem> items)
@@ -106,7 +115,9 @@ public class ContextBuilder : IContextBuilder
         {
             using var reader = new OcsReader(await File.ReadAllBytesAsync(file.Path).ConfigureAwait(false));
 
-            if (reader.ReadInt() != (int)DataFileType.Mod)
+            var fileType = (DataFileType)reader.ReadInt();
+
+            if (!fileType.IsModType())
             {
                 if (options.ThrowIfMissing)
                 {
@@ -116,7 +127,7 @@ public class ContextBuilder : IContextBuilder
                 return;
             }
 
-            reader.ReadHeader();
+            reader.ReadHeader(fileType);
 
             lastId = Math.Max(lastId, reader.ReadInt());
 
@@ -136,13 +147,19 @@ public class ContextBuilder : IContextBuilder
                 var stringId = reader.ReadString();
 
                 // Change type
-                reader.ReadInt();
+                var saveData = reader.ReadUInt();
 
                 if (!items.TryGetValue(stringId, out var item))
                 {
-                    item = new(type, name, stringId);
+                    item = new(type, name, stringId, saveData);
 
                     items[stringId] = item;
+                }
+                else
+                {
+                    item.Type = type;
+                    item.Name = name;
+                    (item as IItem).SaveData = saveData;
                 }
 
                 var dictionaryCount = reader.ReadInt();
@@ -227,7 +244,7 @@ public class ContextBuilder : IContextBuilder
                         // deleted
                         if (value0 == int.MaxValue && value1 == int.MaxValue && value2 == int.MaxValue)
                         {
-                            category.References.RemoveByKey(targetId);
+                            category.References.Remove(targetId);
                         }
                         // possibly modified
                         else if (category.References.TryGetValue(targetId, out var reference))
@@ -261,7 +278,7 @@ public class ContextBuilder : IContextBuilder
 
                     if (targetId.Length == 0)
                     {
-                        item.Instances.RemoveByKey(id);
+                        item.Instances.Remove(id);
                     }
                     else if (item.Instances.TryGetValue(id, out var instance))
                     {

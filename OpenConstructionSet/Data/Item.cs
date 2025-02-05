@@ -15,7 +15,7 @@ public class Item : IItem
         item.Id,
         item.Name,
         item.StringId,
-        item.ChangeType,
+        item.SaveData,
         item.Values,
         item.ReferenceCategories,
         item.Instances)
@@ -29,14 +29,14 @@ public class Item : IItem
     /// <param name="id">The Id of this <see cref="Item"/>.</param>
     /// <param name="name">The name of this <see cref="Item"/>.</param>
     /// <param name="stringId">The unique string identifier of this <see cref="Item"/>.</param>
-    /// <param name="changeType">The types of changes that have been applied to this <see cref="Item"/>.</param>
-    public Item(ItemType type, int id, string name, string stringId, ItemChangeType changeType)
+    /// <param name="saveData">The types of changes that have been applied to this <see cref="Item"/> and its save count.</param>
+    public Item(ItemType type, int id, string name, string stringId, ItemSaveData saveData)
     {
         Type = type;
         Id = id;
         Name = name;
         StringId = stringId;
-        ChangeType = changeType;
+        SaveData = saveData;
 
         Values = new();
         ReferenceCategories = new();
@@ -50,7 +50,7 @@ public class Item : IItem
     /// <param name="id">The Id of this <see cref="Item"/>.</param>
     /// <param name="name">The name of this <see cref="Item"/>.</param>
     /// <param name="stringId">The unique string identifier of this <see cref="Item"/>.</param>
-    /// <param name="changeType">The types of changes that have been applied to this <see cref="Item"/>.</param>
+    /// <param name="saveData">The types of changes that have been applied to this <see cref="Item"/> and its save count.</param>
     /// <param name="values">Dictionary of values stored by this <see cref="Item"/>.</param>
     /// <param name="referenceCategories">Collection of <see cref="ReferenceCategory"/> instances stored by this <see cref="Item"/>.</param>
     /// <param name="instances">Collection of <see cref="Instance"/>s stored by this <see cref="Item"/>.</param>
@@ -59,18 +59,18 @@ public class Item : IItem
         int id,
         string name,
         string stringId,
-        ItemChangeType changeType,
+        ItemSaveData saveData,
         IDictionary<string, object> values,
         IEnumerable<IReferenceCategory> referenceCategories,
         IEnumerable<IInstance> instances)
-        : this(type, id, name, stringId, changeType, values, referenceCategories.Select(c => new ReferenceCategory(c)),
+        : this(type, id, name, stringId, saveData, values, referenceCategories.Select(c => new ReferenceCategory(c)),
               instances.Select(i => new Instance(i)))
     {
         Type = type;
         Id = id;
         Name = name;
         StringId = stringId;
-        ChangeType = changeType;
+        SaveData = saveData;
 
         Values = new(values);
         ReferenceCategories = new(referenceCategories.Select(c => new ReferenceCategory(c)));
@@ -84,7 +84,7 @@ public class Item : IItem
     /// <param name="id">The Id of this <see cref="Item"/>.</param>
     /// <param name="name">The name of this <see cref="Item"/>.</param>
     /// <param name="stringId">The unique string identifier of this <see cref="Item"/>.</param>
-    /// <param name="changeType">The types of changes that have been applied to this <see cref="Item"/>.</param>
+    /// <param name="saveData">The types of changes that have been applied to this <see cref="Item"/> and its save count.</param>
     /// <param name="values">Dictionary of values stored by this <see cref="Item"/>.</param>
     /// <param name="referenceCategories">Collection of <see cref="ReferenceCategory"/> instances stored by this <see cref="Item"/>.</param>
     /// <param name="instances">Collection of <see cref="Instance"/>s stored by this <see cref="Item"/>.</param>
@@ -92,7 +92,7 @@ public class Item : IItem
                 int id,
                 string name,
                 string stringId,
-                ItemChangeType changeType,
+                ItemSaveData saveData,
                 IDictionary<string, object> values,
                 IEnumerable<ReferenceCategory> referenceCategories,
                 IEnumerable<Instance> instances)
@@ -101,7 +101,7 @@ public class Item : IItem
         Id = id;
         Name = name;
         StringId = stringId;
-        ChangeType = changeType;
+        SaveData = saveData;
 
         Values = new(values);
         ReferenceCategories = new(referenceCategories);
@@ -111,7 +111,7 @@ public class Item : IItem
     /// <summary>
     /// The types of changes that have been applied to this <see cref="Item"/>.
     /// </summary>
-    public ItemChangeType ChangeType { get; set; }
+    public ItemSaveData SaveData { get; set; }
 
     /// <summary>
     /// The Id of this <see cref="Item"/>.
@@ -192,7 +192,7 @@ public class Item : IItem
     public override bool Equals(object? obj)
     {
         return obj is Item item &&
-               ChangeType == item.ChangeType &&
+               SaveData == item.SaveData &&
                Id == item.Id &&
                Name == item.Name &&
                StringId == item.StringId &&

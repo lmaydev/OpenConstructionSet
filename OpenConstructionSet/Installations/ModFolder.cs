@@ -36,7 +36,7 @@ public class ModFolder : IModFolder
             ModFolderType.Data => IOPath.Combine(Path, filename),
             ModFolderType.Mod => IOPath.Combine(Path, name, filename),
             ModFolderType.Content => IOPath.Combine(Path, modId.ToString(), filename),
-            _ => throw new InvalidOperationException($"Unkown ModFolderType: {Type}")
+            _ => throw new InvalidOperationException($"Unknown ModFolderType: {Type}")
         };
     }
 
@@ -64,20 +64,10 @@ public class ModFolder : IModFolder
     public override string ToString() => $"{Path} ({Type})";
 
     /// <inheritdoc/>
-    public bool TryFind(string modName, uint id, [MaybeNullWhen(false)] out IModFile file)
+    public bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file)
     {
-        var path = GetModPath(modName, id);
+        file = GetMods().FirstOrDefault(m => m.Filename == modName || m.Name == modName);
 
-        if (File.Exists(path))
-        {
-            file = new ModFile(path);
-            return true;
-        }
-
-        file = null;
-        return false;
+        return file is not null;
     }
-
-    /// <inheritdoc/>
-    public bool TryFind(string modName, [MaybeNullWhen(false)] out IModFile file) => TryFind(modName, 0, out file);
 }

@@ -6,7 +6,7 @@ namespace OpenConstructionSet.Mods;
 /// Represents a <see cref="ModReferenceCategory"/> from the game's data. Stores a collection of
 /// related references.
 /// </summary>
-public class ModReferenceCategory : IReferenceCategory, IKeyedItem<string>
+public class ModReferenceCategory : IReferenceCategory
 {
     private ModReferenceCategoryCollection? parent;
 
@@ -40,9 +40,6 @@ public class ModReferenceCategory : IReferenceCategory, IKeyedItem<string>
 
         References = new(this, collection);
     }
-
-    /// <inheritdoc/>
-    public string Key => Name;
 
     /// <summary>
     /// The name of the <see cref="ModReferenceCategory"/>.

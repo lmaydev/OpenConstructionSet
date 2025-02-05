@@ -3,7 +3,7 @@
 namespace OpenConstructionSet.Mods;
 
 /// <inheritdoc/>
-public class ModInstance : IInstance, IKeyedItem<string>
+public class ModInstance : IInstance
 {
     private ModInstanceCollection? parent;
 
@@ -34,9 +34,6 @@ public class ModInstance : IInstance, IKeyedItem<string>
 
     /// <inheritdoc/>
     public string Id { get; }
-
-    /// <inheritdoc/>
-    public string Key => Id;
 
     /// <inheritdoc/>
     public Vector3 Position { get; set; }

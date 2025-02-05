@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet", "OpenConstructionSet\OpenConstructionSet.csproj", "{8E0241C5-FA39-4761-8539-5259BB85A739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenConstructionSet.Tests", "OpenConstructionSet.Tests\OpenConstructionSet.Tests.csproj", "{FBBB4A6F-707E-4CEF-97D8-F962B40B936E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2A96466C-7A9C-49DB-8223-B1EF05C3D1CD}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
@@ -14,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet.Example.Scar.PathFindingFix", "OpenConstructionSet.Example.Scar.PathFindingFix\OpenConstructionSet.Example.Scar.PathFindingFix.csproj", "{45BF1B22-EB10-40CE-BC54-47BF41BF4325}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenConstructionSet.DependencyInjection", "OpenConstructionSet.DependencyInjection\OpenConstructionSet.DependencyInjection.csproj", "{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenConstructionSet.Tests", "OpenConstructionSet.Tests\OpenConstructionSet.Tests.csproj", "{A51A1B19-44D4-41F6-93CA-498BD49E5EE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +33,12 @@ Global
 		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Docs|Any CPU.Build.0 = Debug|Any CPU
 		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45BF1B22-EB10-40CE-BC54-47BF41BF4325}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}.Docs|Any CPU.ActiveCfg = Debug|Any CPU
-		{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}.Docs|Any CPU.Build.0 = Debug|Any CPU
-		{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E330D36C-626B-4EA4-910C-4FFF6B0CA7B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A51A1B19-44D4-41F6-93CA-498BD49E5EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A51A1B19-44D4-41F6-93CA-498BD49E5EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A51A1B19-44D4-41F6-93CA-498BD49E5EE3}.Docs|Any CPU.ActiveCfg = Debug|Any CPU
+		{A51A1B19-44D4-41F6-93CA-498BD49E5EE3}.Docs|Any CPU.Build.0 = Debug|Any CPU
+		{A51A1B19-44D4-41F6-93CA-498BD49E5EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A51A1B19-44D4-41F6-93CA-498BD49E5EE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using OpenConstructionSet.Data;
 using OpenConstructionSet.Installations;
 using OpenConstructionSet.Mods;
@@ -7,21 +8,17 @@ const string ModName = "OCSP SCAR's pathfinding fix";
 const string ModFileName = ModName + ".mod";
 const string ReferenceModName = "SCAR's pathfinding fix.mod";
 
+var services = new ServiceCollection().AddOpenConstructionSet().BuildServiceProvider();
+
 Console.WriteLine("OpenConstructionSet Patcher Example");
 Console.WriteLine("SCAR's pathfinding fix https://www.nexusmods.com/kenshi/mods/602");
 Console.WriteLine();
 
-var installation = await SelectInstallation();
+var installation = SelectInstallation();
 
 Console.WriteLine();
 
-Console.Write("Reading load order... ");
-
-var baseMods = await ModsToPatch();
-
-Console.WriteLine("done");
-
-Console.Write("Loading data... ");
+Console.Write($"Loading {ModName}... ");
 
 var (waterAvoidance, pathfindAcceleration, version) = await ReadScarsMod();
 
@@ -63,11 +60,12 @@ enabledMods.Add(ModFileName);
 await installation.WriteEnabledModsAsync(enabledMods);
 
 Console.WriteLine("done");
+Console.Write("Press any key to exit...");
 Console.ReadKey();
 
-async Task<IInstallation> SelectInstallation()
+IInstallation SelectInstallation()
 {
-    var installations = await new InstallationService().DiscoverAllInstallationsAsync().ToDictionaryAsync(i => i.Identifier);
+    var installations = services.GetRequiredService<IInstallationService>().LocateAll().ToDictionary(i => i.Identifier);
 
     if (installations.Count == 0)
     {
@@ -114,7 +112,7 @@ void Error(string message)
 
 async Task<(float waterAvoidance, float pathFindAcceleration, int version)> ReadScarsMod()
 {
-    if (!installation.Mods.TryFind(ReferenceModName, out var referenceMod))
+    if (!installation.TryFind(ReferenceModName, out var referenceMod))
     {
         // Not found
         Error($"Unable to find {ReferenceModName}");
@@ -155,31 +153,8 @@ async Task<IModContext> BuildModContext()
                             "LMayDev",
                             "OpenConstructionSet Compatibility patch to apply core values from SCAR's pathfinding fix to custom races");
     header.References.Add(ReferenceModName);
-    header.Dependencies.AddRange(baseMods);
 
-    var options = new ModContextOptions(ModFileName,
-        installation: installation,
-        baseMods: baseMods,
-        header: header,
-        throwIfMissing: false);
+    var options = new ModContextOptions(ModFileName, installation: installation, header: header);
 
     return await new ContextBuilder().BuildAsync(options);
-}
-
-async Task<List<string>> ModsToPatch()
-{
-    var mods = new List<string>(await installation.ReadEnabledModsAsync());
-
-    // Don't patch ourselves or SCAR's mod
-    mods.Remove(ModFileName);
-    mods.Remove(ReferenceModName);
-
-    if (mods.Count == 0)
-    {
-        // No mods found to patch
-        Error($"failed!{Environment.NewLine}No mods found to patch");
-        return new();
-    }
-
-    return mods;
 }

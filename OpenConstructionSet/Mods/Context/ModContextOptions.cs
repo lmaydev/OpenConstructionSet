@@ -16,6 +16,7 @@ public class ModContextOptions
     /// <param name="activeMods">Optional collection of mod names, filenames or paths to load into the active mod.</param>
     /// <param name="baseMods">Optional collection of mod names, filenames or paths to load as base data.</param>
     /// <param name="header">Optional header to use for the active mod.</param>
+    /// <param name="populateDependencies">If <c>true</c> the header's dependencies will be populated with loaded base mods.</param>
     /// <param name="info">Optional .info file data to use for the active mod.</param>
     /// <param name="loadEnabledMods">Determines if/how the enabled mods will be loaded.</param>
     /// <param name="loadGameFiles">Determines if/how the game's base data files will be loaded.</param>
@@ -25,9 +26,10 @@ public class ModContextOptions
                              IEnumerable<string>? activeMods = null,
                              IEnumerable<string>? baseMods = null,
                              Header? header = null,
+                             bool populateDependencies = true,
                              ModInfoData? info = null,
-                             ModLoadType loadEnabledMods = ModLoadType.None,
-                             ModLoadType loadGameFiles = ModLoadType.None)
+                             ModLoadType loadEnabledMods = ModLoadType.Base,
+                             ModLoadType loadGameFiles = ModLoadType.Base)
     {
         Name = name;
         Installation = installation;
@@ -35,6 +37,7 @@ public class ModContextOptions
         ActiveMods = activeMods;
         BaseMods = baseMods;
         Header = header;
+        PopulateDependencies = populateDependencies;
         Info = info;
         LoadEnabledMods = loadEnabledMods;
         LoadGameFiles = loadGameFiles;
@@ -54,6 +57,11 @@ public class ModContextOptions
     /// The header to use for the active mod.
     /// </summary>
     public Header? Header { get; set; }
+
+    /// <summary>
+    /// If <c>true/c> base mods will be added to the dependencies of the header.
+    /// </summary>
+    public bool PopulateDependencies { get; set; }
 
     /// <summary>
     /// The .info file data to use for the active mod.

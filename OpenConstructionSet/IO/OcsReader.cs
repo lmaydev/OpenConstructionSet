@@ -1,10 +1,11 @@
-﻿using System.Text;
+﻿using System.Collections.Immutable;
+using System.Reflection;
+using System.Text;
 
 namespace OpenConstructionSet.IO;
 
 /// <summary>
-/// Reader for the game's data files.
-/// Can read from a <c>Stream</c> or a byte buffer.
+/// Reader for the game's data files. Can read from a <c>Stream</c> or a byte buffer.
 /// </summary>
 public sealed class OcsReader : IDisposable
 {
@@ -24,6 +25,15 @@ public sealed class OcsReader : IDisposable
     /// <param name="stream"></param>
     public OcsReader(Stream stream) => reader = new(stream);
 
+    public DataFileData ReadDataFile()
+    {
+        var type = (DataFileType)ReadInt();
+        var header = type.IsModType() ? ReadHeader(type) : null;
+        var lastId = ReadInt();
+
+        return new(type, header, lastId, ReadItems());
+    }
+
     /// <summary>
     /// Dispose the underlying Stream if provided.
     /// </summary>
@@ -41,15 +51,76 @@ public sealed class OcsReader : IDisposable
     /// <returns>A <c>float</c> read from the data.</returns>
     public float ReadFloat() => reader.ReadSingle();
 
-    /// <summary>
-    /// Read a <see cref="Header"/> object from the data.
-    /// </summary>
-    /// <returns>A <see cref="Header"/> object read from the data.</returns>
-    public Header ReadHeader() => new(ReadInt(), ReadString(), ReadString())
+    public Header ReadHeader(DataFileType type)
     {
-        Dependencies = ReadStringList().ToList(),
-        References = ReadStringList().ToList()
-    };
+        int headerEnd = 0;
+
+        if (type.HasMergeData()) { headerEnd = ReadInt() + (int)reader.BaseStream.Position; }
+
+        int version = ReadInt();
+        string author = ReadString();
+        string description = ReadString();
+        List<string> dependencies = ReadStringList().ToList();
+        List<string> references = ReadStringList().ToList();
+
+        uint saveCount = 1;
+        uint lastMerge = 0;
+
+        OrderedDictionary<string, MergeEntry> mergeEntries;
+
+        if (reader.BaseStream.Position < headerEnd)
+        {
+            saveCount = ReadUInt();
+            lastMerge = ReadUInt();
+
+            mergeEntries = ReadMergeEntries();
+        }
+        else
+        {
+            mergeEntries = [];
+        }
+
+        OrderedDictionary<string, DeleteRequest> deleteRequests = reader.BaseStream.Position < headerEnd ?
+            ReadDeleteRequests() : [];
+
+        if (headerEnd > 0) { reader.BaseStream.Seek(headerEnd, SeekOrigin.Begin); }
+
+        return new Header(version, author, description, dependencies, references, saveCount, lastMerge, mergeEntries, deleteRequests);
+    }
+
+    OrderedDictionary<string, MergeEntry> ReadMergeEntries()
+    {
+        byte mergeEntryCount = ReadByte();
+
+        var mergeEntries = new OrderedDictionary<string, MergeEntry>(mergeEntryCount);
+
+        for (int i = 0; i < mergeEntryCount; i++)
+        {
+            string key = ReadString();
+            MergeEntry entry = new(ReadUInt(), ReadUInt());
+
+            mergeEntries[key] = entry;
+        }
+
+        return mergeEntries;
+    }
+
+    OrderedDictionary<string, DeleteRequest> ReadDeleteRequests()
+    {
+        byte deleteRequestCount = ReadByte();
+
+        var deleteRequests = new OrderedDictionary<string, DeleteRequest>(deleteRequestCount);
+
+        for (int i = 0; i < deleteRequestCount; i++)
+        {
+            string key = ReadString();
+            DeleteRequest deleteRequest = new(ReadUInt(), ReadString());
+
+            deleteRequests[key] = deleteRequest;
+        }
+
+        return deleteRequests;
+    }
 
     /// <summary>
     /// Read an <see cref="Instance"/> from the data.
@@ -58,22 +129,35 @@ public sealed class OcsReader : IDisposable
     public Instance ReadInstance() => new(ReadString(), ReadString(), ReadVector3(), ReadVector4(true), ReadStrings());
 
     /// <summary>
+    /// Read a <c>byte</c> from the data.
+    /// </summary>
+    /// <returns>A <c>byte</c> read from the data.</returns>
+    public byte ReadByte() => reader.ReadByte();
+
+    /// <summary>
     /// Read an <c>int</c> from the data.
     /// </summary>
     /// <returns>An <c>int</c> read from the data.</returns>
     public int ReadInt() => reader.ReadInt32();
 
     /// <summary>
-    /// Read an <see cref="Item"/> from the data.
-    /// This includes the <see cref="Item"/>'s values, instances and references.
+    /// Read an uint from the data.
+    /// </summary>
+    /// <returns><An <c>uint</c> read from the data./returns>
+    public uint ReadUInt() => reader.ReadUInt32();
+
+    /// <summary>
+    /// Read an <see cref="Item"/> from the data. This includes the <see cref="Item"/>'s values,
+    /// instances and references.
     /// </summary>
     /// <returns>An <c>Item</c> read from the data.</returns>
     public Item ReadItem()
     {
-        // Instance count?
+        // Instance count or item length
         ReadInt();
 
-        var item = new Item((ItemType)ReadInt(), ReadInt(), ReadString(), ReadString(), (ItemChangeType)ReadInt());
+        // & change type with 3 to remove save count from number.
+        var item = new Item((ItemType)ReadInt(), ReadInt(), ReadString(), ReadString(), ReadUInt());
 
         ReadDictionary(ReadBool);
         ReadDictionary(ReadFloat);
@@ -122,9 +206,9 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Read a collection of <see cref="Item"/>s from the data.
+    /// Read a collection of <see cref="Item"/> s from the data.
     /// </summary>
-    /// <returns>A collection of <see cref="Item"/>s read from the data.</returns>
+    /// <returns>A collection of <see cref="Item"/> s read from the data.</returns>
     public IEnumerable<Item> ReadItems()
     {
         var count = ReadInt();
@@ -153,15 +237,15 @@ public sealed class OcsReader : IDisposable
     }
 
     /// <summary>
-    /// Read a comma separated list of <c>string</c>s from the data.
+    /// Read a comma separated list of <c>string</c> s from the data.
     /// </summary>
-    /// <returns>An array of <c>string</c>s read from a comma separated list in the data.</returns>
+    /// <returns>An array of <c>string</c> s read from a comma separated list in the data.</returns>
     public string[] ReadStringList() => ReadString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
     /// <summary>
-    /// Reads a collection of <c>string</c>s from the data.
+    /// Reads a collection of <c>string</c> s from the data.
     /// </summary>
-    /// <returns>A collection of <c>string</c>s read from the data.</returns>
+    /// <returns>A collection of <c>string</c> s read from the data.</returns>
     public string[] ReadStrings()
     {
         var count = ReadInt();
@@ -207,4 +291,14 @@ public sealed class OcsReader : IDisposable
 
         return new Vector4(w, x, y, z);
     }
+
+    /// <summary>
+    /// Read a <see cref="Header"/> object from the data.
+    /// </summary>
+    /// <returns>A <see cref="Header"/> object read from the data.</returns>
+    private Header ReadHeader() => new(ReadInt(), ReadString(), ReadString())
+    {
+        Dependencies = ReadStringList().ToList(),
+        References = ReadStringList().ToList()
+    };
 }

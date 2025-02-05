@@ -1,9 +1,11 @@
-﻿namespace OpenConstructionSet.Mods.Context;
+﻿using System.Collections.ObjectModel;
+
+namespace OpenConstructionSet.Mods.Context;
 
 /// <summary>
 /// Collection to manage <see cref="ModReferenceCategory"/> objects.
 /// </summary>
-public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, ModReferenceCategory>
+public class ModReferenceCategoryCollection : KeyedCollection<string, ModReferenceCategory>
 {
     private readonly ModItem parent;
 
@@ -22,14 +24,16 @@ public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, 
 
     internal ModContext? Owner => parent.Owner;
 
-    /// <summary>
-    /// Adds the provided <see cref="ModReferenceCategory"/> to the collection.
-    /// </summary>
-    /// <param name="item">The <see cref="ModReferenceCategory"/> to add.</param>
-    public override void Add(ModReferenceCategory item)
+    protected override void InsertItem(int index, ModReferenceCategory item)
     {
         item.SetParent(this);
-        base.Add(item);
+        base.InsertItem(index, item);
+    }
+
+    protected override void SetItem(int index, ModReferenceCategory item)
+    {
+        item.SetParent(this);
+        base.SetItem(index, item);
     }
 
     /// <summary>
@@ -54,7 +58,7 @@ public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, 
     {
         foreach (var category in this)
         {
-            if (!baseCategories.TryGetValue(category.Key, out var baseCategory))
+            if (!baseCategories.TryGetValue(category.Name, out var baseCategory))
             {
                 yield return new ReferenceCategory(category);
             }
@@ -64,10 +68,12 @@ public class ModReferenceCategoryCollection : SortedKeyedItemCollection<string, 
             }
         }
 
-        foreach (var category in baseCategories.Where(c => !ContainsKey(c.Key))
+        foreach (var category in baseCategories.Where(c => !TryGetValue(c.Name, out var _))
                                                .Select(c => new ReferenceCategory(c.Name, c.References.Select(c => c.AsDeleted()))))
         {
             yield return category;
         }
     }
+
+    protected override string GetKeyForItem(ModReferenceCategory item) => item.Name;
 }

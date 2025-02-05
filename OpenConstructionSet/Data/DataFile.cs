@@ -30,11 +30,7 @@ public class DataFile : IDataFile
 
         using var reader = new OcsReader(buffer);
 
-        var type = (DataFileType)reader.ReadInt();
-        var header = type == DataFileType.Mod ? reader.ReadHeader() : null;
-        var lastId = reader.ReadInt();
-
-        return new(type, header, lastId, reader.ReadItems());
+        return reader.ReadDataFile();
     }
 
     /// <inheritdoc/>
@@ -42,15 +38,7 @@ public class DataFile : IDataFile
     {
         using var writer = new OcsWriter(File.OpenWrite(Path));
 
-        writer.Write((int)data.Type);
-
-        if (data.Type == DataFileType.Mod)
-        {
-            writer.Write(data.Header ?? new Header());
-        }
-
-        writer.Write(data.LastId);
-        writer.Write(data.Items);
+        writer.Write(data);
 
         return Task.CompletedTask;
     }

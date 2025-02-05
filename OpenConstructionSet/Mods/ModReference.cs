@@ -3,7 +3,7 @@
 namespace OpenConstructionSet.Mods;
 
 /// <inheritdoc/>
-public class ModReference : IReference, IKeyedItem<string>
+public class ModReference : IReference
 {
     private ModReferenceCollection? parent;
 
@@ -33,9 +33,6 @@ public class ModReference : IReference, IKeyedItem<string>
         Value1 = value1;
         Value2 = value2;
     }
-
-    /// <inheritdoc/>
-    public string Key => TargetId;
 
     /// <summary>
     /// The target of this <see cref="ModReference"/>.

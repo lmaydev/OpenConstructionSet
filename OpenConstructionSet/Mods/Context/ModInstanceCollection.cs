@@ -1,9 +1,11 @@
-﻿namespace OpenConstructionSet.Mods.Context;
+﻿using System.Collections.ObjectModel;
+
+namespace OpenConstructionSet.Mods.Context;
 
 /// <summary>
 /// Collection to manage <see cref="ModInstance"/>s.
 /// </summary>
-public class ModInstanceCollection : KeyedItemList<string, ModInstance>
+public class ModInstanceCollection : KeyedCollection<string, ModInstance>
 {
     private readonly ModItem parent;
 
@@ -22,14 +24,16 @@ public class ModInstanceCollection : KeyedItemList<string, ModInstance>
 
     internal ModContext? Owner => parent.Owner;
 
-    /// <summary>
-    /// Adds the provided <see cref="ModInstance"/> to the collection.
-    /// </summary>
-    /// <param name="item">The <see cref="ModInstance"/> to add.</param>
-    public override void Add(ModInstance item)
+    protected override void InsertItem(int index, ModInstance item)
     {
         item.SetParent(this);
-        base.Add(item);
+        base.InsertItem(index, item);
+    }
+
+    protected override void SetItem(int index, ModInstance item)
+    {
+        item.SetParent(this);
+        base.SetItem(index, item);
     }
 
     /// <summary>
@@ -69,16 +73,18 @@ public class ModInstanceCollection : KeyedItemList<string, ModInstance>
     public IEnumerable<Instance> GetChanges(ModInstanceCollection baseInstances)
     {
         // All instances that are new (not in the baseInstances) or modified
-        foreach (var instance in this.Where(instance => !baseInstances.TryGetValue(instance.Key, out var bi) || instance != bi)
+        foreach (var instance in this.Where(instance => !baseInstances.TryGetValue(instance.Id, out var bi) || instance != bi)
                       .Select(instance => new Instance(instance)))
         {
             yield return instance;
         }
 
         // All instances that were deleted (not present in current instances)
-        foreach (var instance in baseInstances.Where(i => !ContainsKey(i.Key)).Select(i => i.AsDeleted()))
+        foreach (var instance in baseInstances.Where(i => !TryGetValue(i.Id, out var _)))
         {
-            yield return instance;
+            yield return instance.AsDeleted();
         }
     }
+
+    protected override string GetKeyForItem(ModInstance item) => item.Id;
 }
