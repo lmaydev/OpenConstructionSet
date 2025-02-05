@@ -76,10 +76,7 @@ public class ModFile : IModFile
 
         using var writer = new OcsWriter(File.OpenWrite(Path));
 
-        writer.Write((int)DataFileType.Mod);
-        writer.Write(data.Header);
-        writer.Write(data.LastId);
-        writer.Write(data.Items);
+        writer.Write(data.ToDataFileData());
 
         if (data.Info is not null)
         {

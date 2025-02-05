@@ -16,6 +16,7 @@ public class ModItem : IItem
         item.Type,
         item.Name,
         item.StringId,
+        item.SaveData,
         item.Values,
         item.ReferenceCategories,
         item.Instances)
@@ -29,15 +30,8 @@ public class ModItem : IItem
     /// <param name="name">The name of this <see cref="ModItem"/>.</param>
     /// <param name="stringId">The unique string identifier of this <see cref="ModItem"/>.</param>
     ///
-    public ModItem(ItemType type, string name, string stringId)
+    public ModItem(ItemType type, string name, string stringId, ItemSaveData saveData) : this(type, name, stringId, saveData, new Dictionary<string,object>(), [], [])
     {
-        Type = type;
-        Name = name;
-        StringId = stringId;
-
-        Values = new();
-        ReferenceCategories = new(this);
-        Instances = new(this);
     }
 
     /// <summary>
@@ -46,17 +40,20 @@ public class ModItem : IItem
     /// <param name="type">The <see cref="ItemType"/> for this <see cref="ModItem"/>.</param>
     /// <param name="name">The name of this <see cref="ModItem"/>.</param>
     /// <param name="stringId">The unique string identifier of this <see cref="ModItem"/>.</param>
+    /// <param name="saveData">The types of changes that have been applied to this <see cref="Item"/> and its save count.</param>
     /// <param name="values">Dictionary of values stored by this <see cref="ModItem"/>.</param>
     /// <param name="referenceCategories">
     /// Collection of <see cref="ReferenceCategory"/> instances stored by this <see cref="ModItem"/>.
     /// </param>
     /// <param name="instances">Collection of <see cref="Instance"/> s stored by this <see cref="ModItem"/>.</param>
     ///
-    public ModItem(ItemType type, string name, string stringId, IDictionary<string, object> values, IEnumerable<IReferenceCategory> referenceCategories, IEnumerable<IInstance> instances)
+    public ModItem(ItemType type, string name, string stringId, ItemSaveData saveData, IDictionary<string, object> values, IEnumerable<IReferenceCategory> referenceCategories, IEnumerable<IInstance> instances)
     {
         Type = type;
         Name = name;
         StringId = stringId;
+
+        (this as IItem).SaveData = saveData;
 
         this.Values = new(values);
         this.ReferenceCategories = new(this, referenceCategories);
@@ -87,7 +84,7 @@ public class ModItem : IItem
     /// </summary>
     public SortedDictionary<string, object> Values { get; }
 
-    ItemChangeType IItem.ChangeType { get => ItemChangeType.New; set { } }
+    ItemSaveData IItem.SaveData { get; set; }
     int IItem.Id { get => 0; }
     IEnumerable<IInstance> IItem.Instances => Instances;
     IEnumerable<IReferenceCategory> IItem.ReferenceCategories => ReferenceCategories;
@@ -100,7 +97,7 @@ public class ModItem : IItem
     /// <returns>An <see cref="Item"/> that represents this marked as deleted.</returns>
     public Item AsDeleted()
     {
-        var deleted = new Item(Type, 0, Name, StringId, ItemChangeType.Changed);
+        var deleted = new Item(Type, 0, Name, StringId, (uint)ItemChangeType.Changed);
 
         deleted.Values["DELETED"] = true;
 
@@ -113,7 +110,7 @@ public class ModItem : IItem
     /// <returns>A deep clone of this object.</returns>
     public ModItem DeepClone()
     {
-        return new ModItem(Type, Name, StringId, Values, ReferenceCategories.Select(c => c.DeepClone()),
+        return new ModItem(Type, Name, StringId, (this as IItem).SaveData, Values, ReferenceCategories.Select(c => c.DeepClone()),
             Instances.Select(i => i.DeepClone()));
     }
 
@@ -131,7 +128,9 @@ public class ModItem : IItem
     /// <returns><c>true</c> if there are changes; otherwise, <c>false</c>.</returns>
     public bool TryGetChanges(ModItem baseItem, [MaybeNullWhen(false)] out Item changes)
     {
-        changes = new Item(Type, 0, Name, baseItem.StringId, Name != baseItem.Name ? ItemChangeType.Renamed : ItemChangeType.Changed);
+        var saveData = new ItemSaveData((this as IItem).SaveData.SaveCount + 1, Name != baseItem.Name ? ItemChangeType.Renamed : ItemChangeType.Changed);
+
+        changes = new Item(Type, 0, Name, baseItem.StringId, saveData);
 
         // Add any new or changed values
         foreach (var pair in Values.Where(pair => !baseItem.Values.TryGetValue(pair.Key, out var baseValue)
@@ -144,7 +143,7 @@ public class ModItem : IItem
 
         changes.Instances.AddRange(Instances.GetChanges(baseItem.Instances));
 
-        if (changes.ChangeType == ItemChangeType.Renamed
+        if (changes.SaveData.ChangeType == ItemChangeType.Renamed
             || changes.Values.Count > 0
             || changes.ReferenceCategories.Count > 0
             || changes.Instances.Count > 0)

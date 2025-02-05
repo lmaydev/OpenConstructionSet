@@ -138,11 +138,11 @@ public class ContextBuilder : IContextBuilder
                 var stringId = reader.ReadString();
 
                 // Change type
-                reader.ReadInt();
+                var saveData = reader.ReadUInt();
 
                 if (!items.TryGetValue(stringId, out var item))
                 {
-                    item = new(type, name, stringId);
+                    item = new(type, name, stringId, saveData);
 
                     items[stringId] = item;
                 }
@@ -150,6 +150,7 @@ public class ContextBuilder : IContextBuilder
                 {
                     item.Type = type;
                     item.Name = name;
+                    (item as IItem).SaveData = saveData;
                 }
 
                 var dictionaryCount = reader.ReadInt();

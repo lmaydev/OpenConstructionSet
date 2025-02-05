@@ -57,7 +57,7 @@ public class ModContext : IModContext
 
         var stringId = $"{LastId}-{ModName}";
 
-        var item = new ModItem(type, name, stringId);
+        var item = new ModItem(type, name, stringId, new ItemSaveData(0, ItemChangeType.New));
 
         Items.Add(item);
 

@@ -7,9 +7,9 @@
 public interface IItem
 {
     /// <summary>
-    /// The type of changes applied to this item.
+    /// The type of changes applied to this item and its save count.
     /// </summary>
-    ItemChangeType ChangeType { get; set; }
+    ItemSaveData SaveData { get; set; }
 
     /// <summary>
     /// The ID of the item.

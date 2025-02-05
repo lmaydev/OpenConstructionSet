@@ -18,4 +18,25 @@
     <ProjectReference Include="..\OpenConstructionSet\OpenConstructionSet.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Content\Mods\changes.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Mods\delete-building.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Mods\instance-changes.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Mods\merge.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Mods\new-building.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Mods\ref-changes.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

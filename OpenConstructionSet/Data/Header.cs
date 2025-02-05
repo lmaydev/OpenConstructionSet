@@ -1,4 +1,5 @@
-﻿using OpenConstructionSet.Mods;
+﻿using System.Collections.Immutable;
+using OpenConstructionSet.Mods;
 
 namespace OpenConstructionSet.Data;
 
@@ -10,7 +11,7 @@ public class Header
     /// <summary>
     /// Initialize a new empty <see cref="Header"/>
     /// </summary>
-    public Header() : this(1, "", "")
+    public Header()
     {
     }
 
@@ -27,28 +28,57 @@ public class Header
         Description = description;
     }
 
+    public Header(int version,
+    string author,
+    string description,
+    List<string> dependencies,
+    List<string> references,
+    uint saveCount,
+    uint lastMerge,
+    OrderedDictionary<string, MergeEntry> mergeEntries,
+    OrderedDictionary<string, DeleteRequest> deleteRequests)
+    {
+        Author = author;
+        Dependencies = dependencies;
+        Description = description;
+        References = references;
+        Version = version;
+        SaveCount = saveCount;
+        LastMerge = lastMerge;
+        MergeEntries = mergeEntries;
+        DeleteRequests = deleteRequests;
+    }
+
     /// <summary>
     /// The author of the mod.
     /// </summary>
-    public string Author { get; set; }
+    public string Author { get; set; } = "";
 
     /// <summary>
     /// A list of mod names (e.g. exmaple.mod) that this mod is dependent on.
     /// </summary>
-    public List<string> Dependencies { get; set; } = new List<string>();
+    public List<string> Dependencies { get; set; } = [];
 
     /// <summary>
     /// A description of the mod.
     /// </summary>
-    public string Description { get; set; }
+    public string Description { get; set; } = "";
 
     /// <summary>
     /// A list of mod names (e.g. example.mod) that this mod referenced.
     /// </summary>
-    public List<string> References { get; set; } = new List<string>();
+    public List<string> References { get; set; } = [];
 
     /// <summary>
     /// The version of the mod.
     /// </summary>
-    public int Version { get; set; }
+    public int Version { get; set; } = 1;
+
+    public uint SaveCount { get; set; }
+
+    public uint LastMerge { get; set; }
+
+    public OrderedDictionary<string, MergeEntry> MergeEntries { get; set; } = [];
+
+    public OrderedDictionary<string, DeleteRequest> DeleteRequests { get; set; } = [];
 }

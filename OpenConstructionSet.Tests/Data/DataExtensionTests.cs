@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using OpenConstructionSet.Data;
 
-namespace OpenConstructionSet.Tests;
+namespace OpenConstructionSet.Tests.Data;
 
 public class DataExtensionTests
 {

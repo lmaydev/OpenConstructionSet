@@ -14,7 +14,7 @@ Console.WriteLine("OpenConstructionSet Patcher Example");
 Console.WriteLine("SCAR's pathfinding fix https://www.nexusmods.com/kenshi/mods/602");
 Console.WriteLine();
 
-var installation = await SelectInstallation();
+var installation = SelectInstallation();
 
 Console.WriteLine();
 
@@ -68,7 +68,7 @@ await installation.WriteEnabledModsAsync(enabledMods);
 Console.WriteLine("done");
 Console.ReadKey();
 
-async Task<IInstallation> SelectInstallation()
+IInstallation SelectInstallation()
 {
     var installations = services.GetRequiredService<IInstallationService>().LocateAll().ToDictionary(i => i.Identifier);
 
@@ -117,7 +117,7 @@ void Error(string message)
 
 async Task<(float waterAvoidance, float pathFindAcceleration, int version)> ReadScarsMod()
 {
-    if (!installation.Mods.TryFind(ReferenceModName, out var referenceMod))
+    if (!installation.TryFindMod(ReferenceModName, out var referenceMod))
     {
         // Not found
         Error($"Unable to find {ReferenceModName}");

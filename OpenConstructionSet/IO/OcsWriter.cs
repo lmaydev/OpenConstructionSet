@@ -1,4 +1,7 @@
-﻿namespace OpenConstructionSet.IO;
+﻿using System.Collections.Immutable;
+using OpenConstructionSet.Data;
+
+namespace OpenConstructionSet.IO;
 
 /// <summary>
 /// Writer for the game's data files.
@@ -29,6 +32,34 @@ public sealed class OcsWriter : IDisposable
     /// </summary>
     public void Dispose() => writer.Dispose();
 
+    public void Write(DataFileData data)
+    {
+        Write((int)data.Type);
+
+        if (data.Type.IsModType())
+        {
+            Write(data.Type, data.Header ?? new Header());
+        }
+
+        Write(data.LastId);
+        Write(data.Type, data.Items);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="fileType"></param>
+    /// <param name="value"></param>
+    public void Write(DataFileType fileType, IReadOnlyCollection<Item> value)
+    {
+        Write(value.Count);
+
+        foreach (var item in value)
+        {
+            Write(fileType, item);
+        }
+    }
+
     /// <summary>
     /// Write a collection of objects to the <c>Stream</c>. T will be runtime bound to one of the
     /// Write methods. Passing an unsupported type will result in errors.
@@ -45,7 +76,7 @@ public sealed class OcsWriter : IDisposable
                 continue;
             }
 
-            Write(item);
+            WriteValue(item);
         }
     }
 
@@ -53,16 +84,25 @@ public sealed class OcsWriter : IDisposable
     /// Write an <see cref="Item"/> to the <c>Stream</c>.
     /// </summary>
     /// <param name="value">The <see cref="Item"/> to write to <c>Stream</c>.</param>
-    public void Write(Item value)
+    public void Write(DataFileType fileType, Item value)
     {
-        // Instance count?
-        Write(0);
+        var startPosition = (int)writer.BaseStream.Position;
+
+        // instance count or place holder for item length
+        if (!fileType.IsModType() && value.Type == ItemType.InstanceCollection)
+        {
+            Write(value.Instances.Count);
+        }
+        else
+        {
+            Write(0);
+        }
 
         Write((int)value.Type);
         Write(value.Id);
         Write(value.Name);
         Write(value.StringId);
-        Write((int)value.ChangeType);
+        Write((uint)value.SaveData);
 
         var groupedValues = value.Values.OrderBy(p => p.Key)
                                         .GroupBy(v => v.Value.GetType())
@@ -88,6 +128,20 @@ public sealed class OcsWriter : IDisposable
 
         Write(value.Instances);
 
+        // write item length before item if writing a mod file
+        if (fileType.IsModType())
+        {
+            var endPosition = (int)writer.BaseStream.Position;
+
+            var length = endPosition - startPosition;
+
+            writer.Seek(startPosition, SeekOrigin.Begin);
+
+            Write(length);
+
+            writer.Seek(endPosition, SeekOrigin.Begin);
+        }
+
         void WriteDictionary(Type type)
         {
             if (!groupedValues.TryGetValue(type, out var collection))
@@ -101,7 +155,7 @@ public sealed class OcsWriter : IDisposable
             {
                 Write(item.Key);
 
-                Write(item.Value);
+                WriteValue(item.Value);
             }
         }
     }
@@ -135,14 +189,64 @@ public sealed class OcsWriter : IDisposable
     /// <summary>
     /// Write a <see cref="Header"/> object to the <c>Stream</c>.
     /// </summary>
+    /// <param name="fileType">Type of the data file being written.</param>
     /// <param name="value">The <see cref="Header"/> object to write to <c>Stream</c>.</param>
-    public void Write(Header value)
+    public void Write(DataFileType fileType, Header value)
     {
+        int startPosition = 0;
+
+        if (fileType.HasMergeData())
+        {
+            Write(0);
+            startPosition = (int)writer.BaseStream.Position;
+        }
+
         Write(value.Version);
         Write(value.Author);
         Write(value.Description);
         Write(string.Join(",", value.Dependencies));
         Write(string.Join(",", value.References));
+
+        if (fileType.HasMergeData())
+        {
+            Write(value.SaveCount);
+            Write(value.LastMerge);
+
+            WriteMergeEntries(value.MergeEntries);
+            WriteDeleteRequests(value.DeleteRequests);
+
+            int headerLength = (int)writer.BaseStream.Position - startPosition;
+
+            writer.Seek(startPosition - 4, SeekOrigin.Begin);
+
+            Write(headerLength);
+
+            writer.Seek(startPosition + headerLength, SeekOrigin.Begin);
+        }
+
+        void WriteMergeEntries(ICollection<KeyValuePair<string, MergeEntry>> mergeEntries)
+        {
+            writer.Write((byte)mergeEntries.Count);
+
+            foreach (var entry in mergeEntries)
+            {
+                Write(entry.Key);
+                Write(entry.Value.Version1);
+                Write(entry.Value.Version2);
+            }
+        }
+
+        void WriteDeleteRequests(ICollection<KeyValuePair<string, DeleteRequest>> deleteRequests)
+        {
+            writer.Write((byte)deleteRequests.Count);
+
+            foreach (var request in deleteRequests)
+            {
+                Write(request.Key);
+                Write(request.Value.Version);
+                Write(request.Value.Items);
+            }
+        }
     }
 
     /// <summary>
@@ -216,7 +320,13 @@ public sealed class OcsWriter : IDisposable
     /// <param name="value">The <c>int</c> to write to <c>Stream</c>.</param>
     public void Write(int value) => writer.Write(value);
 
-    private void Write(object value)
+    /// <summary>
+    /// Write an <c>uint</c> to the <c>Stream</c>.
+    /// </summary>
+    /// <param name="value">The <c>uint</c> to write to <c>Stream</c>.</param>
+    public void Write(uint value) => writer.Write(value);
+
+    private void WriteValue(object value)
     {
         switch (value)
         {
@@ -253,14 +363,6 @@ public sealed class OcsWriter : IDisposable
                 break;
 
             case Reference v:
-                Write(v);
-                break;
-
-            case Header v:
-                Write(v);
-                break;
-
-            case Item v:
                 Write(v);
                 break;
 

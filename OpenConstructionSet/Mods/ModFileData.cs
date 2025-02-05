@@ -46,4 +46,6 @@ public class ModFileData
     /// The <see cref="DataFileType"/> of the mod file.
     /// </summary>
     public DataFileType Type { get; }
+
+    public DataFileData ToDataFileData() => new(Type, Header, LastId, Items);
 }
