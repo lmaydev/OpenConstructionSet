@@ -1,4 +1,5 @@
-﻿using GameFinder.RegistryUtils;
+﻿using System.Runtime.Versioning;
+using GameFinder.RegistryUtils;
 using GameFinder.StoreHandlers.GOG;
 using GameFinder.StoreHandlers.Steam;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -11,6 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class OcsServiceCollectionExtensions
 {
+    [SupportedOSPlatform("windows")]
     public static IServiceCollection AddOpenConstructionSet(this IServiceCollection services)
     {
         // Game finder
@@ -19,12 +21,12 @@ public static class OcsServiceCollectionExtensions
         services.AddSingleton<SteamHandler>();
         services.AddSingleton<GOGHandler>();
 
-        services.TryAddEnumerable(new[]
-        {
+        services.TryAddEnumerable(
+        [
                 ServiceDescriptor.Singleton<IInstallationLocator, SteamLocator>(),
                 ServiceDescriptor.Singleton<IInstallationLocator, GogLocator>(),
                 ServiceDescriptor.Singleton<IInstallationLocator, LocalLocator>(),
-        });
+        ]);
 
         return services.AddSingleton<IInstallationService, InstallationService>()
                        .AddSingleton<IContextBuilder, ContextBuilder>();
