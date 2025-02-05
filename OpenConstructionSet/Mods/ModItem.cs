@@ -4,7 +4,7 @@ using OpenConstructionSet.Mods.Context;
 namespace OpenConstructionSet.Mods;
 
 /// <inheritdoc/>
-public class ModItem : IItem, IKeyedItem<string>
+public class ModItem : IItem
 {
     internal ModItemCollection? parent;
 
@@ -67,9 +67,6 @@ public class ModItem : IItem, IKeyedItem<string>
     /// Collection of <see cref="Instance"/> s stored by this <see cref="ModItem"/>.
     /// </summary>
     public ModInstanceCollection Instances { get; }
-
-    /// <inheritdoc/>
-    public string Key => StringId;
 
     /// <inheritdoc/>
     public string Name { get; set; }

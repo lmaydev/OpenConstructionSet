@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8</TargetFramework>
+    <TargetFramework>net9</TargetFramework>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -40,7 +40,6 @@
 
 
   <ItemGroup>
-    <PackageReference Include="LMay.Collections" Version="3.0.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="GameFinder.StoreHandlers.Steam" Version="4.2.0" />
     <PackageReference Include="GameFinder.StoreHandlers.GOG" Version="4.2.0" />

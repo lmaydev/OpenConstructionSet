@@ -1,9 +1,11 @@
-﻿namespace OpenConstructionSet.Mods.Context;
+﻿using System.Collections.ObjectModel;
+
+namespace OpenConstructionSet.Mods.Context;
 
 /// <summary>
 /// Collection to manage <see cref="ModItem"/>s.
 /// </summary>
-public class ModItemCollection : KeyedItemCollection<string, ModItem>
+public class ModItemCollection : KeyedCollection<string, ModItem>
 {
     internal ModItemCollection(ModContext owner, IEnumerable<IItem> collection) : this(owner)
     {
@@ -20,14 +22,16 @@ public class ModItemCollection : KeyedItemCollection<string, ModItem>
 
     internal ModContext Owner { get; }
 
-    /// <summary>
-    /// Adds the provided <see cref="ModItem"/> to the collection.
-    /// </summary>
-    /// <param name="item">The <see cref="ModItem"/> to add.</param>
-    public override void Add(ModItem item)
+    protected override void InsertItem(int index, ModItem item)
     {
         item.SetParent(this);
-        base.Add(item);
+        base.InsertItem(index, item);
+    }
+
+    protected override void SetItem(int index, ModItem item)
+    {
+        item.SetParent(this);
+        base.SetItem(index, item);
     }
 
     /// <summary>
@@ -40,15 +44,15 @@ public class ModItemCollection : KeyedItemCollection<string, ModItem>
     /// <summary>
     /// Compares this collection with another returning any changes.
     /// </summary>
-    /// <param name="baseItems">Collection to comapre to this one.</param>
+    /// <param name="baseItems">Collection to compare to this one.</param>
     /// <returns>A collection containing the added or modified <see cref="Item"/>s.</returns>
     public IEnumerable<Item> GetChanges(IDictionary<string, ModItem> baseItems)
     {
         foreach (var item in this)
         {
-            if (!baseItems.TryGetValue(item.Key, out var baseItem))
+            if (!baseItems.TryGetValue(item.StringId, out var baseItem))
             {
-                yield return new Item(item.Type, 0, item.Name, item.StringId, ItemChangeType.New);
+                yield return new Item(item.Type, 0, item.Name, item.StringId, new ItemSaveData(1, ItemChangeType.New));
             }
             else if (item.TryGetChanges(baseItem, out var changes))
             {
@@ -56,9 +60,11 @@ public class ModItemCollection : KeyedItemCollection<string, ModItem>
             }
         }
 
-        foreach (var item in baseItems.Values.Where(i => !ContainsKey(i.Key)))
+        foreach (var item in baseItems.Values.Where(i => !TryGetValue(i.StringId, out var _)))
         {
             yield return new Item(item.AsDeleted());
         }
     }
+
+    protected override string GetKeyForItem(ModItem item) => item.StringId;
 }

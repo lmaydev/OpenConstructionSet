@@ -234,7 +234,7 @@ public class ContextBuilder : IContextBuilder
                         // deleted
                         if (value0 == int.MaxValue && value1 == int.MaxValue && value2 == int.MaxValue)
                         {
-                            category.References.RemoveByKey(targetId);
+                            category.References.Remove(targetId);
                         }
                         // possibly modified
                         else if (category.References.TryGetValue(targetId, out var reference))
@@ -268,7 +268,7 @@ public class ContextBuilder : IContextBuilder
 
                     if (targetId.Length == 0)
                     {
-                        item.Instances.RemoveByKey(id);
+                        item.Instances.Remove(id);
                     }
                     else if (item.Instances.TryGetValue(id, out var instance))
                     {

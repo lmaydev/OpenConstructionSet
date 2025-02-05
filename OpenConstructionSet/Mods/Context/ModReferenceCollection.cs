@@ -1,11 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OpenConstructionSet.Mods.Context;
 
 /// <summary>
 /// Collection to manage <see cref="ModReference"/>s.
 /// </summary>
-public class ModReferenceCollection : KeyedItemList<string, ModReference>
+public class ModReferenceCollection : KeyedCollection<string, ModReference>
 {
     private readonly ModReferenceCategory parent;
 
@@ -24,15 +25,9 @@ public class ModReferenceCollection : KeyedItemList<string, ModReference>
 
     internal ModContext? Owner => parent.Owner;
 
-    /// <summary>
-    /// Adds the provided <see cref="ModReference"/> to the collection.
-    /// </summary>
-    /// <param name="item">The <see cref="ModReference"/> to add.</param>
-    public override void Add(ModReference item)
-    {
-        item.SetParent(this);
-        base.Add(item);
-    }
+    protected override void InsertItem(int index, ModReference item) => item.SetParent(this);
+
+    protected override void SetItem(int index, ModReference item) => item.SetParent(this);
 
     /// <summary>
     /// Adds a new <see cref="ModReference"/> to the collection with the provided values.
@@ -67,16 +62,16 @@ public class ModReferenceCollection : KeyedItemList<string, ModReference>
     public IEnumerable<Reference> GetChanges(ModReferenceCollection baseReferences)
     {
         // All instances that are new (not in the baseInstances) or modified
-        foreach (var reference in this.Where(r => !baseReferences.TryGetValue(r.Key, out var br) || r != br)
+        foreach (var reference in this.Where(r => !baseReferences.TryGetValue(r.TargetId, out var br) || r != br)
                                       .Select(r => new Reference(r)))
         {
             yield return reference;
         }
 
         // All instances that were deleted (not present in current instances)
-        foreach (var reference in baseReferences.Where(i => !ContainsKey(i.Key)).Select(i => i.AsDeleted()))
+        foreach (var reference in baseReferences.Where(i => !TryGetValue(i.TargetId, out var _)))
         {
-            yield return reference;
+            yield return reference.AsDeleted();
         }
     }
 
@@ -98,4 +93,6 @@ public class ModReferenceCollection : KeyedItemList<string, ModReference>
         changes = null;
         return false;
     }
+
+    protected override string GetKeyForItem(ModReference item) => item.TargetId;
 }
