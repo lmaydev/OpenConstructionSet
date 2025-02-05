@@ -67,6 +67,11 @@ public class Installation : IInstallation
         }
     }
 
+    public virtual bool TryFindMod(string modName, [MaybeNullWhen(false)] out IModFile file)
+    {
+        return Data.TryFind(modName, out file) || Mods.TryFind(modName, out file) || Content?.TryFind(modName, out file) == true;
+    }
+
     /// <inheritdoc/>
     public virtual async Task<string[]> ReadEnabledModsAsync(CancellationToken cancellationToken = default)
         => await File.ReadAllLinesAsync(EnabledModsFile, cancellationToken).ConfigureAwait(false);

@@ -39,11 +39,16 @@ public interface IInstallation
     string RootPath { get; }
 
     /// <summary>
-    /// Search all <see cref="IModFolder"/> s for mods. Searches in the order Data, Mod, Content (if
-    /// not null).
+    /// Search all <see cref="IModFolder"/> s for mods. Searches in the order Data, Mod, Content (if not null).
     /// </summary>
     /// <returns>A collection of <see cref="IModFile"/> s for the <see cref="IInstallation"/>.</returns>
     IEnumerable<IModFile> GetMods();
+
+    /// <summary>
+    /// Search all <see cref="IModFolder"/> s for the named mod. Searches in the order Data, Mod, Content (if not null).
+    /// </summary>
+    /// <returns>A collection of <see cref="IModFile"/> s for the <see cref="IInstallation"/>.</returns>
+    bool TryFindMod(string modName, [MaybeNullWhen(false)] out IModFile file);
 
     /// <summary>
     /// Reads the <see cref="EnabledModsFile"/> to get the currently enabled mod's filenames and
