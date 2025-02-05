@@ -32,6 +32,8 @@ public class ContextBuilder : IContextBuilder
 
         baseMods.Remove(modFileName);
 
+        var dependencies = baseMods.Except(OcsConstants.BaseMods);
+
         var baseItems = new Dictionary<string, ModItem>();
 
         await ReadModsAsync(baseMods, baseItems).ConfigureAwait(false);
@@ -80,6 +82,13 @@ public class ContextBuilder : IContextBuilder
             {
                 info = await activeMod.ReadInfoAsync().ConfigureAwait(false);
             }
+        }
+
+        header ??= new();
+
+        if (options.PopulateDependencies)
+        {
+            header.Dependencies = header.Dependencies.Concat(dependencies).Distinct().ToList();
         }
 
         return new ModContext(baseItems, activeItems.Values, options.Installation, modFileName, lastId, header, info);

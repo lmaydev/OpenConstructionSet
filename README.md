@@ -24,10 +24,8 @@ Massive shout out to [SCARaw](https://www.nexusmods.com/kenshi/users/16691049) f
 ### Project Setup
 Add the main nuget (https://www.nuget.org/packages/OpenConstructionSet/)
 
-Optionally add the dependency injection nuget (https://www.nuget.org/packages/OpenConstructionSet.DependencyInjection/)
-
 ### Using Dependency Injection
-Once you have a reference to the dependency injection assembly simple add OCS to your services.
+Add OCS to your services.
 
 ```csharp
 services.UseOpenContructionSet();

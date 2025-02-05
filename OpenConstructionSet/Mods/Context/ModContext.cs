@@ -22,7 +22,7 @@ public class ModContext : IModContext
     /// <param name="lastId">The last ID used when generating an <see cref="IItem.StringId"/>.</param>
     /// <param name="header">The header to use for the mod.</param>
     /// <param name="info">Optional data for the mod's .info file.</param>
-    public ModContext(Dictionary<string, ModItem> baseItems, IEnumerable<ModItem> activeItems, IInstallation installation, string modName, int lastId, Header? header = null, ModInfoData? info = null)
+    public ModContext(Dictionary<string, ModItem> baseItems, IEnumerable<ModItem> activeItems, IInstallation installation, string modName, int lastId, Header header, ModInfoData? info = null)
     {
         this.baseItems = baseItems;
         Items = new(this, activeItems);

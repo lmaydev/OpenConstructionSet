@@ -18,13 +18,7 @@ var installation = SelectInstallation();
 
 Console.WriteLine();
 
-Console.Write("Reading load order... ");
-
-var baseMods = await ModsToPatch();
-
-Console.WriteLine("done");
-
-Console.Write("Loading data... ");
+Console.Write($"Loading {ModName}... ");
 
 var (waterAvoidance, pathfindAcceleration, version) = await ReadScarsMod();
 
@@ -66,6 +60,7 @@ enabledMods.Add(ModFileName);
 await installation.WriteEnabledModsAsync(enabledMods);
 
 Console.WriteLine("done");
+Console.Write("Press any key to exit...");
 Console.ReadKey();
 
 IInstallation SelectInstallation()
@@ -117,7 +112,7 @@ void Error(string message)
 
 async Task<(float waterAvoidance, float pathFindAcceleration, int version)> ReadScarsMod()
 {
-    if (!installation.TryFindMod(ReferenceModName, out var referenceMod))
+    if (!installation.TryFind(ReferenceModName, out var referenceMod))
     {
         // Not found
         Error($"Unable to find {ReferenceModName}");
@@ -158,31 +153,8 @@ async Task<IModContext> BuildModContext()
                             "LMayDev",
                             "OpenConstructionSet Compatibility patch to apply core values from SCAR's pathfinding fix to custom races");
     header.References.Add(ReferenceModName);
-    header.Dependencies.AddRange(baseMods);
 
-    var options = new ModContextOptions(ModFileName,
-        installation: installation,
-        baseMods: baseMods,
-        header: header,
-        throwIfMissing: false);
+    var options = new ModContextOptions(ModFileName, installation: installation, header: header);
 
     return await new ContextBuilder().BuildAsync(options);
-}
-
-async Task<List<string>> ModsToPatch()
-{
-    var mods = new List<string>(await installation.ReadEnabledModsAsync());
-
-    // Don't patch ourselves or SCAR's mod
-    mods.Remove(ModFileName);
-    mods.Remove(ReferenceModName);
-
-    if (mods.Count == 0)
-    {
-        // No mods found to patch
-        Error($"failed!{Environment.NewLine}No mods found to patch");
-        return new();
-    }
-
-    return mods;
 }
