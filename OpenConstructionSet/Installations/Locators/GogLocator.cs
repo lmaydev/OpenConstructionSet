@@ -9,7 +9,7 @@ namespace OpenConstructionSet.Installations.Locators;
 /// Gog implementation of a <see cref="IInstallationLocator"/>
 /// </summary>
 [SupportedOSPlatform("windows")]
-public class GogLocator(GOGHandler handler) : IInstallationLocator
+public class GogLocator(GOGHandler handler, InstallationFactory installationFactory) : IInstallationLocator
 {
     readonly GOGGameId gameId = GOGGameId.From(1193046833);
 
@@ -27,7 +27,7 @@ public class GogLocator(GOGHandler handler) : IInstallationLocator
             return false;
         }
 
-        installation = new Installation(Id, path, null);
+        installation = installationFactory.Build(Id, path, null);
         return true;
     }
 }

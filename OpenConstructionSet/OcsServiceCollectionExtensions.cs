@@ -7,6 +7,7 @@ using NexusMods.Paths;
 using OpenConstructionSet;
 using OpenConstructionSet.Installations;
 using OpenConstructionSet.Installations.Locators;
+using OpenConstructionSet.Installations.Settings;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -16,11 +17,12 @@ public static class OcsServiceCollectionExtensions
     public static IServiceCollection AddOpenConstructionSet(this IServiceCollection services)
     {
         // Game finder
-        services.AddSingleton(FileSystem.Shared);
-        services.AddSingleton(WindowsRegistry.Shared);
-        services.AddSingleton<SteamHandler>();
-        services.AddSingleton<GOGHandler>();
+        services.TryAddSingleton(FileSystem.Shared);
+        services.TryAddSingleton(WindowsRegistry.Shared);
+        services.TryAddSingleton<SteamHandler>();
+        services.TryAddSingleton<GOGHandler>();
 
+        // Locators
         services.TryAddEnumerable(
         [
                 ServiceDescriptor.Singleton<IInstallationLocator, SteamLocator>(),
@@ -28,7 +30,15 @@ public static class OcsServiceCollectionExtensions
                 ServiceDescriptor.Singleton<IInstallationLocator, LocalLocator>(),
         ]);
 
-        return services.AddSingleton<IInstallationService, InstallationService>()
-                       .AddSingleton<IContextBuilder, ContextBuilder>();
+        services.TryAddSingleton<SettingsHelper>();
+        services.TryAddSingleton<SaveFolderHelper>();
+
+        services.TryAddSingleton<InstallationFactory>();
+
+        // Core services
+        services.TryAddSingleton<IInstallationService, InstallationService>();
+        services.TryAddSingleton<IContextBuilder, ContextBuilder>();
+
+        return services;
     }
 }
