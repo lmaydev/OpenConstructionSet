@@ -33,6 +33,8 @@ public static class OcsServiceCollectionExtensions
         services.TryAddSingleton<SettingsHelper>();
         services.TryAddSingleton<SaveFolderHelper>();
 
+        services.TryAddSingleton<InstallationFactory>();
+
         // Core services
         services.TryAddSingleton<IInstallationService, InstallationService>();
         services.TryAddSingleton<IContextBuilder, ContextBuilder>();

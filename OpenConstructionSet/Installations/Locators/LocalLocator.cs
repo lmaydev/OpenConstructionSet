@@ -5,7 +5,7 @@ namespace OpenConstructionSet.Installations.Locators;
 /// <summary>
 /// Implementation of a <see cref="IInstallationLocator"/> that looks for the folders in the working directory.
 /// </summary>
-public class LocalLocator : IInstallationLocator
+public class LocalLocator(InstallationFactory installationFactory) : IInstallationLocator
 {
     /// <inheritdoc/>
     public string Id { get; } = "Local";
@@ -18,7 +18,7 @@ public class LocalLocator : IInstallationLocator
             return false;
         }
 
-        installation = new Installation(Id, Path.GetFullPath("."), null);
+        installation = installationFactory.Build(Id, Path.GetFullPath("."), null);
         return true;
     }
 }
