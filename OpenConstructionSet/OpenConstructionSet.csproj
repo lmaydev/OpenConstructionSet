@@ -7,7 +7,7 @@
     <Configurations>Debug;Release;Docs</Configurations>
     <Platforms>AnyCPU</Platforms>
     <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
-    <Version>4.1.0.0</Version>
+    <Version>4.1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Docs' ">
