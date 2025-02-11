@@ -25,9 +25,17 @@ public class ModReferenceCollection : KeyedCollection<string, ModReference>
 
     internal ModContext? Owner => parent.Owner;
 
-    protected override void InsertItem(int index, ModReference item) => item.SetParent(this);
+    protected override void InsertItem(int index, ModReference item)
+    {
+        item.SetParent(this);
+        base.InsertItem(index, item);
+    }
 
-    protected override void SetItem(int index, ModReference item) => item.SetParent(this);
+    protected override void SetItem(int index, ModReference item)
+    {
+        item.SetParent(this);
+        base.SetItem(index, item);
+    }
 
     /// <summary>
     /// Adds a new <see cref="ModReference"/> to the collection with the provided values.

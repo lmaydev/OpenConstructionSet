@@ -11,7 +11,7 @@ namespace OpenConstructionSet.Installations.Locators;
 /// Steam implementation of a <see cref="IInstallationLocator"/>
 /// </summary>
 [SupportedOSPlatform("windows")]
-public class SteamLocator(SteamHandler handler) : IInstallationLocator
+public class SteamLocator(SteamHandler handler, InstallationFactory installationFactory) : IInstallationLocator
 {
     readonly AppId gameId = AppId.From(233860);
 
@@ -40,7 +40,7 @@ public class SteamLocator(SteamHandler handler) : IInstallationLocator
                 return false;
             }
 
-            installation = new Installation(Id, path, content);
+            installation = installationFactory.Build(Id, path, content);
             return true;
         }
     }

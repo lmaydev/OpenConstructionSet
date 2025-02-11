@@ -4,50 +4,13 @@ using OpenConstructionSet.Saves;
 
 namespace OpenConstructionSet.Installations;
 
-/// <inheritdoc/>
-public class Installation : IInstallation
+/// <summary>
+/// Representation of an installation of the game.
+/// </summary>
+public record class Installation(string Identifier, string RootPath, IModFolder Data, IModFolder Mods, IModFolder? Content, ISaveFolder Saves) : IInstallation
 {
-    /// <summary>
-    /// Creates a new <see cref="Installation"/> from the provided values.
-    /// </summary>
-    /// <param name="identifier">Name used to identify this installation e.g. Steam</param>
-    /// <param name="path">The full path of the installation.</param>
-    /// <param name="content">Optional content folder e.g. Steam Workshop folder.</param>
-    public Installation(string identifier, string path, string? content)
-    {
-        Identifier = identifier;
-        RootPath = path;
-
-        Data = new ModFolder(Path.Combine(path, "data"), ModFolderType.Data);
-        Mods = new ModFolder(Path.Combine(path, "mods"), ModFolderType.Mod);
-
-        Content = content is not null ? new ModFolder(content, ModFolderType.Content) : null;
-
-        Saves = new SaveFolder(Path.Combine(RootPath, "save"));
-
-        EnabledModsFile = Path.Combine(Data.Path, OcsConstants.EnabledModFile);
-    }
-
     /// <inheritdoc/>
-    public IModFolder? Content { get; }
-
-    /// <inheritdoc/>
-    public IModFolder Data { get; }
-
-    /// <inheritdoc/>
-    public string EnabledModsFile { get; }
-
-    /// <inheritdoc/>
-    public string Identifier { get; }
-
-    /// <inheritdoc/>
-    public IModFolder Mods { get; }
-
-    /// <inheritdoc/>
-    public string RootPath { get; }
-
-    /// <inheritdoc/>
-    public ISaveFolder Saves { get; }
+    public string EnabledModsFile => Path.Combine(Data.Path, OcsConstants.EnabledModFile);
 
     /// <inheritdoc/>
     public virtual IEnumerable<IModFile> GetMods()
