@@ -1,0 +1,36 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '9.0.x' # Specify the .NET version you're using
+
+      - name: Build and Test
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet test --no-build --configuration Release
+
+      - name: Pack
+        run: dotnet pack --no-build --configuration Release --output nupkgs
+
+      - name: Publish
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push nupkgs/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ env.NUGET_API_KEY }}
+        
+      - name: Clean up
+        run: rm -rf nupkgs
